@@ -124,8 +124,19 @@
   .entry .ebody { flex: 1; }
   .entry .etext { font-size: 13px; font-weight: 500; color: #333; }
   .entry .emeta { font-size: 11px; color: #aaa; margin-top: 3px; }
-  .entry .edel { background: none; border: none; color: #ccc; cursor: pointer; font-size: 18px; padding: 0; line-height: 1; }
-  .entry .edel:hover { color: #e74c3c; }
+  .entry .edel {
+    background: #fff;
+    border: 1.5px solid #f0caca;
+    color: #d64545;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 999px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .entry .edel:hover { background: #fee; border-color: #e74c3c; color: #b00020; }
 
   /* JENSON VIEW */
   .hero-card { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 20px; padding: 28px; text-align: center; color: white; margin-bottom: 20px; box-shadow: 0 8px 30px rgba(26,26,46,0.3); }
@@ -485,11 +496,8 @@
   // 1) Create the Supabase table using the SQL file I gave you.
   // 2) Paste your Project URL and anon public key below.
   // 3) Use the same CHART_ID on every device you want synced.
-const SUPABASE_URL =
-  "https://yxciwwcfjwsxlksqkmto.supabase.co";
-
-const SUPABASE_ANON_KEY =
-  "sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6";
+  const SUPABASE_URL = "https://yxciwwcfjwsxlksqkmto.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6";
   const CHART_ID = 'jenson-main-chart';
 
   const CLOUD_READY =
@@ -640,7 +648,7 @@ const SUPABASE_ANON_KEY =
           <div class="etext">${e.cat}${e.note?' — '+e.note:''}</div>
           <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
         </div>
-        <button class="edel" onclick="del(${idx})" title="Delete">✕</button>
+        <button class="edel" onclick="del(${idx})" title="Delete">🗑 Delete</button>
       </div>`;
     }).join('');
   }
@@ -663,10 +671,14 @@ const SUPABASE_ANON_KEY =
   }
 
   async function del(idx) {
+    if (!confirm('Delete this entry?')) return;
+
     const wk  = weekKey(wkOff);
     const all = await getData();
+
     if (!all[wk]) return;
-    all[wk].splice(idx,1);
+
+    all[wk].splice(idx, 1);
     await saveData(all);
     await renderParent();
   }
