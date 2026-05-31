@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="apple-touch-startup-image" href="splash.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2563eb">
@@ -217,6 +218,20 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+  <div id="splash" style="
+  position:fixed;
+  inset:0;
+  background:#2563eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:28px;
+  font-weight:800;
+  z-index:9999;
+">
+⭐ Jenson Rewards
+</div>
 <div class="app" id="app">
 
   <!-- LOGIN SCREEN -->
@@ -1159,6 +1174,16 @@ if (cTab==='rewards') list = list.filter(e => e.type === "reward");
     </div>`).join('');
   }
   loadAndApplyTheme();
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const s = document.getElementById('splash');
+    if (s) s.style.opacity = '0';
+    setTimeout(() => {
+      if (s) s.style.display = 'none';
+    }, 300);
+  }, 800);
+});
 </script>
 </body>
 </html>
