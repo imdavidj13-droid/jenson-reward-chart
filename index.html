@@ -440,8 +440,9 @@
       <h3>Your behaviour log</h3>
       <div class="tabs">
         <button class="tab active" id="t-all" onclick="setTab('all')">All</button>
-        <button class="tab" id="t-pos" onclick="setTab('pos')">⭐ Positives</button>
-        <button class="tab" id="t-neg" onclick="setTab('neg')">✖ Negatives</button>
+<button class="tab" id="t-pos" onclick="setTab('pos')">⭐ Positives</button>
+<button class="tab" id="t-neg" onclick="setTab('neg')">✖ Negatives</button>
+<button class="tab" id="t-rewards" onclick="setTab('rewards')">🎁 Rewards</button>
       </div>
       <div class="entry-list" id="c-entries"></div>
     </div>
@@ -605,12 +606,13 @@ async function approveReward(id) {
   if (!all[wk]) all[wk] = [];
 
   all[wk].push({
-    day: (new Date().getDay() + 6) % 7,
-    cat: `Claimed reward: ${req.rewardName}`,
-    note: "",
-    pos: false,
-    points: -Math.abs(req.points)
-  });
+  day: (new Date().getDay() + 6) % 7,
+  cat: `Claimed reward: ${req.rewardName}`,
+  note: "",
+  pos: false,
+  points: -Math.abs(req.points),
+  type: "reward"
+});
 
   req.status = "approved";
   req.approvedAt = new Date().toISOString();
@@ -1084,7 +1086,7 @@ document.getElementById('c-reward-cards').innerHTML =
 
   function setTab(t) {
     cTab = t;
-    ['all','pos','neg'].forEach(x => {
+    ['all','pos','neg','rewards'].forEach(x => {
       document.getElementById('t-'+x).className = 'tab'+(x===t?' active':'');
     });
     weekEntries(0).then(renderCEntries);
@@ -1092,8 +1094,9 @@ document.getElementById('c-reward-cards').innerHTML =
 
   function renderCEntries(entries) {
     let list = [...entries].reverse();
-    if (cTab==='pos') list = list.filter(e=>pointsForEntry(e)>0);
-    if (cTab==='neg') list = list.filter(e=>pointsForEntry(e)<0);
+    if (cTab==='pos') list = list.filter(e => pointsForEntry(e) > 0 && e.type !== "reward");
+if (cTab==='neg') list = list.filter(e => pointsForEntry(e) < 0 && e.type !== "reward");
+if (cTab==='rewards') list = list.filter(e => e.type === "reward");
     const el = document.getElementById('c-entries');
     if (!list.length) { el.innerHTML = '<p class="empty-msg">Nothing here yet.</p>'; return; }
     el.innerHTML = list.map(e=>`<div class="entry ${pointsForEntry(e)>0?'pos-entry':'neg-entry'}">
