@@ -461,28 +461,28 @@
     tier:'small',
     icon:'🍬',
     name:'Pick a sweet',
-    pts:5,
+    pts:8,
     desc:'Choose a sweet'
   },
   {
     tier:'small',
     icon:'🎮',
     name:'30 mins extra gaming',
-    pts:8,
+    pts:12,
     desc:'Extra video game or phone time'
   },
   {
     tier:'small',
     icon:'⚽',
     name:'FC26 vs Dad',
-    pts:10,
+    pts:15,
     desc:'1v1 match against Dad'
   },
   {
     tier:'small',
     icon:'🎬',
     name:'Choose movie night',
-    pts:12,
+    pts:18,
     desc:'Pick the Sunday movie'
   },
 
@@ -491,21 +491,21 @@
     tier:'medium',
     icon:'🟩',
     name:'100 Robux',
-    pts:20,
+    pts:25,
     desc:'Roblox reward'
   },
   {
     tier:'medium',
     icon:'💷',
     name:'£1 added to card',
-    pts:25,
+    pts:35,
     desc:'Money added to your card'
   },
   {
     tier:'medium',
     icon:'⚽',
     name:'Play football',
-    pts:30,
+    pts:40,
     desc:'Football at the weekend'
   },
 
@@ -514,23 +514,35 @@
     tier:'big',
     icon:'💷',
     name:'£5 added to card',
-    pts:50,
+    pts:80,
     desc:'Big money reward'
   },
   {
     tier:'big',
     icon:'🟩',
     name:'250 Robux',
-    pts:60,
+    pts:90,
     desc:'Big Roblox reward'
   },
   {
     tier:'big',
     icon:'🎁',
-    name:'Reward of choice',
-    pts:75,
-    desc:'Choose a special reward'
+    name:'Mega reward',
+    pts:120,
+    desc:'Choose one special mega reward'
   }
+
+
+];
+const MEGA_REWARD_OPTIONS = [
+  "1000 Robux",
+  "Fortnite Crew",
+  "1000 V-Bucks",
+  "1000 FC Points",
+  "Trip to cinema",
+  "Bowling with dad",
+  "pizza perfect takeaway",
+  
 ];
 
   const BEHAVIOUR_POINTS = {
@@ -566,8 +578,7 @@
   return all.__rewardRequests || [];
 }
 
-async function requestReward(index) {
-  const all = await getData();
+async function requestReward(index, megaChoice = "") {  const all = await getData();
   const reward = REWARDS[index];
 
   if (!all.__rewardRequests) all.__rewardRequests = [];
@@ -584,7 +595,9 @@ async function requestReward(index) {
   all.__rewardRequests.push({
     id: Date.now(),
     rewardIndex: index,
-    rewardName: reward.name,
+    rewardName: megaChoice
+  ? `${reward.name}: ${megaChoice}`
+  : reward.name,
     points: reward.pts,
     icon: reward.icon,
     status: "pending",
@@ -1032,12 +1045,26 @@ async function renderRewardRequests() {
                 : r.pts + ' pts needed'
             }
           </div>
+${
+  w && !pending
+    ? r.isMega
+      ? `
+        <select id="mega-choice-${realIndex}" style="margin-top:8px;width:100%;padding:7px;border-radius:8px;border:1px solid #ddd;">
+          ${MEGA_REWARD_OPTIONS.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+        </select>
 
-          ${
-            w && !pending
-              ? `<button class="claim-btn" onclick="requestReward(${realIndex})">Claim</button>`
-              : ''
-          }
+        <button
+          class="claim-btn"
+          style="margin-top:8px"
+          onclick="requestReward(${realIndex}, document.getElementById('mega-choice-${realIndex}').value)"
+        >
+          Claim
+        </button>
+      `
+      : `<button class="claim-btn" onclick="requestReward(${realIndex})">Claim</button>`
+    : ''
+}
+          
         </div>
       `;
     }).join('')}
