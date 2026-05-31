@@ -454,14 +454,96 @@
   const DEFAULT_CHILD_PIN  = '0000';
 
   const REWARDS = [
-    { icon:'🍫', name:'Small treat',        pts:8,  desc:'A small snack or sweet treat' },
-    { icon:'🎬', name:'Movie night',        pts:14, desc:'Choose a film for everyone' },
-    { icon:'🍕', name:'Takeaway choice',    pts:18, desc:'Pick the family takeaway' },
-    { icon:'🟩', name:'100 Robux',          pts:20, desc:'Roblox reward' },
-    { icon:'🎮', name:'Extra game time',    pts:22, desc:'Bonus PS5 / tablet time' },
-    { icon:'🛍️', name:'Pocket money bonus',pts:28, desc:'A small weekend bonus' },
-    { icon:'⭐', name:'Big reward choice',  pts:35, desc:'Choose a bigger weekend reward' },
-  ];
+  // SMALL
+  {
+    tier:'small',
+    icon:'🍬',
+    name:'Pick a sweet',
+    pts:5,
+    desc:'Choose a sweet or chocolate'
+  },
+  {
+    tier:'small',
+    icon:'🎮',
+    name:'15 mins extra gaming',
+    pts:8,
+    desc:'Extra gaming time'
+  },
+  {
+    tier:'small',
+    icon:'🍿',
+    name:'Choose movie night',
+    pts:10,
+    desc:'Pick the family movie'
+  },
+  {
+    tier:'small',
+    icon:'🍦',
+    name:'Ice cream',
+    pts:10,
+    desc:'Ice cream treat'
+  },
+
+  // MEDIUM
+  {
+    tier:'medium',
+    icon:'🟩',
+    name:'100 Robux',
+    pts:20,
+    desc:'Roblox reward'
+  },
+  {
+    tier:'medium',
+    icon:'🍕',
+    name:'Choose takeaway',
+    pts:25,
+    desc:'Pick the family takeaway'
+  },
+  {
+    tier:'medium',
+    icon:'🎮',
+    name:'30 mins extra gaming',
+    pts:25,
+    desc:'Extra gaming session'
+  },
+  {
+    tier:'medium',
+    icon:'🎁',
+    name:'£3 toy',
+    pts:30,
+    desc:'Small toy reward'
+  },
+
+  // BIG
+  {
+    tier:'big',
+    icon:'🟩',
+    name:'250 Robux',
+    pts:50,
+    desc:'Big Roblox reward'
+  },
+  {
+    tier:'big',
+    icon:'🎁',
+    name:'£5 toy',
+    pts:60,
+    desc:'Choose a toy'
+  },
+  {
+    tier:'big',
+    icon:'⚽',
+    name:'Football trip',
+    pts:75,
+    desc:'Football activity'
+  },
+  {
+    tier:'big',
+    icon:'🏆',
+    name:'Mega reward',
+    pts:100,
+    desc:'Choose a special reward'
+  }
+];
 
   const BEHAVIOUR_POINTS = {
     'Brilliant morning routine': 3,
@@ -936,6 +1018,42 @@ async function renderRewardRequests() {
     await renderParent();
   }
 
+  function buildRewardSection(title, rewards, net, requests) {
+  return `
+    <div style="grid-column:1/-1;font-weight:800;font-size:18px;padding:10px 0;">
+      ${title}
+    </div>
+    ${rewards.map((r,index)=>{
+      const realIndex = REWARDS.indexOf(r);
+      const w = net >= r.pts;
+      const pending = requests.some(
+        req => req.rewardName === r.name && req.status === "pending"
+      );
+
+      return `
+        <div class="rcard${w?' won':''}">
+          <div class="ricon">${r.icon}</div>
+          <div class="rname">${r.name}</div>
+          <div class="rstatus">
+            ${
+              pending
+              ? '⏳ Waiting for approval'
+              : w
+                ? '✓ Unlocked!'
+                : r.pts + ' pts needed'
+            }
+          </div>
+
+          ${
+            w && !pending
+              ? `<button class="claim-btn" onclick="requestReward(${realIndex})">Claim</button>`
+              : ''
+          }
+        </div>
+      `;
+    }).join('')}
+  `;
+}
   async function renderChild() {
     await loadAndApplyTheme();
     const entries = await weekEntries(0);
@@ -961,22 +1079,18 @@ async function renderRewardRequests() {
         <div class="rstatus">${bonus.points?'✓ +10 bonus points!':bonus.cleanDays+'/5 days with no negatives'}</div>
       </div>`;
 
-    const all = await getData();
+      const all = await getData();
 const requests = rewardRequests(all);
 
-document.getElementById('c-reward-cards').innerHTML = bonusCard + REWARDS.map((r, index) => {
-  const w = net >= r.pts;
-  const pending = requests.some(req => req.rewardName === r.name && req.status === "pending");
+    const smallRewards = REWARDS.filter(r => r.tier === 'small');
+const mediumRewards = REWARDS.filter(r => r.tier === 'medium');
+const bigRewards = REWARDS.filter(r => r.tier === 'big');
 
-  return `<div class="rcard${w?' won':''}">
-    <div class="ricon">${r.icon}</div>
-    <div class="rname">${r.name}</div>
-    <div class="rstatus">
-      ${pending ? '⏳ Waiting for approval' : w ? '✓ Unlocked!' : r.pts + ' pts needed'}
-    </div>
-    ${w && !pending ? `<button class="claim-btn" onclick="requestReward(${index})">Claim</button>` : ''}
-  </div>`;
-}).join('');
+document.getElementById('c-reward-cards').innerHTML =
+  bonusCard +
+  buildRewardSection('🟢 Small Rewards', smallRewards, net, requests) +
+  buildRewardSection('🟡 Medium Rewards', mediumRewards, net, requests) +
+  buildRewardSection('🔴 Big Rewards', bigRewards, net, requests);
 
     renderCEntries(entries);
   }
