@@ -526,7 +526,8 @@
     icon:'🎁',
     name:'Mega reward',
     pts:120,
-    desc:'Choose one special mega reward'
+    desc:'Choose one special mega reward',
+    isMega:true
   }
 
 
@@ -823,8 +824,8 @@ function setBankPoints(all, points) {
         await fillParentSettings();
         show('parent');
       } else {
-        await renderChild();
-        show('child');
+         show('child');
+  await renderChild();
       }
     } else {
       document.getElementById('pin-err').textContent = 'Wrong PIN — try again';
@@ -1077,6 +1078,9 @@ ${
 }
   async function renderChild() {
     await loadAndApplyTheme();
+    const all = await getData();
+const requests = rewardRequests(all);
+const bankPoints = getBankPoints(all);
     const entries = await weekEntries(0);
     const pos  = entries.filter(e=>pointsForEntry(e)>0).reduce((sum,e)=>sum+pointsForEntry(e),0);
     const neg  = Math.abs(entries.filter(e=>pointsForEntry(e)<0).reduce((sum,e)=>sum+pointsForEntry(e),0));
@@ -1099,10 +1103,6 @@ ${
         <div class="rname">5 clean days</div>
         <div class="rstatus">${bonus.points?'✓ +10 bonus points!':bonus.cleanDays+'/5 days with no negatives'}</div>
       </div>`;
-
-      const all = await getData();
-const requests = rewardRequests(all);
-const bankPoints = getBankPoints(all);
 
     const smallRewards = REWARDS.filter(r => r.tier === 'small');
 const mediumRewards = REWARDS.filter(r => r.tier === 'medium');
