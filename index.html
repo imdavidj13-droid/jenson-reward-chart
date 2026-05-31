@@ -157,6 +157,9 @@
   .entry { background: #fafafa; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; border-left: 4px solid transparent; }
   .entry.pos-entry { border-left-color: #27ae60; }
   .entry.neg-entry { border-left-color: #e74c3c; }
+  .entry.reward-entry {
+  border-left-color: #f59e0b;
+}
   .entry .eicon { font-size: 18px; flex-shrink: 0; }
   .entry .ebody { flex: 1; }
   .entry .etext { font-size: 13px; font-weight: 500; color: #333; }
@@ -457,13 +460,7 @@
   const REWARDS = [
 
   // 🟢 SMALL REWARDS
-  {
-    tier:'small',
-    icon:'🍬',
-    name:'Pick a sweet',
-    pts:8,
-    desc:'Choose a sweet'
-  },
+
   {
     tier:'small',
     icon:'🎮',
@@ -983,8 +980,8 @@ async function renderRewardRequests() {
     if (!rev.length) { el.innerHTML = '<p class="empty-msg">No entries logged yet this week.</p>'; return; }
     el.innerHTML = rev.map((e,ri) => {
       const idx = entries.length-1-ri;
-      return `<div class="entry ${pointsForEntry(e)>0?'pos-entry':'neg-entry'}">
-        <span class="eicon">${pointsForEntry(e)>0?'⭐':'✖'}</span>
+      return `<div class="entry ${e.type === "reward" || e.cat?.startsWith("Claimed reward") ? 'reward-entry' : pointsForEntry(e)>0 ? 'pos-entry' : 'neg-entry'}">
+        <span class="eicon">${e.type === "reward" || e.cat?.startsWith("Claimed reward") ? '🎁' : pointsForEntry(e)>0 ? '⭐' : '✖'}</span>
         <div class="ebody">
           <div class="etext">${e.cat}${e.note?' — '+e.note:''}</div>
           <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
