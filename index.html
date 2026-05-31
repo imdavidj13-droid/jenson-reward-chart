@@ -947,7 +947,10 @@ function setBankPoints(all, points) {
 
     const bonus = weeklyBonus(entries);
     const net = tPos-tNeg+bonus.points;
+    const all = await getData();
+const bankPoints = getBankPoints(all);
     document.getElementById('p-stats').innerHTML = `
+    <div class="stat-box"><div class="slabel">🏦 Bank</div><div class="sval blue">${bankPoints}</div></div>
       <div class="stat-box"><div class="slabel">Score</div><div class="sval ${net>=0?'green':'red'}">${net>0?'+':''}${net}</div></div>
       <div class="stat-box"><div class="slabel">⭐ Earned</div><div class="sval green">${tPos}</div></div>
       <div class="stat-box"><div class="slabel">🎉 Bonus</div><div class="sval blue">${bonus.points ? '+'+bonus.points : bonus.cleanDays+'/5'}</div></div>
@@ -963,13 +966,13 @@ function setBankPoints(all, points) {
       </div>`;
 
     document.getElementById('p-rewards').innerHTML = bonusHtml + REWARDS.map(r => {
-      const u = net >= r.pts;
+const u = bankPoints >= r.pts;
       return `<div class="reward-row">
         <div class="reward-left">
           <span class="reward-emoji">${r.icon}</span>
           <div><div class="reward-name">${r.name}</div><div class="reward-pts">${r.desc} • Needs ${r.pts} points</div></div>
         </div>
-        <span class="badge ${u?'unlocked':'locked'}">${u?'✓ Unlocked!': net+'/'+r.pts}</span>
+        <span class="badge ${u?'unlocked':'locked'}">${u?'✓ Unlocked!': bankPoints+'/'+r.pts}</span>
       </div>`;
     }).join('');
 
@@ -1018,13 +1021,25 @@ await saveData(all);
   }
 
   async function del(idx) {
-    const wk  = weekKey(wkOff);
-    const all = await getData();
-    if (!all[wk]) return;
-    all[wk].splice(idx,1);
-    await saveData(all);
-    await renderParent();
+  const wk  = weekKey(wkOff);
+  const all = await getData();
+
+  if (!all[wk]) return;
+
+  const removed = all[wk][idx];
+
+  if (removed) {
+    setBankPoints(
+      all,
+      getBankPoints(all) - pointsForEntry(removed)
+    );
   }
+
+  all[wk].splice(idx, 1);
+
+  await saveData(all);
+  await renderParent();
+}
 
   function buildRewardSection(title, rewards, bankPoints, requests) {
   return `
@@ -1087,15 +1102,15 @@ const bankPoints = getBankPoints(all);
     const bonus = weeklyBonus(entries);
     const net  = pos-neg+bonus.points;
     const maxP = Math.max(...REWARDS.map(r=>r.pts));
-    const pct  = Math.min(100, Math.max(0, Math.round(net/maxP*100)));
+    const pct = Math.min(100, Math.max(0, Math.round(bankPoints / maxP * 100)));
 
     document.getElementById('c-stars').textContent = '⭐'.repeat(Math.min(5,Math.max(1,pos)));
     document.getElementById('c-score').textContent = bankPoints;
     document.getElementById('c-prog').style.width  = pct+'%';
 
-    const nxt = REWARDS.filter(r=>net<r.pts).sort((a,b)=>a.pts-b.pts)[0];
+    const nxt = REWARDS.filter(r=>bankPoints<r.pts).sort((a,b)=>a.pts-b.pts)[0];
     document.getElementById('c-prog-label').textContent = nxt
-      ? `${nxt.pts-net} more points to unlock ${nxt.name}!`
+     ? `${nxt.pts-bankPoints} more points to unlock ${nxt.name}!`
       : '🎉 Amazing — you\'ve unlocked rewards this week!';
 
     const bonusCard = `<div class="rcard${bonus.points?' won':''}">
