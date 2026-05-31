@@ -225,6 +225,7 @@
   inset:0;
   background:#2563eb;
   z-index:9999;
+   transition: opacity 0.5s ease;
 ">
   <img src="splash.png" style="
     width:100%;
@@ -1178,11 +1179,15 @@ if (cTab==='rewards') list = list.filter(e => e.type === "reward");
 window.addEventListener('load', () => {
   setTimeout(() => {
     const s = document.getElementById('splash');
-    if (s) s.style.opacity = '0';
-    setTimeout(() => {
-      if (s) s.style.display = 'none';
-    }, 300);
-  }, 800);
+
+    if (s) {
+      s.style.opacity = '0';
+
+      setTimeout(() => {
+        s.style.display = 'none';
+      }, 500); // matches fade duration
+    }
+  }, 2500);
 });
 </script>
 </body>
