@@ -738,9 +738,9 @@ async function checkPendingCelebrations() {
 
   if (!celebrations.length) return;
 
+  setTimeout(() => {
   fireConfetti();
-
-  alert(`🎉 Reward approved!\n${celebrations[0].rewardName}`);
+}, 300);
 
   celebrations.forEach(c => {
     c.seen = true;
