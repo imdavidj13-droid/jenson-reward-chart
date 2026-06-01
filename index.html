@@ -270,6 +270,26 @@
   .theme-btn.active { border-color: var(--accent, #4a90d9); background: var(--accent-soft, #ddeeff); }
 
   @media (max-width: 500px) {
+    @media (max-width: 500px) {
+  .day-col {
+    min-height: 65px;
+    padding: 6px 2px;
+  }
+
+  .day-summary {
+    margin-top: 4px;
+    gap: 1px;
+  }
+
+  .day-line {
+    font-size: 10px;
+    line-height: 1.1;
+  }
+
+  .day-col .ddate {
+    display: none;
+  }
+}
     .stats-row { grid-template-columns: repeat(2, 1fr); }
     .days-grid { gap: 4px; }
     .day-col { padding: 6px 3px; }
