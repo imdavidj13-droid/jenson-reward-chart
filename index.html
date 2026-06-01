@@ -720,7 +720,17 @@ function addPendingCelebration(all, rewardName) {
   });
 }
 
+function playRewardSound() {
+  const audio = new Audio(
+    "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
+  );
+
+  audio.volume = 0.4;
+  audio.play().catch(() => {});
+}
+
 function fireConfetti() {
+  playRewardSound();
   if (!window.confetti) return;
 
   confetti({
