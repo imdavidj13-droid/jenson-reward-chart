@@ -1186,9 +1186,9 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
 
   ${(p+n)>0 ? `
     <div class="day-summary">
-      ${p ? `<div class="day-line pos">+${p} earned</div>` : ''}
-      ${n ? `<div class="day-line neg">-${n} lost</div>` : ''}
-      <div class="day-total ${nc}">${net>0?'+':''}${net} total</div>
+      ${p ? `<div class="day-line pos">🟢 +${p} earned</div>` : ''}
+${n ? `<div class="day-line neg">🔴 -${n} lost</div>` : ''}
+<div class="day-total ${nc}">⚡ ${net>0?'+':''}${net} total</div>
     </div>
   ` : `<div class="day-empty">No entries</div>`}
 </div>`;
