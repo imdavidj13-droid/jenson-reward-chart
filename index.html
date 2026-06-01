@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2563eb">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Jenson's Reward Chart</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -150,7 +150,7 @@
   .choice-panel.negative { background: #fff4f0; border-color: #f2c7b6; }
   .choice-panel h4 { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
   .form-group label { display: block; font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; background: white; color: #1a1a2e; transition: border-color 0.15s; }
+  .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 16px; font-family: inherit; background: white; color: #1a1a2e; transition: border-color 0.15s; }
   .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent, #4a90d9); }
   .form-group textarea { height: 64px; resize: none; }
   .action-btns { display: flex; gap: 10px; margin-top: 4px; }
@@ -336,11 +336,11 @@
       <div class="settings-grid">
         <div class="form-group">
           <label>Parent PIN</label>
-          <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
+          <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;">
         </div>
         <div class="form-group">
           <label>Jenson's PIN</label>
-          <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
+          <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;">
         </div>
       </div>
       <button class="btn-add-pos" onclick="savePinSettings()" style="margin-top:12px">Save PINs</button>
@@ -909,8 +909,6 @@ async function checkPendingCelebrations() {
   }
 
   async function checkPin() {
-    if (document.activeElement) {
-  document.activeElement.blur();
 }
     await loadAndApplyTheme();
     const settings = await getSettings();
@@ -933,7 +931,6 @@ async function checkPendingCelebrations() {
       pinBuf = '';
       updateDots();
     }
-  }
 
   function logout() { show('login'); }
 
