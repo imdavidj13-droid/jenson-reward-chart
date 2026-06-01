@@ -316,6 +316,11 @@
     <div class="days-grid" id="p-days"></div>
     <div class="stats-row" id="p-stats"></div>
 
+<div class="section-card">
+  <h3>🏦 Bank History</h3>
+  <div class="entry-list" id="p-bank-history"></div>
+</div>
+
     <div class="section-card">
       <h3>🎁 Rewards this week</h3>
       <div id="p-rewards"></div>
@@ -418,12 +423,7 @@
         <button class="btn-add-pos" onclick="addEntry('positive')">⭐ Add positive points</button>
         <button class="btn-add-neg" onclick="addEntry('negative')">✖ Add consequence</button>
       </div>
-    </div>
 
-    <div class="section-card">
-  <h3>🏦 Bank History</h3>
-  <div class="entry-list" id="bank-history"></div>
-</div>
 
     <div class="section-card">
       <h3>📋 This week's log</h3>
@@ -449,6 +449,10 @@
       <div class="prog-bar"><div class="prog-fill" id="c-prog" style="width:0%"></div></div>
       <div class="prog-label" id="c-prog-label">Keep going!</div>
     </div>
+    <div class="section-card">
+  <h3>🏦 Recent Activity</h3>
+  <div class="entry-list" id="c-bank-history"></div>
+</div>
 
     <div class="reward-cards" id="c-reward-cards"></div>
 
@@ -1103,7 +1107,7 @@ const u = bankPoints >= r.pts;
 
     await renderRewardRequests();
 
-    renderBankHistory(entries);
+renderBankHistory(entries, "p-bank-history");
     renderPEntries(entries);
   }
 
@@ -1123,44 +1127,37 @@ const u = bankPoints >= r.pts;
       </div>`;
     }).join('');
   }
-
-  function renderBankHistory(entries) {
-  const el = document.getElementById("bank-history");
-
+  function renderBankHistory(entries, elementId) {
+  const el = document.getElementById(elementId);
   if (!el) return;
 
   const bankEntries = [...entries]
     .filter(e => pointsForEntry(e) !== 0)
-    .reverse();
+    .reverse()
+    .slice(0, 5);
 
   if (!bankEntries.length) {
-    el.innerHTML =
-      '<p class="empty-msg">No bank activity yet.</p>';
+    el.innerHTML = '<p class="empty-msg">No recent activity yet.</p>';
     return;
   }
 
   el.innerHTML = bankEntries.map(e => {
     const pts = pointsForEntry(e);
+    const isReward = e.type === "reward" || e.cat?.startsWith("Claimed reward");
 
     return `
-      <div class="entry ${pts > 0 ? 'pos-entry' : 'neg-entry'}">
-        <span class="eicon">
-          ${pts > 0 ? '⭐' : '💸'}
-        </span>
-
+      <div class="entry ${isReward ? 'reward-entry' : pts > 0 ? 'pos-entry' : 'neg-entry'}">
+        <span class="eicon">${isReward ? '🎁' : pts > 0 ? '⭐' : '💸'}</span>
         <div class="ebody">
-          <div class="etext">
-            ${pts > 0 ? '+' : ''}${pts} • ${e.cat}
-          </div>
-
-          <div class="emeta">
-            ${DAYSFULL[e.day]}
-          </div>
+          <div class="etext">${pts > 0 ? '+' : ''}${pts} • ${e.cat}</div>
+          <div class="emeta">${DAYSFULL[e.day]}</div>
         </div>
       </div>
     `;
   }).join("");
 }
+
+  
 
   async function addEntry(type) {
     const isPositive = type === 'positive';
@@ -1289,6 +1286,7 @@ document.getElementById('c-reward-cards').innerHTML =
   buildRewardSection('🟡 Medium Rewards', mediumRewards, bankPoints, requests) +
   buildRewardSection('🔴 Big Rewards', bigRewards, bankPoints, requests);
 
+renderBankHistory(entries, "c-bank-history");
     renderCEntries(entries);
   }
 
