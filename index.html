@@ -101,7 +101,22 @@
 }
 
 .day-line {
+  text-align: center;
   font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.day-line span {
+  font-size: 10px;
+}
+
+.day-line strong {
+  font-size: 12px;
+}
+
+.day-line small {
+  font-size: 10px;
   font-weight: 700;
 }
 
@@ -373,6 +388,14 @@ pointer-events:none;
     </div>
 
     <div class="days-grid" id="p-days"></div>
+    <div style="
+  text-align:center;
+  color:#888;
+  font-size:12px;
+  margin:-8px 0 16px;
+">
+  🟢 Earned • 🔴 Lost • ⚡ Daily Total
+</div>
     <div class="stats-row" id="p-stats"></div>
 
 <div class="section-card">
@@ -1186,9 +1209,9 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
 
   ${(p+n)>0 ? `
     <div class="day-summary">
-      ${p ? `<div class="day-line pos">🟢 +${p} earned</div>` : ''}
-${n ? `<div class="day-line neg">🔴 -${n} lost</div>` : ''}
-<div class="day-total ${nc}">⚡ ${net>0?'+':''}${net} total</div>
+     ${p ? `<div class="day-line pos">🟢 +${p}</div>` : ''}
+${n ? `<div class="day-line neg">🔴 -${n}</div>` : ''}
+<div class="day-line day-total ${nc}">⚡ ${net>0?'+':''}${net}</div>
     </div>
   ` : `<div class="day-empty">No entries</div>`}
 </div>`;
