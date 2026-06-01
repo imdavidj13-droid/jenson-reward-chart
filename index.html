@@ -1393,20 +1393,20 @@ if (cTab==='rewards') list = list.filter(e => e.type === "reward");
   }
   loadAndApplyTheme();
   startRealtime();
+function hideSplash() {
+  const s = document.getElementById('splash');
 
-window.addEventListener('load', () => {
+  if (!s) return;
+
+  s.style.opacity = '0';
+
   setTimeout(() => {
-    const s = document.getElementById('splash');
+    s.style.display = 'none';
+  }, 500);
+}
 
-    if (s) {
-      s.style.opacity = '0';
+setTimeout(hideSplash, 2500);
 
-      setTimeout(() => {
-        s.style.display = 'none';
-      }, 500); // matches fade duration
-    }
-  }, 2500);
-});
 </script>
 </body>
 </html>
