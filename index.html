@@ -870,11 +870,6 @@ async function checkPendingCelebrations() {
   };
 }
 
-    return {
-      cleanDays,
-      points: cleanDays >= 5 ? 10 : 0
-    };
-
   function getSettingsFromData(all) {
     return {
       parentPin: all.__settings?.parentPin || DEFAULT_PARENT_PIN,
