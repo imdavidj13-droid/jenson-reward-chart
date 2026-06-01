@@ -846,16 +846,22 @@ async function checkPendingCelebrations() {
     return `${points > 0 ? '+' : ''}${points} ${Math.abs(points) === 1 ? 'point' : 'points'}`;
   }
 
-  function weeklyBonus(entries) {
-    let cleanDays = 0;
+ function weeklyBonus(entries) {
+  let cleanDays = 0;
 
-    for (let day = 0; day < 7; day++) {
-      const dayEntries = entries.filter(e => e.day === day);
-      const hasEntry = dayEntries.length > 0;
-      const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
+  for (let day = 0; day < 7; day++) {
+    const dayEntries = entries.filter(e => e.day === day);
+    const hasEntry = dayEntries.length > 0;
+    const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
 
-      if (hasEntry && !hasNegative) cleanDays++;
-    }}
+    if (hasEntry && !hasNegative) cleanDays++;
+  }
+
+  return {
+    cleanDays,
+    points: cleanDays >= 5 ? 10 : 0
+  };
+}
 
     return {
       cleanDays,
