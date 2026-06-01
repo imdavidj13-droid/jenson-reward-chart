@@ -337,7 +337,7 @@
     </div>
 
     <div class="section-card">
-  <h3>📬 Reward requests</h3>
+  <h3 id="reward-requests-title">📬 Reward requests</h3>
   <div id="p-reward-requests"></div>
 </div>
 
@@ -694,6 +694,13 @@ async function renderRewardRequests() {
   const all = await getData();
   const requests = rewardRequests(all).filter(r => r.status === "pending");
   const el = document.getElementById("p-reward-requests");
+  const title = document.getElementById("reward-requests-title");
+
+if (title) {
+  title.textContent = requests.length
+    ? `📬 Reward requests (${requests.length})`
+    : "📬 Reward requests";
+}
 
   if (!el) return;
 
