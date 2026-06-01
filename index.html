@@ -421,6 +421,11 @@
     </div>
 
     <div class="section-card">
+  <h3>🏦 Bank History</h3>
+  <div class="entry-list" id="bank-history"></div>
+</div>
+
+    <div class="section-card">
       <h3>📋 This week's log</h3>
       <div class="entry-list" id="p-entries"></div>
     </div>
@@ -1098,6 +1103,7 @@ const u = bankPoints >= r.pts;
 
     await renderRewardRequests();
 
+    renderBankHistory(entries);
     renderPEntries(entries);
   }
 
@@ -1117,6 +1123,44 @@ const u = bankPoints >= r.pts;
       </div>`;
     }).join('');
   }
+
+  function renderBankHistory(entries) {
+  const el = document.getElementById("bank-history");
+
+  if (!el) return;
+
+  const bankEntries = [...entries]
+    .filter(e => pointsForEntry(e) !== 0)
+    .reverse();
+
+  if (!bankEntries.length) {
+    el.innerHTML =
+      '<p class="empty-msg">No bank activity yet.</p>';
+    return;
+  }
+
+  el.innerHTML = bankEntries.map(e => {
+    const pts = pointsForEntry(e);
+
+    return `
+      <div class="entry ${pts > 0 ? 'pos-entry' : 'neg-entry'}">
+        <span class="eicon">
+          ${pts > 0 ? '⭐' : '💸'}
+        </span>
+
+        <div class="ebody">
+          <div class="etext">
+            ${pts > 0 ? '+' : ''}${pts} • ${e.cat}
+          </div>
+
+          <div class="emeta">
+            ${DAYSFULL[e.day]}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
 
   async function addEntry(type) {
     const isPositive = type === 'positive';
