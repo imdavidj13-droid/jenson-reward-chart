@@ -12,6 +12,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Jenson's Reward Chart</title>
 <style>
+  @keyframes hideSplash {
+  0% { opacity: 1; visibility: visible; }
+  80% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--page-bg, #f0f4f8); min-height: 100vh; color: #1a1a2e; }
 
@@ -228,6 +233,7 @@
   background:#2563eb;
   z-index:9999;
    transition: opacity 0.5s ease;
+animation: hideSplash 3s forwards;
 ">
   <img src="splash.png" style="
     width:100%;
