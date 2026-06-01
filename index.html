@@ -906,6 +906,9 @@ async function checkPendingCelebrations() {
   }
 
   async function checkPin() {
+    if (document.activeElement) {
+  document.activeElement.blur();
+}
     await loadAndApplyTheme();
     const settings = await getSettings();
     const ok = loginWho === 'parent' ? settings.parentPin : settings.childPin;
