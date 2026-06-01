@@ -839,7 +839,8 @@ async function celebrateApprovedReward() {
 }
 async function checkPendingCelebrations() {
   const all = await getData();
-   renderApprovedRewardCard(all);
+  renderApprovedRewardCard(all);
+}
 
   function formatPoints(points) {
     return `${points > 0 ? '+' : ''}${points} ${Math.abs(points) === 1 ? 'point' : 'points'}`;
@@ -860,7 +861,6 @@ async function checkPendingCelebrations() {
       cleanDays,
       points: cleanDays >= 5 ? 10 : 0
     };
-  }
 
   function getSettingsFromData(all) {
     return {
