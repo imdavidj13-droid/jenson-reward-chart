@@ -94,6 +94,48 @@
   .day-net.pos { color: #27ae60; }
   .day-net.neg { color: #e74c3c; }
   .day-net.zero { color: #bbb; }
+  .day-summary {
+  margin-top: 8px;
+  display: grid;
+  gap: 3px;
+}
+
+.day-line {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.day-line.pos {
+  color: #27ae60;
+}
+
+.day-line.neg {
+  color: #e74c3c;
+}
+
+.day-total {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.day-total.pos {
+  color: #2563eb;
+}
+
+.day-total.neg {
+  color: #e74c3c;
+}
+
+.day-total.zero {
+  color: #999;
+}
+
+.day-empty {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #bbb;
+}
 
   /* STATS */
   .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
@@ -1138,14 +1180,19 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
       const net = p-n;
       const nc  = net>0?'pos':net<0?'neg':'zero';
       const isT = d.toDateString()===today.toDateString();
-      const stars  = p ? `<span class="sym-star">⭐</span><span class="day-net pos">+${p}</span>` : '';
-      const crosses= n ? `<span class="sym-cross">✖</span><span class="day-net neg">-${n}</span>` : '';
       dHtml += `<div class="day-col${isT?' today':''}">
-        <div class="dname">${DAYS[i]}</div>
-        <div class="ddate">${d.getDate()}/${d.getMonth()+1}</div>
-        <div class="day-symbols">${stars}${crosses}</div>
-        ${(p+n)>0?`<div class="day-net ${nc}">${net>0?'+':''}${net}</div>`:''}
-      </div>`;
+  <div class="dname">${DAYS[i]}</div>
+  <div class="ddate">${d.getDate()}/${d.getMonth()+1}</div>
+
+  ${(p+n)>0 ? `
+    <div class="day-summary">
+      ${p ? `<div class="day-line pos">+${p} earned</div>` : ''}
+      ${n ? `<div class="day-line neg">-${n} lost</div>` : ''}
+      <div class="day-total ${nc}">${net>0?'+':''}${net} total</div>
+    </div>
+  ` : `<div class="day-empty">No entries</div>`}
+</div>`;
+
     });
     document.getElementById('p-days').innerHTML = dHtml;
 
