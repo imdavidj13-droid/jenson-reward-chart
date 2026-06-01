@@ -723,11 +723,8 @@ function addPendingCelebration(all, rewardName) {
 let rewardAudio = null;
 
 function unlockRewardSound() {
-  rewardAudio = new Audio(
-    "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
-  );
-
-  rewardAudio.volume = 0.5;
+  rewardAudio = new Audio("reward-sound.mp3");
+  rewardAudio.volume = 0.7;
   rewardAudio.load();
 }
 
