@@ -940,11 +940,13 @@ async function checkPendingCelebrations() {
 
     if (pinBuf === ok) {
       if (loginWho === 'parent') {
-        wkOff = 0;
-        await renderParent();
-        await fillParentSettings();
-        show('parent');
-      } else {
+  document.body.dataset.theme = "blue";
+  wkOff = 0;
+  await renderParent();
+  await fillParentSettings();
+  show('parent');
+}
+      else {
         unlockRewardSound();
          show('child');
   await renderChild();
@@ -956,7 +958,10 @@ async function checkPendingCelebrations() {
       updateDots();
     }}
 
-  function logout() { show('login'); }
+  function logout() {
+  document.body.dataset.theme = "blue";
+  show('login');
+}
 
   // CLOUD SETTINGS
   // 1) Create the Supabase table using the SQL file I gave you.
