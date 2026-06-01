@@ -711,7 +711,10 @@ async function renderRewardRequests() {
     return e.pos ? 1 : -1;
   }
 function getBankPoints(all) {
-  return all.__bankPoints || 0;
+  return Object.keys(all)
+    .filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key))
+    .flatMap(key => all[key] || [])
+    .reduce((sum, entry) => sum + pointsForEntry(entry), 0);
 }
 
 function setBankPoints(all, points) {
