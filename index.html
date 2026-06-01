@@ -720,13 +720,22 @@ function addPendingCelebration(all, rewardName) {
   });
 }
 
-function playRewardSound() {
-  const audio = new Audio(
+let rewardAudio = null;
+
+function unlockRewardSound() {
+  rewardAudio = new Audio(
     "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
   );
 
-  audio.volume = 0.4;
-  audio.play().catch(() => {});
+  rewardAudio.volume = 0.5;
+  rewardAudio.load();
+}
+
+function playRewardSound() {
+  if (!rewardAudio) unlockRewardSound();
+
+  rewardAudio.currentTime = 0;
+  rewardAudio.play().catch(() => {});
 }
 
 function fireConfetti() {
@@ -900,6 +909,7 @@ async function checkPendingCelebrations() {
         await fillParentSettings();
         show('parent');
       } else {
+        unlockRewardSound();
          show('child');
   await renderChild();
   await checkPendingCelebrations();
