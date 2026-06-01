@@ -871,6 +871,36 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
 
   const db = CLOUD_READY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
   let cachedData = null;
+  function startRealtime() {
+  if (!CLOUD_READY) return;
+
+  db.channel("reward-chart-live")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "reward_chart_data",
+        filter: `chart_id=eq.${CHART_ID}`
+      },
+      async (payload) => {
+        console.log("Realtime update received", payload);
+
+        cachedData = payload.new?.data || {};
+
+        if (document.getElementById("s-parent").classList.contains("active")) {
+          await renderParent();
+        }
+
+        if (document.getElementById("s-child").classList.contains("active")) {
+          await renderChild();
+        }
+      }
+    )
+    .subscribe((status) => {
+      console.log("Realtime status:", status);
+    });
+}
 
   function getLocalData() {
     try { return JSON.parse(localStorage.getItem('jenson_v2') || '{}'); } catch(e) { return {}; }
@@ -1176,6 +1206,7 @@ if (cTab==='rewards') list = list.filter(e => e.type === "reward");
     </div>`).join('');
   }
   loadAndApplyTheme();
+  startRealtime();
 
 window.addEventListener('load', () => {
   setTimeout(() => {
