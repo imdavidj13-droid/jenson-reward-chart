@@ -461,6 +461,13 @@
       <div class="prog-bar"><div class="prog-fill" id="c-prog" style="width:0%"></div></div>
       <div class="prog-label" id="c-prog-label">Keep going!</div>
     </div>
+
+    <div class="section-card" id="approved-reward-card" style="display:none;">
+  <h3>🎉 Reward Approved!</h3>
+  <div id="approved-reward-text" style="font-size:16px;font-weight:700;margin-bottom:12px;"></div>
+  <button class="claim-btn" onclick="celebrateApprovedReward()">Celebrate!</button>
+</div>
+
     <div class="section-card">
   <h3>🏦 Recent Activity</h3>
   <div class="entry-list" id="c-bank-history"></div>
@@ -794,22 +801,45 @@ function closeCelebrationModal() {
 
   fireConfetti();
 }
-async function checkPendingCelebrations() {
+let activeCelebrationId = null;
+
+function renderApprovedRewardCard(all) {
+  const card = document.getElementById("approved-reward-card");
+  const text = document.getElementById("approved-reward-text");
+
+  if (!card || !text) return;
+
+  const celebration = (all.__pendingCelebrations || []).find(c => !c.seen);
+
+  if (!celebration) {
+    card.style.display = "none";
+    activeCelebrationId = null;
+    return;
+  }
+
+  activeCelebrationId = celebration.id;
+  text.textContent = celebration.rewardName;
+  card.style.display = "block";
+}
+
+async function celebrateApprovedReward() {
   const all = await getData();
 
-  const celebrations =
-    (all.__pendingCelebrations || []).filter(c => !c.seen);
+  const celebration = (all.__pendingCelebrations || []).find(
+    c => c.id === activeCelebrationId
+  );
 
-  if (!celebrations.length) return;
+  if (celebration) {
+    celebration.seen = true;
+    await saveData(all);
+  }
 
- showCelebrationModal(celebrations[0].rewardName);
-
-  celebrations.forEach(c => {
-    c.seen = true;
-  });
-
-  await saveData(all);
+  renderApprovedRewardCard(all);
+  fireConfetti();
 }
+async function checkPendingCelebrations() {
+  const all = await getData();
+   renderApprovedRewardCard(all);
 
   function formatPoints(points) {
     return `${points > 0 ? '+' : ''}${points} ${Math.abs(points) === 1 ? 'point' : 'points'}`;
@@ -824,7 +854,7 @@ async function checkPendingCelebrations() {
       const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
 
       if (hasEntry && !hasNegative) cleanDays++;
-    }
+    }}
 
     return {
       cleanDays,
@@ -1292,6 +1322,7 @@ ${
   async function renderChild() {
     await loadAndApplyTheme();
     const all = await getData();
+    renderApprovedRewardCard(all);
 const requests = rewardRequests(all);
 const bankPoints = getBankPoints(all);
     const entries = await weekEntries(0);
