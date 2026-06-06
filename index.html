@@ -1607,6 +1607,13 @@
       </div>
 
       <div class="reward-cards" id="c-reward-cards"></div>
+      <div class="section-card" id="weekly-spin-card" style="display:none;">
+  <h3>🎡 Sunday Spin Wheel</h3>
+  <p id="weekly-spin-status" style="font-size:14px;color:#666;line-height:1.4;margin-bottom:12px;"></p>
+  <button class="primary-btn" id="weekly-spin-btn" onclick="spinWeeklyWheel()">
+    Spin the Wheel
+  </button>
+</div>
 
       <div class="section-card">
         <h3>🎨 Choose your theme</h3>
@@ -1638,6 +1645,18 @@
 <script>
     const DEFAULT_PARENT_PIN = '1234';
     const DEFAULT_CHILD_PIN = '0000';
+    const WEEKLY_SPIN_THRESHOLD = 25;
+
+const WHEEL_PRIZES = [
+  { label: '+5 bonus points', points: 5 },
+  { label: '+10 bonus points', points: 10 },
+  { label: '+15 bonus points', points: 15 },
+  { label: 'Small treat voucher', points: 0 },
+  { label: 'Movie choice voucher', points: 0 },
+  { label: 'Pick dessert voucher', points: 0 },
+  { label: 'Jackpot +25 points', points: 25 }
+];
+
 
     const DEFAULT_REWARDS = [
       { icon: '🎁', name: 'Small treat', pts: 8, desc: 'A small snack or sweet treat' },
@@ -2843,6 +2862,86 @@ showToast('🎁 Reward added!');
       await showLoginForFamily();
     }
 
+    function isSundayToday() {
+  return new Date().getDay() === 0;
+}
+
+function weekTotal(entries) {
+  const pos = entries
+    .filter(e => pointsForEntry(e) > 0)
+    .reduce((sum, e) => sum + pointsForEntry(e), 0);
+
+  const neg = Math.abs(entries
+    .filter(e => pointsForEntry(e) < 0)
+    .reduce((sum, e) => sum + pointsForEntry(e), 0));
+
+  const bonus = weeklyBonus(entries);
+
+  return pos - neg + bonus.points;
+}
+
+function getWeeklySpin(child, wk) {
+  if (!child.weeklySpins) child.weeklySpins = {};
+  if (!child.weeklySpins[wk]) {
+    child.weeklySpins[wk] = {
+      claimed: false,
+      prize: null,
+      claimedAt: null
+    };
+  }
+  return child.weeklySpins[wk];
+}
+
+async function spinWeeklyWheel() {
+  if (!currentUser || currentUser.role !== 'child') return;
+
+  const todayWeek = weekKey(0);
+
+  if (!isSundayToday()) {
+    showToast('🎡 The spin wheel opens on Sunday!');
+    return;
+  }
+
+  const all = await getData();
+  const child = getChildFromData(all, activeChildId);
+  const entries = child.weeks[todayWeek] || [];
+  const total = weekTotal(entries);
+  const spin = getWeeklySpin(child, todayWeek);
+
+  if (total < WEEKLY_SPIN_THRESHOLD) {
+    showToast(`You need ${WEEKLY_SPIN_THRESHOLD} points this week to spin.`);
+    return;
+  }
+
+  if (spin.claimed) {
+    showToast(`Already spun this week: ${spin.prize}`);
+    return;
+  }
+
+  const prize = WHEEL_PRIZES[Math.floor(Math.random() * WHEEL_PRIZES.length)];
+
+  spin.claimed = true;
+  spin.prize = prize.label;
+  spin.points = prize.points || 0;
+  spin.claimedAt = new Date().toISOString();
+
+  if (prize.points) {
+    if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
+    child.weeks[todayWeek].push({
+      day: 6,
+      cat: `Sunday Spin Wheel: ${prize.label}`,
+      icon: '🎡',
+      note: 'Weekly wheel prize',
+      pos: true,
+      points: prize.points
+    });
+  }
+
+  await saveData(all);
+  showToast(`🎉 You won ${prize.label}!`);
+  await renderChild();
+}
+
     function weekKey(off) {
       const d = new Date();
       d.setDate(d.getDate() - ((d.getDay() + 6) % 7) + off * 7);
@@ -3033,7 +3132,39 @@ const summary = (posCount || negCount) ? `
         <div class="rstatus">${w ? '✓ Unlocked!' : r.pts + ' pts needed'}</div>
       </div>`;
       }).join('');
+const spinCard = document.getElementById('weekly-spin-card');
+const spinStatus = document.getElementById('weekly-spin-status');
+const spinBtn = document.getElementById('weekly-spin-btn');
 
+if (spinCard && spinStatus && spinBtn) {
+  const todayWeek = weekKey(0);
+  const currentWeekTotal = weekTotal(entries);
+  const spin = getWeeklySpin(child, todayWeek);
+
+  spinCard.style.display = 'block';
+
+  if (!isSundayToday()) {
+    spinStatus.textContent = `Come back on Sunday. You need ${WEEKLY_SPIN_THRESHOLD} points this week to unlock the wheel. Current total: ${currentWeekTotal}.`;
+    spinBtn.disabled = true;
+    spinBtn.textContent = 'Available Sunday';
+    spinBtn.style.opacity = '0.65';
+  } else if (currentWeekTotal < WEEKLY_SPIN_THRESHOLD) {
+    spinStatus.textContent = `You need ${WEEKLY_SPIN_THRESHOLD} points to spin. Current total: ${currentWeekTotal}.`;
+    spinBtn.disabled = true;
+    spinBtn.textContent = 'Not enough points yet';
+    spinBtn.style.opacity = '0.65';
+  } else if (spin.claimed) {
+    spinStatus.textContent = `You already spun this week and won: ${spin.prize}.`;
+    spinBtn.disabled = true;
+    spinBtn.textContent = 'Already spun';
+    spinBtn.style.opacity = '0.65';
+  } else {
+    spinStatus.textContent = `You reached ${currentWeekTotal} points this week. Spin the wheel!`;
+    spinBtn.disabled = false;
+    spinBtn.textContent = 'Spin the Wheel';
+    spinBtn.style.opacity = '1';
+  }
+}
       renderCEntries(entries);
     }
 
