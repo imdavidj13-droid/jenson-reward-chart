@@ -3595,8 +3595,8 @@ setTimeout(() => {
   setTimeout(async () => {
   const prizePoints = parseInt(prize.points, 10) || 0;
 
-  const latestAll = all;
-const latestChild = child;
+  const latestAll = await getData();
+const latestChild = getChildFromData(latestAll, activeChildId);
 const latestSpin = getWeeklySpin(latestChild, todayWeek);
 
   latestSpin.claimed = true;
@@ -3642,10 +3642,10 @@ showToast(`🎉 You won ${prize.prize}! New total: ${updatedNet}`);
 launchConfettiRain();
 
   if (btn) {
-    btn.disabled = true;
-    btn.textContent = 'Already spun';
-    btn.style.opacity = '0.65';
-  }
+  btn.disabled = !DEBUG_SPIN_WHEEL;
+  btn.textContent = DEBUG_SPIN_WHEEL ? 'Spin again' : 'Already spun';
+  btn.style.opacity = DEBUG_SPIN_WHEEL ? '1' : '0.65';
+}
 
   await renderChild();
 }, 11000);
