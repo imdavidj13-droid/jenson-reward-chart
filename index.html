@@ -3594,6 +3594,10 @@ setTimeout(() => {
 
   setTimeout(async () => {
   const prizePoints = parseInt(prize.points, 10) || 0;
+  console.log('WHEEL PRIZE DEBUG', {
+  prize,
+  prizePoints
+});
 
   const latestAll = await getData();
 const latestChild = getChildFromData(latestAll, activeChildId);
