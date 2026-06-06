@@ -88,11 +88,11 @@
       --accent-soft: #dcfce7;
     }
     body[data-theme="dark"] {
-  --page-bg: #0f172a;
-  --hero-a: #020617;
-  --hero-b: #1e293b;
-  --accent: #38bdf8;
-  --accent-soft: #1e293b;
+  --page-bg: #172033;
+  --hero-a: #111827;
+  --hero-b: #2563eb;
+  --accent: #60a5fa;
+  --accent-soft: #24324a;
 }
 
     .app {
@@ -1001,9 +1001,9 @@ body[data-theme="dark"] .rcard,
 body[data-theme="dark"] .nav-btn,
 body[data-theme="dark"] .theme-btn,
 body[data-theme="dark"] .numpad button {
-  background: #111827;
-  color: #e5e7eb;
-  border-color: #334155;
+  background: #1f2a3d;
+  color: #f8fafc;
+  border-color: #3b4a63;
 }
 
 body[data-theme="dark"] h1,
@@ -1158,8 +1158,61 @@ body[data-theme="dark"] .pin-dot.filled {
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
 }
 
+.theme-toggle-btn {
+  background: var(--accent-soft, #ddeeff);
+  color: var(--accent, #2563eb);
+  border: 1.5px solid var(--accent, #2563eb);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+body[data-theme="dark"] .theme-toggle-btn {
+  background: #0f172a;
+  color: #f8fafc;
+  border-color: #60a5fa;
+}
+
+.day-summary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.day-pos,
+.day-neg {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.day-net {
+  font-size: 11px;
+  font-weight: 800;
+  margin-top: 5px;
+}
+
     @media (max-width: 600px) {
 
+.day-summary {
+  gap: 3px;
+  font-size: 10px;
+}
+
+.day-pos,
+.day-neg {
+  font-size: 10px;
+}
+
+.day-net {
+  font-size: 10px;
+}
 
 
 @media (max-width: 380px) {
@@ -1239,8 +1292,8 @@ body[data-theme="dark"] .pin-dot.filled {
       }
 
       .day-col {
-  min-height: 76px;
-  padding: 6px 2px;
+  min-height: 82px;
+  padding: 7px 3px;
   border-radius: 10px;
 }
 
@@ -1560,7 +1613,10 @@ body[data-theme="dark"] .pin-dot.filled {
           <h2 id="p-title">Reward Chart</h2>
           <span class="role-badge parent-badge">Parent</span>
         </div>
-        <button class="logout-btn" onclick="logout()">Log out</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+  <button class="theme-toggle-btn" onclick="toggleDarkMode()">🌙 / ☀️</button>
+  <button class="logout-btn" onclick="logout()">Log out</button>
+</div>
       </div>
 
       <div class="week-nav-bar">
@@ -1740,9 +1796,7 @@ body[data-theme="dark"] .pin-dot.filled {
 </div>
 
 <div class="section-card">
-  <h3>🎡 Weekly Spin Wheel</h3>git add index.html
-git commit -m "Fix admin settings HTML nesting"
-git push
+  <h3>🎡 Weekly Spin Wheel</h3>
 
   <p style="font-size:13px;color:#666;margin-bottom:12px;">
     Set how many points are needed to unlock the Sunday wheel spin.
@@ -1833,7 +1887,12 @@ git push
           <h2 id="c-title">Hi! 👋</h2>
           <span class="role-badge child-badge">Your chart</span>
         </div>
-        <button class="logout-btn" onclick="logout()">Log out</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+  <div style="display:flex;gap:8px;align-items:center;">
+  <button class="theme-toggle-btn" onclick="toggleDarkMode()">🌙 / ☀️</button>
+  <button class="logout-btn" onclick="logout()">Log out</button>
+</div>
+</div>
       </div>
 
       <div class="hero-card">
@@ -2179,7 +2238,13 @@ const WHEEL_PRIZES = [
       const settings = await getSettings();
       applyTheme(settings.theme);
     }
+async function toggleDarkMode() {
+  const all = await getData();
+  const currentTheme = normaliseTheme(all.__settings?.theme || 'blue');
+  const nextTheme = currentTheme === 'dark' ? 'blue' : 'dark';
 
+  await saveTheme(nextTheme);
+}
     async function saveTheme(theme) {
       const safeTheme = normaliseTheme(theme);
       const all = await getData();
