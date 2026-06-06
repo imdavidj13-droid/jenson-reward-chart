@@ -3595,8 +3595,8 @@ setTimeout(() => {
   setTimeout(async () => {
   const prizePoints = parseInt(prize.points, 10) || 0;
 
-  const latestAll = await getData();
-  const latestChild = getChildFromData(latestAll, activeChildId);
+  const latestAll = all;
+const latestChild = child;
   const latestSpin = getWeeklySpin(latestChild, todayWeek);
 
   latestSpin.claimed = true;
@@ -3920,8 +3920,7 @@ if (spinCard && spinStatus && spinBtn) {
       }
     }
 
-    setInterval(() => refreshFromCloud('timer'), 15000);
-
+// setInterval(() => refreshFromCloud('timer'), 15000);
     window.addEventListener('focus', () => {
       refreshFromCloud('focus');
     });
