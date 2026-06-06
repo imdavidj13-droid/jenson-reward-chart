@@ -302,8 +302,8 @@ button {
       <h3>Create a family</h3>
 
       <div class="form-group">
-        <label>Family name</label>
-        <input id="create-family-name" placeholder="e.g. Clynch Family">
+        <label>Family surname</label>
+<input id="forgot-family-name" placeholder="e.g. Clynch">
       </div>
 
       <div class="settings-grid">
@@ -344,7 +344,7 @@ button {
 
   <div id="forgot-family-box" style="display:none;margin-top:12px;">
     <div class="form-group">
-      <label>Family name</label>
+      <label>Family surname</label>
       <input id="forgot-family-name" placeholder="e.g. Clynch Family">
     </div>
 
@@ -1632,7 +1632,7 @@ async function checkPin() {
     const childPin = document.getElementById('create-child-pin').value.trim();
 
     if (!familyName) {
-      err.textContent = 'Family name is required.';
+      err.textContent = 'Family surname is required.';
       return;
     }
 
@@ -1711,7 +1711,7 @@ async function findFamilyCode() {
   const familyName = String(input.value || '').trim().toLowerCase();
 
   if (!familyName) {
-    err.textContent = 'Enter your family name.';
+    err.textContent = 'Enter your family surname.';
     return;
   }
 
@@ -1731,9 +1731,12 @@ async function findFamilyCode() {
   }
 
   const matches = (data || []).filter(row => {
-    const savedName = String(row.data?.__family?.name || '').trim().toLowerCase();
-    return savedName === familyName;
-  });
+  const savedName = String(row.data?.__family?.name || '')
+    .trim()
+    .toLowerCase();
+
+  return savedName.includes(familyName);
+});
 
   if (!matches.length) {
     err.textContent = 'No family found with that name.';
@@ -1793,10 +1796,13 @@ function useFoundFamilyCode(code) {
     setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
     await showLoginForFamily(false);
   } catch (error) {
-    console.error('Open family failed:', error);
-    if (err) err.textContent = 'Could not open family. Try again.';
-    setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
+  console.error('Open family failed:', error);
+
+  if (err) {
+    err.textContent =
+      'Error: ' + (error?.message || JSON.stringify(error));
   }
+}
 }
 
   async function showLoginForFamily(wasJustCreated = false) {
