@@ -2304,24 +2304,7 @@ async function saveWheelSettings() {
     'Wheel settings saved!'
   );
 }
-function prepWheelSound() {
-  const sound = document.getElementById('wheel-sound');
-  if (!sound) return;
 
-  sound.load();
-
-  // Quietly primes the audio after a user action.
-  sound.volume = 0;
-  sound.play()
-    .then(() => {
-      sound.pause();
-      sound.currentTime = 0;
-      sound.volume = 1;
-    })
-    .catch(() => {
-      sound.volume = 1;
-    });
-}
 function launchConfettiRain() {
   const colors = ['#ef4444', '#22c55e', '#3b82f6', '#facc15'];
 
@@ -3551,7 +3534,6 @@ const summary = (posCount || negCount) ? `
   await loadAndApplyTheme();
   const allForChild = await getData();
 
-  prepWheelSound();
 
   const child = getChildFromData(allForChild, activeChildId);
       const childTitle = document.getElementById('c-title');
