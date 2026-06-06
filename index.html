@@ -1148,6 +1148,16 @@ body[data-theme="dark"] .wheel-pointer {
   color: #e5e7eb;
 }
 
+body[data-theme="dark"] .pin-dot {
+  border-color: #64748b;
+}
+
+body[data-theme="dark"] .pin-dot.filled {
+  background: #38bdf8;
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
+}
+
     @media (max-width: 600px) {
 
 
@@ -3193,7 +3203,7 @@ async function spinWeeklyWheel() {
   const total = weekTotal(entries);
   const spin = getWeeklySpin(child, todayWeek);
 
-  const threshold = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+  const threshold = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
 
 if (total < threshold) {
     showToast(`You need ${threshold} points this week to spin.`);
