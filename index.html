@@ -3341,7 +3341,10 @@ if (sound) {
   sound.currentTime = 0;
   sound.play().catch(() => {});
 }
-    wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+setTimeout(() => {
+  wheel.style.transform = `rotate(${finalRotation}deg)`;
+}, 900);
   }
 
   setTimeout(async () => {
@@ -3375,7 +3378,7 @@ if (btn) {
 if (!DEBUG_SPIN_WHEEL) {
   await renderChild();
 }
-}, 10200);
+}, 11000);
 }
 
     function weekKey(off) {
