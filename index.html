@@ -208,7 +208,7 @@
           <div class="form-group"><label>Child username</label><input id="create-child-username" placeholder="e.g. jenson"></div>
           <div class="form-group"><label>Child PIN</label><input id="create-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
         </div>
-        <button class="primary-btn" onclick="createFamily()">Create family</button>
+        <button class="primary-btn" id="create-family-btn" onclick="createFamily()">Create family</button>
         <div class="pin-error" id="create-family-err"></div>
       </div>
 
@@ -218,7 +218,7 @@
           <label>Family code</label>
           <input id="join-family-code" placeholder="e.g. MATHIE-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
         </div>
-        <button class="primary-btn" onclick="joinFamily()">Join family</button>
+        <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Join family</button>
         <div class="pin-error" id="join-family-err"></div>
       </div>
     </div>
@@ -230,7 +230,13 @@
       <div class="login-logo">
         <span class="big-star">⭐</span>
         <h1 id="login-family-title">Reward Chart</h1>
-        <p id="login-family-subtitle">Who\'s logging in today?</p>
+        <p id="login-family-subtitle">Who's logging in today?</p>
+      </div>
+      <div class="login-form" id="family-created-card" style="display:none;margin-bottom:16px;background:#f0fbf0;border:1.5px solid #b5dfb5;">
+        <h3>✅ Family created!</h3>
+        <p style="font-size:13px;color:#1a1a2e;line-height:1.4;margin-bottom:10px;">Save this family code. Anyone joining this family will need it.</p>
+        <p style="font-size:18px;font-weight:800;letter-spacing:1px;color:#1a1a2e;margin-bottom:10px;" id="created-family-code"></p>
+        <button class="btn-add-pos" type="button" onclick="copyFamilyCode()">Copy family code</button>
       </div>
       <div class="login-form">
         <div class="form-group">
@@ -305,7 +311,7 @@
     <div class="section-card">
       <h3>⚙️ Account settings</h3>
       <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.4;">This parent login is linked to one child. Change your login details or the linked child's login details here.</p>
-      <p style="font-size:13px;color:#1a1a2e;margin-bottom:12px;line-height:1.4;"><strong>Family code:</strong> <span id="family-code-display"></span></p>
+      <p style="font-size:13px;color:#1a1a2e;margin-bottom:12px;line-height:1.4;"><strong>Family code:</strong> <span id="family-code-display"></span> <button class="btn-add-pos" type="button" onclick="copyFamilyCode()" style="padding:6px 10px;margin-left:8px;">Copy</button></p>
       <div class="settings-grid">
         <div class="form-group">
           <label>Parent name</label>
@@ -701,6 +707,29 @@
     if (ok) setTimeout(() => msg.textContent = '', 1800);
   }
 
+  async function copyFamilyCode() {
+    if (!currentFamilyId) return;
+    try {
+      await navigator.clipboard.writeText(currentFamilyId);
+      setMsg('pin-settings-msg', 'Family code copied!');
+      const createdCard = document.getElementById('family-created-card');
+      if (createdCard && createdCard.style.display !== 'none') {
+        const subtitle = document.getElementById('login-family-subtitle');
+        if (subtitle) subtitle.textContent = `Family code copied: ${currentFamilyId}`;
+      }
+    } catch (e) {
+      window.prompt('Copy this family code:', currentFamilyId);
+    }
+  }
+
+  function setButtonLoading(buttonId, isLoading, loadingText, normalText) {
+    const btn = document.getElementById(buttonId);
+    if (!btn) return;
+    btn.disabled = isLoading;
+    btn.textContent = isLoading ? loadingText : normalText;
+    btn.style.opacity = isLoading ? '0.75' : '1';
+  }
+
   function validPin(pin) {
     return /^\d{4}$/.test(String(pin || '').trim());
   }
@@ -1018,13 +1047,18 @@ if (!users[loginUsername]) {
     const err = document.getElementById('create-family-err');
     err.textContent = '';
 
-    const familyName = document.getElementById('create-family-name').value.trim() || 'My Family';
+    const familyName = document.getElementById('create-family-name').value.trim();
     const parentName = document.getElementById('create-parent-name').value.trim() || 'Parent';
     const parentUsername = normalizeUsername(document.getElementById('create-parent-username').value);
     const parentPin = document.getElementById('create-parent-pin').value.trim();
     const childName = document.getElementById('create-child-name').value.trim() || 'Child';
     const childUsername = normalizeUsername(document.getElementById('create-child-username').value);
     const childPin = document.getElementById('create-child-pin').value.trim();
+
+    if (!familyName) {
+      err.textContent = 'Family name is required.';
+      return;
+    }
 
     if (!parentUsername || !childUsername) {
       err.textContent = 'Parent and child usernames are required.';
@@ -1040,6 +1074,8 @@ if (!users[loginUsername]) {
       err.textContent = 'Both PINs must be exactly 4 numbers.';
       return;
     }
+
+    setButtonLoading('create-family-btn', true, 'Creating family...', 'Create family');
 
     let familyCode = generateFamilyCode(familyName);
     let tries = 0;
@@ -1067,10 +1103,12 @@ if (!users[loginUsername]) {
     const saved = await saveCloudFamily(currentFamilyId, starterData);
     if (!saved && CLOUD_READY) {
       err.textContent = 'Could not save to Supabase. Check the table/policies.';
+      setButtonLoading('create-family-btn', false, 'Creating family...', 'Create family');
       return;
     }
 
-    await showLoginForFamily();
+    setButtonLoading('create-family-btn', false, 'Creating family...', 'Create family');
+    await showLoginForFamily(true);
   }
 
   async function joinFamily() {
@@ -1084,10 +1122,12 @@ if (!users[loginUsername]) {
       return;
     }
 
+    setButtonLoading('join-family-btn', true, 'Joining family...', 'Join family');
     const cloudData = await loadCloudFamily(familyCode);
 
     if (!cloudData) {
       err.textContent = 'Family code not found.';
+      setButtonLoading('join-family-btn', false, 'Joining family...', 'Join family');
       return;
     }
 
@@ -1096,10 +1136,11 @@ if (!users[loginUsername]) {
     localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
     saveLocalData(cachedData);
 
-    await showLoginForFamily();
+    setButtonLoading('join-family-btn', false, 'Joining family...', 'Join family');
+    await showLoginForFamily(false);
   }
 
-  async function showLoginForFamily() {
+  async function showLoginForFamily(wasJustCreated = false) {
     const all = await getData();
     const familyName = all.__family?.name || 'Reward Chart';
 
@@ -1107,6 +1148,13 @@ if (!users[loginUsername]) {
     document.getElementById('login-family-subtitle').textContent = `Family code: ${currentFamilyId}`;
     document.getElementById('login-username').value = '';
     document.getElementById('login-err').textContent = '';
+
+    const createdCard = document.getElementById('family-created-card');
+    const createdCode = document.getElementById('created-family-code');
+    if (createdCard && createdCode) {
+      createdCard.style.display = wasJustCreated ? 'grid' : 'none';
+      createdCode.textContent = currentFamilyId;
+    }
 
     show('login');
   }
@@ -1118,6 +1166,8 @@ if (!users[loginUsername]) {
     currentUserKey = '';
     currentUser = null;
     loginWho = '';
+    const createdCard = document.getElementById('family-created-card');
+    if (createdCard) createdCard.style.display = 'none';
     show('family');
   }
 
