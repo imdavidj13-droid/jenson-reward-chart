@@ -3453,7 +3453,7 @@ const spinBtn = document.getElementById('weekly-spin-btn');
 
 if (spinCard && spinStatus && spinBtn) {
   const todayWeek = weekKey(0);
-  const threshold = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+  const threshold = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
   const currentWeekTotal = weekTotal(entries);
   const spin = getWeeklySpin(child, todayWeek);
 
