@@ -3593,7 +3593,11 @@ setTimeout(() => {
   }
 
   setTimeout(async () => {
-  const prizePoints = parseInt(prize.points, 10) || 0;
+  const prizePoints =
+  parseInt(prize.points, 10) ||
+  parseInt(String(prize.label || '').match(/\d+/)?.[0], 10) ||
+  parseInt(String(prize.prize || '').match(/\d+/)?.[0], 10) ||
+  0;
   console.log('WHEEL PRIZE DEBUG', {
   prize,
   prizePoints
