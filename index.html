@@ -3203,7 +3203,7 @@ async function spinWeeklyWheel() {
   const total = weekTotal(entries);
   const spin = getWeeklySpin(child, todayWeek);
 
-  const threshold = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+  const threshold = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
 
 if (total < threshold) {
     showToast(`You need ${threshold} points this week to spin.`);
@@ -3453,7 +3453,7 @@ const spinBtn = document.getElementById('weekly-spin-btn');
 
 if (spinCard && spinStatus && spinBtn) {
   const todayWeek = weekKey(0);
-  const threshold = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+  const threshold = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;ch
   const currentWeekTotal = weekTotal(entries);
   const spin = getWeeklySpin(child, todayWeek);
 
