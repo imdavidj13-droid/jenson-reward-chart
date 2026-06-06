@@ -1754,26 +1754,33 @@ async function findFamilyCode() {
 
 function useFoundFamilyCode(code) {
   const input = document.getElementById('join-family-code');
-  if (input) input.value = code;
+  if (input) input.value = cleanFamilyCode(code);
+
+  const err = document.getElementById('join-family-err');
+  if (err) err.textContent = '';
+
   joinFamily();
 }
 
   async function joinFamily() {
-    const err = document.getElementById('join-family-err');
-    err.textContent = '';
+  const err = document.getElementById('join-family-err');
+  if (err) err.textContent = '';
 
-    const familyCode = cleanFamilyCode(document.getElementById('join-family-code').value);
+  const input = document.getElementById('join-family-code');
+  const familyCode = cleanFamilyCode(input?.value || '');
 
-    if (!familyCode) {
-      err.textContent = 'Enter a family code.';
-      return;
-    }
+  if (!familyCode) {
+    if (err) err.textContent = 'Enter a family code.';
+    return;
+  }
 
-    setButtonLoading('join-family-btn', true, 'Opening family...', 'Open Family');
+  setButtonLoading('join-family-btn', true, 'Opening family...', 'Open Family');
+
+  try {
     const cloudData = await loadCloudFamily(familyCode);
 
     if (!cloudData) {
-      err.textContent = 'Family code not found.';
+      if (err) err.textContent = 'Family code not found.';
       setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
       return;
     }
@@ -1785,7 +1792,12 @@ function useFoundFamilyCode(code) {
 
     setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
     await showLoginForFamily(false);
+  } catch (error) {
+    console.error('Open family failed:', error);
+    if (err) err.textContent = 'Could not open family. Try again.';
+    setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
   }
+}
 
   async function showLoginForFamily(wasJustCreated = false) {
     const all = await getData();
