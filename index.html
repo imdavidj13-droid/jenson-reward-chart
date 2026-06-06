@@ -302,7 +302,7 @@ button {
 
       <div class="form-group">
         <label>Family name</label>
-        <input id="create-family-name" placeholder="e.g. Mathie Family">
+        <input id="create-family-name" placeholder="e.g. Clynch Family">
       </div>
 
       <div class="settings-grid">
@@ -329,16 +329,34 @@ button {
       <h1>Open Family</h1>
       <p>Enter your family code.</p>
     </div>
+<div class="login-form">
+  <h3>Already in a family?</h3>
 
-    <div class="login-form">
-      <h3>Already in a family?</h3>
+  <div class="form-group">
+    <label>Family code</label>
+    <input id="join-family-code" placeholder="e.g. CLYNCH-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
+  </div>
 
-      <div class="form-group">
-        <label>Family code</label>
-        <input id="join-family-code" placeholder="e.g. MATHIE-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
-      </div>
+  <button class="back-link" type="button" onclick="toggleForgotFamilyCode()">
+    Forgot family code?
+  </button>
 
-      <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Open Family</button>
+  <div id="forgot-family-box" style="display:none;margin-top:12px;">
+    <div class="form-group">
+      <label>Family name</label>
+      <input id="forgot-family-name" placeholder="e.g. Mathie Family">
+    </div>
+
+    <button class="btn-add-pos" type="button" onclick="findFamilyCode()">
+      Find family code
+    </button>
+
+    <div class="pin-error" id="forgot-family-err"></div>
+    <div id="forgot-family-result"></div>
+  </div>
+
+  <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Open Family</button>
+    
       <div class="pin-error" id="join-family-err"></div>
 
       <button class="back-link" type="button" onclick="show('family')">← Back</button>
@@ -1667,6 +1685,77 @@ async function checkPin() {
     setButtonLoading('create-family-btn', false, 'Creating family...', 'Create family');
     await showLoginForFamily(true);
   }
+
+  function toggleForgotFamilyCode() {
+  const box = document.getElementById('forgot-family-box');
+  if (!box) return;
+
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+
+  const err = document.getElementById('forgot-family-err');
+  const result = document.getElementById('forgot-family-result');
+
+  if (err) err.textContent = '';
+  if (result) result.innerHTML = '';
+}
+
+async function findFamilyCode() {
+  const err = document.getElementById('forgot-family-err');
+  const result = document.getElementById('forgot-family-result');
+  const input = document.getElementById('forgot-family-name');
+
+  err.textContent = '';
+  result.innerHTML = '';
+
+  const familyName = String(input.value || '').trim().toLowerCase();
+
+  if (!familyName) {
+    err.textContent = 'Enter your family name.';
+    return;
+  }
+
+  if (!CLOUD_READY || !db) {
+    err.textContent = 'Cloud lookup is not available.';
+    return;
+  }
+
+  const { data, error } = await db
+    .from('reward_chart_data')
+    .select('chart_id, data');
+
+  if (error) {
+    err.textContent = 'Could not search family codes.';
+    console.warn('Family lookup failed:', error.message);
+    return;
+  }
+
+  const matches = (data || []).filter(row => {
+    const savedName = String(row.data?.__family?.name || '').trim().toLowerCase();
+    return savedName === familyName;
+  });
+
+  if (!matches.length) {
+    err.textContent = 'No family found with that name.';
+    return;
+  }
+
+  result.innerHTML = matches.map(row => `
+    <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin-top:8px;">
+      <strong>${escapeHtml(row.data?.__family?.name || 'Family')}</strong><br>
+      Family code: <strong>${escapeHtml(row.chart_id)}</strong><br>
+      <button class="btn-add-pos" type="button" style="margin-top:8px;padding:7px 10px;"
+        onclick="useFoundFamilyCode('${escapeHtml(row.chart_id)}')">
+        Use this code
+      </button>
+    </div>
+  `).join('');
+}
+
+function useFoundFamilyCode(code) {
+  const input = document.getElementById('join-family-code');
+  if (input) input.value = code;
+  joinFamily();
+}
 
   async function joinFamily() {
     const err = document.getElementById('join-family-err');
