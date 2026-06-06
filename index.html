@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<link rel="apple-touch-icon" href="icon.png">
-  <link rel="apple-touch-startup-image" href="splash.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#2563eb">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jenson's Reward Chart</title>
 <style>
-  @keyframes hideSplash {
-  0% { opacity: 1; visibility: visible; }
-  80% { opacity: 1; visibility: visible; }
-  100% { opacity: 0; visibility: hidden; }
-}
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--page-bg, #f0f4f8); min-height: 100vh; color: #1a1a2e; }
 
-  body[data-theme="blue"] { --page-bg:#eef6ff; --hero-a:#1e3a8a; --hero-b:#2563eb; --accent:#2563eb; --accent-soft:#dbeafe; }
+  body[data-theme="blue"] { --page-bg:#eef6ff; --hero-a:#1a1a2e; --hero-b:#2563eb; --accent:#4a90d9; --accent-soft:#ddeeff; }
   body[data-theme="green"] { --page-bg:#effaf1; --hero-a:#064e3b; --hero-b:#16a34a; --accent:#22c55e; --accent-soft:#dcfce7; }
-  body[data-theme="red"] { --page-bg:#fff1f2; --hero-a:#7f1d1d; --hero-b:#dc2626; --accent:#ef4444; --accent-soft:#fee2e2; }
-  body[data-theme="yellow"] { --page-bg:#fffbeb; --hero-a:#78350f; --hero-b:#f59e0b; --accent:#f59e0b; --accent-soft:#fef3c7; }
+  body[data-theme="purple"] { --page-bg:#f5f0ff; --hero-a:#3b0764; --hero-b:#8b5cf6; --accent:#8b5cf6; --accent-soft:#ede9fe; }
+  body[data-theme="pink"] { --page-bg:#fff1f6; --hero-a:#831843; --hero-b:#ec4899; --accent:#ec4899; --accent-soft:#fce7f3; }
   body[data-theme="football"] { --page-bg:#ecfdf5; --hero-a:#052e16; --hero-b:#15803d; --accent:#16a34a; --accent-soft:#dcfce7; }
-  body[data-theme="games"] { --page-bg:#f5f3ff; --hero-a:#3b0764; --hero-b:#7c3aed; --accent:#8b5cf6; --accent-soft:#ede9fe; }
 
   .app { max-width: 700px; margin: 0 auto; padding: 20px; }
 
@@ -94,63 +81,6 @@
   .day-net.pos { color: #27ae60; }
   .day-net.neg { color: #e74c3c; }
   .day-net.zero { color: #bbb; }
-  .day-summary {
-  margin-top: 8px;
-  display: grid;
-  gap: 3px;
-}
-
-.day-line {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.day-line span {
-  font-size: 10px;
-}
-
-.day-line strong {
-  font-size: 12px;
-}
-
-.day-line small {
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.day-line.pos {
-  color: #27ae60;
-}
-
-.day-line.neg {
-  color: #e74c3c;
-}
-
-.day-total {
-  margin-top: 4px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.day-total.pos {
-  color: #2563eb;
-}
-
-.day-total.neg {
-  color: #e74c3c;
-}
-
-.day-total.zero {
-  color: #999;
-}
-
-.day-empty {
-  margin-top: 12px;
-  font-size: 11px;
-  color: #bbb;
-}
 
   /* STATS */
   .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
@@ -173,36 +103,6 @@
   .badge { font-size: 12px; padding: 5px 12px; border-radius: 20px; font-weight: 600; }
   .badge.unlocked { background: #e8f8e8; color: #2a7a2a; }
   .badge.locked { background: #f5f5f5; color: #999; }
-  .claim-btn {
-  background: var(--accent, #4a90d9);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 7px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.claim-btn:disabled {
-  background: #ddd;
-  color: #888;
-  cursor: not-allowed;
-}
-
-.request-card {
-  background: #fff8e8;
-  border: 1.5px solid #f3d28b;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 10px;
-}
-
-.request-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
 
   /* LOG FORM */
   .log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
@@ -212,8 +112,8 @@
   .choice-panel.negative { background: #fff4f0; border-color: #f2c7b6; }
   .choice-panel h4 { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
   .form-group label { display: block; font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 16px; font-family: inherit; background: white; color: #1a1a2e; transition: border-color 0.15s; }
-  .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent, #4a90d9); }
+  .form-group select, .form-group textarea, .form-group input { width: 100%; padding: 9px 12px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; background: white; color: #1a1a2e; transition: border-color 0.15s; }
+  .form-group select:focus, .form-group textarea:focus, .form-group input:focus { outline: none; border-color: var(--accent, #4a90d9); }
   .form-group textarea { height: 64px; resize: none; }
   .action-btns { display: flex; gap: 10px; margin-top: 4px; }
   .btn-add-pos { background: #e8f8e8; color: #2a7a2a; border: 1.5px solid #b5dfb5; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
@@ -226,9 +126,6 @@
   .entry { background: #fafafa; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; border-left: 4px solid transparent; }
   .entry.pos-entry { border-left-color: #27ae60; }
   .entry.neg-entry { border-left-color: #e74c3c; }
-  .entry.reward-entry {
-  border-left-color: #f59e0b;
-}
   .entry .eicon { font-size: 18px; flex-shrink: 0; }
   .entry .ebody { flex: 1; }
   .entry .etext { font-size: 13px; font-weight: 500; color: #333; }
@@ -265,31 +162,11 @@
   /* SETTINGS */
   .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .settings-msg { font-size: 13px; font-weight: 700; min-height: 18px; margin-top: 10px; color: #27ae60; }
-  .theme-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .theme-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
   .theme-btn { border: 2px solid transparent; border-radius: 12px; padding: 10px 6px; background: white; cursor: pointer; font-size: 12px; font-weight: 800; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
   .theme-btn.active { border-color: var(--accent, #4a90d9); background: var(--accent-soft, #ddeeff); }
 
   @media (max-width: 500px) {
-    @media (max-width: 500px) {
-  .day-col {
-    min-height: 65px;
-    padding: 6px 2px;
-  }
-
-  .day-summary {
-    margin-top: 4px;
-    gap: 1px;
-  }
-
-  .day-line {
-    font-size: 10px;
-    line-height: 1.1;
-  }
-
-  .day-col .ddate {
-    display: none;
-  }
-}
     .stats-row { grid-template-columns: repeat(2, 1fr); }
     .days-grid { gap: 4px; }
     .day-col { padding: 6px 3px; }
@@ -301,34 +178,8 @@
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-  <div id="splash" style="
-  position:fixed;
-  inset:0;
-  background:#2563eb;
-  z-index:9999;
-   transition: opacity 0.5s ease;
-animation: hideSplash 3s forwards;
-pointer-events:none;
-">
-  <img src="splash.png" style="
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  ">
-</div>
-
-<div id="celebration-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;padding:20px;">
-  <div style="background:white;border-radius:24px;padding:28px;text-align:center;max-width:340px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.25);">
-    <div style="font-size:52px;margin-bottom:10px;">🎉</div>
-    <h2 style="font-size:24px;margin-bottom:8px;">Reward Approved!</h2>
-    <p id="celebration-reward-name" style="font-size:17px;font-weight:700;color:#2563eb;margin-bottom:18px;"></p>
-    <button class="claim-btn" onclick="closeCelebrationModal()">Awesome!</button>
-  </div>
-</div>
-
 <div class="app" id="app">
 
   <!-- LOGIN SCREEN -->
@@ -408,20 +259,7 @@ pointer-events:none;
     </div>
 
     <div class="days-grid" id="p-days"></div>
-    <div style="
-  text-align:center;
-  color:#888;
-  font-size:12px;
-  margin:-8px 0 16px;
-">
-  🟢 Earned • 🔴 Lost • ⚡ Daily Total
-</div>
     <div class="stats-row" id="p-stats"></div>
-
-<div class="section-card">
-  <h3>🏦 Bank History</h3>
-  <div class="entry-list" id="p-bank-history"></div>
-</div>
 
     <div class="section-card">
       <h3>🎁 Rewards this week</h3>
@@ -429,20 +267,15 @@ pointer-events:none;
     </div>
 
     <div class="section-card">
-  <h3 id="reward-requests-title">📬 Reward requests</h3>
-  <div id="p-reward-requests"></div>
-</div>
-
-    <div class="section-card">
       <h3>⚙️ Parent settings</h3>
       <div class="settings-grid">
         <div class="form-group">
           <label>Parent PIN</label>
-          <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;">
+          <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
         </div>
         <div class="form-group">
           <label>Jenson's PIN</label>
-          <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;">
+          <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
         </div>
       </div>
       <button class="btn-add-pos" onclick="savePinSettings()" style="margin-top:12px">Save PINs</button>
@@ -472,25 +305,17 @@ pointer-events:none;
           <div class="form-group">
             <label>Positive category</label>
             <select id="f-pos-cat">
-              <option value="2" data-label="brushed teeth">👂 Brushed teeth (+2 points)</option>
-              <option value="2" data-label="got dressed without fuss">😊 Got dressed without fuss (+2 points)</option>
-              <option value="3" data-label="listened first time">😌 Listened first time(+3 points)</option>
-              <option value="2" data-label="went to bed without fuss">👕 Went to bed without fuss (+2 points)</option>
-              <option value="2" data-label="had a good day">🌙 Had a good day (+2 points)</option>
-              <option value="3" data-label="eat dinner without fuss">💪Eat dinner without fuss (+2 points)</option>
-              <option value="3" data-label="had a good day at school">🏫 Had a good day at school (+3 points)</option>
-              <option value="2" data-label="played video games nicely">🎮 Played video games nicely (+2 points)</option>
-              <option value="2" data-label="got ready for school">🎒 Got ready for school (+2 points)</option>
-              <option value="5" data-label="superstar day">🌟 Superstar Day (+5 points)</option>
-              <option value="3" data-label="followed instructions first time">✅ Followed instructions first time (+3 points)</option>
-              <option value="2" data-label="helped without being asked">⭐ Helped without being asked (+2 points)</option>
-              <option value="2" data-label="accepted no">👍 Accepted 'no' without arguing (+2 points)</option>
-              <option value="2" data-label="stopped gaming when asked">🎮 Stopped gaming when asked (+2 points)</option>  
-              <option value="3" data-label="recovered after bad behaviour">⭐ Turned behaviour around (+3 points)</option>
-              <option value="2" data-label="got off device first time">📱 Got off device first time (+2 points)</option>
-              <option value="2" data-label="apologised sincerely">❤️ Gave a genuine apology (+2 points)</option>
-              <option value="2" data-label="good behaviour while out">🛒 Good behaviour while out (+2 points)</option>  
-        </select>
+              <option value="3" data-label="Brilliant morning routine">🌅 Brilliant morning routine (+3 points)</option>
+              <option value="2" data-label="Listened first time">👂 Listened first time (+2 points)</option>
+              <option value="2" data-label="Kind / helpful to others">😊 Kind / helpful to others (+2 points)</option>
+              <option value="2" data-label="Did homework or schoolwork">📚 Did homework or schoolwork (+2 points)</option>
+              <option value="3" data-label="Stayed calm when frustrated">😌 Stayed calm when frustrated (+3 points)</option>
+              <option value="3" data-label="Told the truth / owned up">✅ Told the truth / owned up (+3 points)</option>
+              <option value="2" data-label="Tidied room">🧹 Tidied room (+2 points)</option>
+              <option value="2" data-label="Got ready without fuss">👕 Got ready without fuss (+2 points)</option>
+              <option value="2" data-label="Good bedtime routine">🌙 Good bedtime routine (+2 points)</option>
+              <option value="3" data-label="Tried hard at something difficult">💪 Tried hard at something difficult (+3 points)</option>
+            </select>
           </div>
         </div>
 
@@ -502,16 +327,14 @@ pointer-events:none;
               <option value="-1" data-label="Told more than once to do something">⚠️ Told more than once to do something (-1 point)</option>
               <option value="-1" data-label="Shouting">📢 Shouting (-1 point)</option>
               <option value="-2" data-label="Screaming">😡 Screaming (-2 points)</option>
-              <option value="-2" data-label="Rude or disrespectful">🙄 Rude behaviour(-2 points)</option>
+              <option value="-2" data-label="Rude or disrespectful">🙄 Rude or disrespectful (-2 points)</option>
+              <option value="-2" data-label="Refused to cooperate">🙅 Refused to cooperate (-2 points)</option>
+              <option value="-2" data-label="Left without asking">🚪 Left without asking (-2 points)</option>
+              <option value="-2" data-label="Broke a rule">📏 Broke a rule (-2 points)</option>
+              <option value="-3" data-label="Reckless behaviour">🏃 Reckless behaviour (-3 points)</option>
               <option value="-3" data-label="Damaged item">💥 Damaged item (-3 points)</option>
               <option value="-4" data-label="Threatening behaviour">👊 Threatening behaviour (-4 points)</option>
               <option value="-5" data-label="Aggressive behaviour">🚫 Aggressive behaviour (-5 points)</option>
-              <option value="-1" data-label="arguing">🗣️ Arguing back (-1 point)</option>
-              <option value="-2" data-label="gaming behaviour">🎮 Poor behaviour while gaming (-2 points)</option>
-              <option value="-2" data-label="bedtime behaviour">🌙 Bedtime refusal (-2 points)</option>
-              <option value="-1" data-label="swearing">🤬 Swearing (-1 point)</option>
-              <option value="-3" data-label="throwing items">🚫 Threw items (-3 points)</option>
-              <option value="-3" data-label="serious lie">🤥 Told a serious lie (-3 points)</option>
             </select>
           </div>
         </div>
@@ -525,9 +348,7 @@ pointer-events:none;
         <button class="btn-add-pos" onclick="addEntry('positive')">⭐ Add positive points</button>
         <button class="btn-add-neg" onclick="addEntry('negative')">✖ Add consequence</button>
       </div>
-
-      </div> 
-
+    </div>
 
     <div class="section-card">
       <h3>📋 This week's log</h3>
@@ -547,23 +368,12 @@ pointer-events:none;
 
     <div class="hero-card">
       <div class="hero-stars" id="c-stars">⭐⭐⭐</div>
-      <div class="hero-title">Your reward points</div>
+      <div class="hero-title">Your points this week</div>
       <div class="hero-score" id="c-score">0</div>
       <div class="hero-pts">points</div>
       <div class="prog-bar"><div class="prog-fill" id="c-prog" style="width:0%"></div></div>
       <div class="prog-label" id="c-prog-label">Keep going!</div>
     </div>
-
-    <div class="section-card" id="approved-reward-card" style="display:none;">
-  <h3>🎉 Reward Approved!</h3>
-  <div id="approved-reward-text" style="font-size:16px;font-weight:700;margin-bottom:12px;"></div>
-  <button class="claim-btn" onclick="celebrateApprovedReward()">Celebrate!</button>
-</div>
-
-    <div class="section-card">
-  <h3>🏦 Recent Activity</h3>
-  <div class="entry-list" id="c-bank-history"></div>
-</div>
 
     <div class="reward-cards" id="c-reward-cards"></div>
 
@@ -572,10 +382,9 @@ pointer-events:none;
       <div class="theme-grid">
         <button class="theme-btn" data-theme-btn="blue" onclick="saveTheme('blue')">🔵 Blue</button>
         <button class="theme-btn" data-theme-btn="green" onclick="saveTheme('green')">🟢 Green</button>
-        <button class="theme-btn" data-theme-btn="red" onclick="saveTheme('red')">🔴 Red</button>
-        <button class="theme-btn" data-theme-btn="yellow" onclick="saveTheme('yellow')">🟡 Yellow</button>
+        <button class="theme-btn" data-theme-btn="purple" onclick="saveTheme('purple')">🟣 Purple</button>
+        <button class="theme-btn" data-theme-btn="pink" onclick="saveTheme('pink')">💖 Pink</button>
         <button class="theme-btn" data-theme-btn="football" onclick="saveTheme('football')">⚽ Football</button>
-        <button class="theme-btn" data-theme-btn="games" onclick="saveTheme('games')">🎮 Video Games</button>
       </div>
       <div class="settings-msg" id="theme-settings-msg"></div>
     </div>
@@ -584,9 +393,8 @@ pointer-events:none;
       <h3>Your behaviour log</h3>
       <div class="tabs">
         <button class="tab active" id="t-all" onclick="setTab('all')">All</button>
-<button class="tab" id="t-pos" onclick="setTab('pos')">⭐ Positives</button>
-<button class="tab" id="t-neg" onclick="setTab('neg')">✖ Negatives</button>
-<button class="tab" id="t-rewards" onclick="setTab('rewards')">🎁 Rewards</button>
+        <button class="tab" id="t-pos" onclick="setTab('pos')">⭐ Positives</button>
+        <button class="tab" id="t-neg" onclick="setTab('neg')">✖ Negatives</button>
       </div>
       <div class="entry-list" id="c-entries"></div>
     </div>
@@ -595,94 +403,18 @@ pointer-events:none;
 </div>
 
 <script>
-  const DEFAULT_PARENT_PIN = '1988';
-  const DEFAULT_CHILD_PIN  = '6767';
+  const DEFAULT_PARENT_PIN = '1234';
+  const DEFAULT_CHILD_PIN  = '0000';
 
   const REWARDS = [
-
-  // 🟢 SMALL REWARDS
-
-  {
-    tier:'small',
-    icon:'🎮',
-    name:'30 mins extra gaming',
-    pts:12,
-    desc:'Extra video game or phone time'
-  },
-  {
-    tier:'small',
-    icon:'⚽',
-    name:'FC26 vs Dad',
-    pts:15,
-    desc:'1v1 match against Dad'
-  },
-  {
-    tier:'small',
-    icon:'🎬',
-    name:'Choose movie night',
-    pts:18,
-    desc:'Pick the Sunday movie'
-  },
-
-  // 🟡 MEDIUM REWARDS
-  {
-    tier:'medium',
-    icon:'🟩',
-    name:'100 Robux',
-    pts:25,
-    desc:'Roblox reward'
-  },
-  {
-    tier:'medium',
-    icon:'💷',
-    name:'£1 added to card',
-    pts:35,
-    desc:'Money added to your card'
-  },
-  {
-    tier:'medium',
-    icon:'⚽',
-    name:'Play football',
-    pts:40,
-    desc:'Football at the weekend'
-  },
-
-  // 🔴 BIG REWARDS
-  {
-    tier:'big',
-    icon:'💷',
-    name:'£5 added to card',
-    pts:80,
-    desc:'Big money reward'
-  },
-  {
-    tier:'big',
-    icon:'🟩',
-    name:'250 Robux',
-    pts:90,
-    desc:'Big Roblox reward'
-  },
-  {
-    tier:'big',
-    icon:'🎁',
-    name:'Mega reward',
-    pts:120,
-    desc:'Choose one special mega reward',
-    isMega:true
-  }
-
-
-];
-const MEGA_REWARD_OPTIONS = [
-  "1000 Robux",
-  "Fortnite Crew",
-  "1000 V-Bucks",
-  "1000 FC Points",
-  "Trip to cinema",
-  "Bowling with dad",
-  "pizza perfect takeaway",
-  
-];
+    { icon:'🍫', name:'Small treat',        pts:8,  desc:'A small snack or sweet treat' },
+    { icon:'🎬', name:'Movie night',        pts:14, desc:'Choose a film for everyone' },
+    { icon:'🍕', name:'Takeaway choice',    pts:18, desc:'Pick the family takeaway' },
+    { icon:'🟩', name:'100 Robux',          pts:20, desc:'Roblox reward' },
+    { icon:'🎮', name:'Extra game time',    pts:22, desc:'Bonus PS5 / tablet time' },
+    { icon:'🛍️', name:'Pocket money bonus',pts:28, desc:'A small weekend bonus' },
+    { icon:'⭐', name:'Big reward choice',  pts:35, desc:'Choose a bigger weekend reward' },
+  ];
 
   const BEHAVIOUR_POINTS = {
     'Brilliant morning routine': 3,
@@ -713,247 +445,50 @@ const MEGA_REWARD_OPTIONS = [
     'Unsafe behaviour': -5,
   };
 
-  function rewardRequests(all) {
-  return all.__rewardRequests || [];
-}
-
-async function requestReward(index, megaChoice = "") {  const all = await getData();
-  const reward = REWARDS[index];
-
-  if (!all.__rewardRequests) all.__rewardRequests = [];
-
-  const alreadyPending = all.__rewardRequests.some(
-    r => r.rewardName === reward.name && r.status === "pending"
-  );
-
-  if (alreadyPending) {
-    alert("This reward is already waiting for approval.");
-    return;
-  }
-
-  all.__rewardRequests.push({
-    id: Date.now(),
-    rewardIndex: index,
-    rewardName: megaChoice
-  ? `${reward.name}: ${megaChoice}`
-  : reward.name,
-    points: reward.pts,
-    icon: reward.icon,
-    status: "pending",
-    createdAt: new Date().toISOString()
-  });
-
-  await saveData(all);
-  await renderChild();
-  alert("Reward request sent!");
-}
-
-async function approveReward(id) {
-  const all = await getData();
-  const requests = rewardRequests(all);
-  const req = requests.find(r => r.id === id);
-  if (!req) return;
-
-  const wk = weekKey(0);
-  if (!all[wk]) all[wk] = [];
-
-  all[wk].push({
-  day: (new Date().getDay() + 6) % 7,
-  cat: `Claimed reward: ${req.rewardName}`,
-  note: "",
-  pos: false,
-  points: -Math.abs(req.points),
-  type: "reward"
-});
-setBankPoints(all, getBankPoints(all) - Math.abs(req.points));
-
-  req.status = "approved";
-  req.approvedAt = new Date().toISOString();
-
-  addPendingCelebration(all, req.rewardName);
-
-  await saveData(all);
-  await renderParent();
-}
-
-async function rejectReward(id) {
-  const all = await getData();
-  const requests = rewardRequests(all);
-  const req = requests.find(r => r.id === id);
-  if (!req) return;
-
-  req.status = "rejected";
-  req.rejectedAt = new Date().toISOString();
-
-  await saveData(all);
-  await renderParent();
-}
-
-async function renderRewardRequests() {
-  const all = await getData();
-  const requests = rewardRequests(all).filter(r => r.status === "pending");
-  const el = document.getElementById("p-reward-requests");
-  const title = document.getElementById("reward-requests-title");
-
-if (title) {
-  title.textContent = requests.length
-    ? `📬 Reward requests (${requests.length})`
-    : "📬 Reward requests";
-}
-
-  if (!el) return;
-
-  if (!requests.length) {
-    el.innerHTML = '<p class="empty-msg">No reward requests yet.</p>';
-    return;
-  }
-
-  el.innerHTML = requests.map(r => `
-    <div class="request-card">
-      <strong>${r.icon} ${r.rewardName}</strong>
-      <div class="reward-pts">Jenson wants to claim this reward • Costs ${r.points} points</div>
-      <div class="request-actions">
-        <button class="btn-add-pos" onclick="approveReward(${r.id})">Approve</button>
-        <button class="btn-add-neg" onclick="rejectReward(${r.id})">Reject</button>
-      </div>
-    </div>
-  `).join("");
-}
-
   function pointsForEntry(e) {
     if (typeof e.points === 'number') return e.points;
     if (typeof e.pts === 'number') return e.pts;
     if (e.cat && BEHAVIOUR_POINTS[e.cat] !== undefined) return BEHAVIOUR_POINTS[e.cat];
     return e.pos ? 1 : -1;
   }
-function getBankPoints(all) {
-  return Object.keys(all)
-    .filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key))
-    .flatMap(key => all[key] || [])
-    .reduce((sum, entry) => sum + pointsForEntry(entry), 0);
-}
-
-function setBankPoints(all, points) {
-  all.__bankPoints = Math.max(0, points);
-}
-function getPendingCelebrations(all) {
-  return all.__pendingCelebrations || [];
-}
-
-function addPendingCelebration(all, rewardName) {
-  if (!all.__pendingCelebrations) all.__pendingCelebrations = [];
-
-  all.__pendingCelebrations.push({
-    id: Date.now(),
-    rewardName,
-    seen: false
-  });
-}
-
-let rewardAudio = null;
-
-function unlockRewardSound() {
-  rewardAudio = new Audio("reward-sound.mp3");
-  rewardAudio.volume = 0.7;
-  rewardAudio.load();
-}
-
-function playRewardSound() {
-  if (!rewardAudio) unlockRewardSound();
-
-  rewardAudio.currentTime = 0;
-  rewardAudio.play().catch(() => {});
-}
-
-function fireConfetti() {
-  playRewardSound();
-  if (!window.confetti) return;
-
-  confetti({
-    particleCount: 200,
-    spread: 100,
-    origin: { y: 0.6 }
-  });
-}
-
-function showCelebrationModal(rewardName) {
-  const modal = document.getElementById("celebration-modal");
-  const name = document.getElementById("celebration-reward-name");
-
-  if (!modal || !name) return;
-
-  name.textContent = rewardName;
-  modal.style.display = "flex";
-}
-
-function closeCelebrationModal() {
-  const modal = document.getElementById("celebration-modal");
-
-  if (modal) modal.style.display = "none";
-
-  fireConfetti();
-}
-let activeCelebrationId = null;
-
-function renderApprovedRewardCard(all) {
-  const card = document.getElementById("approved-reward-card");
-  const text = document.getElementById("approved-reward-text");
-
-  if (!card || !text) return;
-
-  const celebration = (all.__pendingCelebrations || []).find(c => !c.seen);
-
-  if (!celebration) {
-    card.style.display = "none";
-    activeCelebrationId = null;
-    return;
-  }
-
-  activeCelebrationId = celebration.id;
-  text.textContent = celebration.rewardName;
-  card.style.display = "block";
-}
-
-async function celebrateApprovedReward() {
-  const all = await getData();
-
-  const celebration = (all.__pendingCelebrations || []).find(
-    c => c.id === activeCelebrationId
-  );
-
-  if (celebration) {
-    celebration.seen = true;
-    await saveData(all);
-  }
-
-  renderApprovedRewardCard(all);
-  fireConfetti();
-}
-async function checkPendingCelebrations() {
-  const all = await getData();
-  renderApprovedRewardCard(all);
-}
 
   function formatPoints(points) {
     return `${points > 0 ? '+' : ''}${points} ${Math.abs(points) === 1 ? 'point' : 'points'}`;
   }
 
- function weeklyBonus(entries) {
-  let cleanDays = 0;
-
-  for (let day = 0; day < 7; day++) {
-    const dayEntries = entries.filter(e => e.day === day);
-    const hasEntry = dayEntries.length > 0;
-    const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
-
-    if (hasEntry && !hasNegative) cleanDays++;
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
   }
 
-  return {
-    cleanDays,
-    points: cleanDays >= 5 ? 10 : 0
-  };
-}
+  function localDateKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function weeklyBonus(entries) {
+    let cleanDays = 0;
+
+    for (let day = 0; day < 7; day++) {
+      const dayEntries = entries.filter(e => e.day === day);
+      const hasEntry = dayEntries.length > 0;
+      const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
+
+      if (hasEntry && !hasNegative) cleanDays++;
+    }
+
+    return {
+      cleanDays,
+      points: cleanDays >= 5 ? 10 : 0
+    };
+  }
 
   function getSettingsFromData(all) {
     return {
@@ -969,12 +504,9 @@ async function checkPendingCelebrations() {
   }
 
   function applyTheme(theme) {
-    const allowedThemes = ['blue', 'green', 'red', 'yellow', 'football', 'games'];
-    const safeTheme = allowedThemes.includes(theme) ? theme : 'blue';
-
-    document.body.dataset.theme = safeTheme;
+    document.body.dataset.theme = theme || 'blue';
     document.querySelectorAll('[data-theme-btn]').forEach(btn => {
-      btn.className = 'theme-btn' + (btn.dataset.themeBtn === safeTheme ? ' active' : '');
+      btn.className = 'theme-btn' + (btn.dataset.themeBtn === theme ? ' active' : '');
     });
   }
 
@@ -1070,36 +602,29 @@ async function checkPendingCelebrations() {
 
     if (pinBuf === ok) {
       if (loginWho === 'parent') {
-  document.body.dataset.theme = "blue";
-  wkOff = 0;
-  await renderParent();
-  await fillParentSettings();
-  show('parent');
-}
-      else {
-        unlockRewardSound();
-         show('child');
-  await renderChild();
-  await checkPendingCelebrations();
+        wkOff = 0;
+        await renderParent();
+        await fillParentSettings();
+        show('parent');
+      } else {
+        await renderChild();
+        show('child');
       }
     } else {
       document.getElementById('pin-err').textContent = 'Wrong PIN — try again';
       pinBuf = '';
       updateDots();
-    }}
+    }
+  }
 
-  function logout() {
-  document.body.dataset.theme = "blue";
-  show('login');
-}
+  function logout() { show('login'); }
 
   // CLOUD SETTINGS
   // 1) Create the Supabase table using the SQL file I gave you.
   // 2) Paste your Project URL and anon public key below.
   // 3) Use the same CHART_ID on every device you want synced.
-  const SUPABASE_URL = 'https://yxciwwcfjwsxlksqkmto.supabase.co';
-
-const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
+  const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_PROJECT_URL_HERE';
+  const SUPABASE_ANON_KEY = 'PASTE_YOUR_SUPABASE_ANON_KEY_HERE';
   const CHART_ID = 'jenson-main-chart';
 
   const CLOUD_READY =
@@ -1109,37 +634,6 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
 
   const db = CLOUD_READY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
   let cachedData = null;
-  function startRealtime() {
-  if (!CLOUD_READY) return;
-
-  db.channel("reward-chart-live")
-    .on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "reward_chart_data",
-        filter: `chart_id=eq.${CHART_ID}`
-      },
-      async (payload) => {
-        console.log("Realtime update received", payload);
-
-        cachedData = payload.new?.data || {};
-
-        if (document.getElementById("s-parent").classList.contains("active")) {
-          await renderParent();
-        }
-
-        if (document.getElementById("s-child").classList.contains("active")) {
-          await renderChild();
-          await checkPendingCelebrations();
-        }
-      }
-    )
-    .subscribe((status) => {
-      console.log("Realtime status:", status);
-    });
-}
 
   function getLocalData() {
     try { return JSON.parse(localStorage.getItem('jenson_v2') || '{}'); } catch(e) { return {}; }
@@ -1163,10 +657,12 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
       return cachedData;
     }
 
-    cachedData = data?.data || getLocalData() || {};
+    const localBackup = getLocalData();
+    const cloudData = data?.data && Object.keys(data.data).length ? data.data : null;
+    cachedData = cloudData || localBackup || {};
 
-    // First cloud load: if the cloud row is empty but this device has old local data, upload it.
-    if (!data && Object.keys(cachedData).length) await saveData(cachedData);
+    // First cloud load: if the cloud row is missing or empty but this device has local data, upload it.
+    if ((!data || !cloudData) && Object.keys(localBackup).length) await saveData(cachedData);
 
     return cachedData;
   }
@@ -1187,7 +683,7 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
   function weekKey(off) {
     const d = new Date();
     d.setDate(d.getDate() - ((d.getDay()+6)%7) + off*7);
-    return d.toISOString().slice(0,10);
+    return localDateKey(d);
   }
 
   async function weekEntries(off) {
@@ -1223,28 +719,20 @@ const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
       const net = p-n;
       const nc  = net>0?'pos':net<0?'neg':'zero';
       const isT = d.toDateString()===today.toDateString();
+      const stars  = p ? `<span class="sym-star">⭐</span><span class="day-net pos">+${p}</span>` : '';
+      const crosses= n ? `<span class="sym-cross">✖</span><span class="day-net neg">-${n}</span>` : '';
       dHtml += `<div class="day-col${isT?' today':''}">
-  <div class="dname">${DAYS[i]}</div>
-  <div class="ddate">${d.getDate()}/${d.getMonth()+1}</div>
-
-  ${(p+n)>0 ? `
-    <div class="day-summary">
-     ${p ? `<div class="day-line pos">🟢 +${p}</div>` : ''}
-${n ? `<div class="day-line neg">🔴 -${n}</div>` : ''}
-<div class="day-line day-total ${nc}">⚡ ${net>0?'+':''}${net}</div>
-    </div>
-  ` : `<div class="day-empty">No entries</div>`}
-</div>`;
-
+        <div class="dname">${DAYS[i]}</div>
+        <div class="ddate">${d.getDate()}/${d.getMonth()+1}</div>
+        <div class="day-symbols">${stars}${crosses}</div>
+        ${(p+n)>0?`<div class="day-net ${nc}">${net>0?'+':''}${net}</div>`:''}
+      </div>`;
     });
     document.getElementById('p-days').innerHTML = dHtml;
 
     const bonus = weeklyBonus(entries);
     const net = tPos-tNeg+bonus.points;
-    const all = await getData();
-const bankPoints = getBankPoints(all);
     document.getElementById('p-stats').innerHTML = `
-    <div class="stat-box"><div class="slabel">🏦 Bank</div><div class="sval blue">${bankPoints}</div></div>
       <div class="stat-box"><div class="slabel">Score</div><div class="sval ${net>=0?'green':'red'}">${net>0?'+':''}${net}</div></div>
       <div class="stat-box"><div class="slabel">⭐ Earned</div><div class="sval green">${tPos}</div></div>
       <div class="stat-box"><div class="slabel">🎉 Bonus</div><div class="sval blue">${bonus.points ? '+'+bonus.points : bonus.cleanDays+'/5'}</div></div>
@@ -1260,13 +748,13 @@ const bankPoints = getBankPoints(all);
       </div>`;
 
     document.getElementById('p-rewards').innerHTML = bonusHtml + REWARDS.map(r => {
-const u = bankPoints >= r.pts;
+      const u = net >= r.pts;
       return `<div class="reward-row">
         <div class="reward-left">
           <span class="reward-emoji">${r.icon}</span>
           <div><div class="reward-name">${r.name}</div><div class="reward-pts">${r.desc} • Needs ${r.pts} points</div></div>
         </div>
-        <span class="badge ${u?'unlocked':'locked'}">${u?'✓ Unlocked!': bankPoints+'/'+r.pts}</span>
+        <span class="badge ${u?'unlocked':'locked'}">${u?'✓ Unlocked!': net+'/'+r.pts}</span>
       </div>`;
     }).join('');
 
@@ -1274,9 +762,6 @@ const u = bankPoints >= r.pts;
     const todayIdx = (today.getDay()+6)%7;
     document.getElementById('f-day').value = todayIdx;
 
-    await renderRewardRequests();
-
-renderBankHistory(entries, "p-bank-history");
     renderPEntries(entries);
   }
 
@@ -1286,47 +771,16 @@ renderBankHistory(entries, "p-bank-history");
     if (!rev.length) { el.innerHTML = '<p class="empty-msg">No entries logged yet this week.</p>'; return; }
     el.innerHTML = rev.map((e,ri) => {
       const idx = entries.length-1-ri;
-      return `<div class="entry ${e.type === "reward" || e.cat?.startsWith("Claimed reward") ? 'reward-entry' : pointsForEntry(e)>0 ? 'pos-entry' : 'neg-entry'}">
-        <span class="eicon">${e.type === "reward" || e.cat?.startsWith("Claimed reward") ? '🎁' : pointsForEntry(e)>0 ? '⭐' : '✖'}</span>
+      return `<div class="entry ${pointsForEntry(e)>0?'pos-entry':'neg-entry'}">
+        <span class="eicon">${pointsForEntry(e)>0?'⭐':'✖'}</span>
         <div class="ebody">
-          <div class="etext">${e.cat}${e.note?' — '+e.note:''}</div>
+          <div class="etext">${escapeHtml(e.cat)}${e.note?' — '+escapeHtml(e.note):''}</div>
           <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
         </div>
         <button class="edel" onclick="del(${idx})" title="Delete">✕</button>
       </div>`;
     }).join('');
   }
-  function renderBankHistory(entries, elementId) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-
-  const bankEntries = [...entries]
-    .filter(e => pointsForEntry(e) !== 0)
-    .reverse()
-    .slice(0, 5);
-
-  if (!bankEntries.length) {
-    el.innerHTML = '<p class="empty-msg">No recent activity yet.</p>';
-    return;
-  }
-
-  el.innerHTML = bankEntries.map(e => {
-    const pts = pointsForEntry(e);
-    const isReward = e.type === "reward" || e.cat?.startsWith("Claimed reward");
-
-    return `
-      <div class="entry ${isReward ? 'reward-entry' : pts > 0 ? 'pos-entry' : 'neg-entry'}">
-        <span class="eicon">${isReward ? '🎁' : pts > 0 ? '⭐' : '💸'}</span>
-        <div class="ebody">
-          <div class="etext">${pts > 0 ? '+' : ''}${pts} • ${e.cat}</div>
-          <div class="emeta">${DAYSFULL[e.day]}</div>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-  
 
   async function addEntry(type) {
     const isPositive = type === 'positive';
@@ -1340,104 +794,37 @@ renderBankHistory(entries, "p-bank-history");
     const all = await getData();
     if (!all[wk]) all[wk] = [];
     all[wk].push({ day, cat, note, pos: points > 0, points });
-setBankPoints(all, getBankPoints(all) + points);
-await saveData(all);
+    await saveData(all);
     document.getElementById('f-note').value = '';
     await renderParent();
   }
 
   async function del(idx) {
-  const wk  = weekKey(wkOff);
-  const all = await getData();
-
-  if (!all[wk]) return;
-
-  const removed = all[wk][idx];
-
-  if (removed) {
-    setBankPoints(
-      all,
-      getBankPoints(all) - pointsForEntry(removed)
-    );
+    const wk  = weekKey(wkOff);
+    const all = await getData();
+    if (!all[wk]) return;
+    all[wk].splice(idx,1);
+    await saveData(all);
+    await renderParent();
   }
 
-  all[wk].splice(idx, 1);
-
-  await saveData(all);
-  await renderParent();
-}
-
-  function buildRewardSection(title, rewards, bankPoints, requests) {
-  return `
-    <div style="grid-column:1/-1;font-weight:800;font-size:18px;padding:10px 0;">
-      ${title}
-    </div>
-    ${rewards.map((r,index)=>{
-      const realIndex = REWARDS.indexOf(r);
-      const w = bankPoints >= r.pts;
-      const pending = requests.some(
-        req => req.rewardName === r.name && req.status === "pending"
-      );
-
-      return `
-        <div class="rcard${w?' won':''}">
-          <div class="ricon">${r.icon}</div>
-          <div class="rname">${r.name}</div>
-          <div class="rstatus">
-            ${
-              pending
-              ? '⏳ Waiting for approval'
-              : w
-                ? '✓ Unlocked!'
-                : r.pts + ' pts needed'
-            }
-          </div>
-${
-  w && !pending
-    ? r.isMega
-      ? `
-        <select id="mega-choice-${realIndex}" style="margin-top:8px;width:100%;padding:7px;border-radius:8px;border:1px solid #ddd;">
-          ${MEGA_REWARD_OPTIONS.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-        </select>
-
-        <button
-          class="claim-btn"
-          style="margin-top:8px"
-          onclick="requestReward(${realIndex}, document.getElementById('mega-choice-${realIndex}').value)"
-        >
-          Claim
-        </button>
-      `
-      : `<button class="claim-btn" onclick="requestReward(${realIndex})">Claim</button>`
-    : ''
-}
-          
-        </div>
-      `;
-    }).join('')}
-  `;
-}
   async function renderChild() {
     await loadAndApplyTheme();
-    const all = await getData();
-    renderApprovedRewardCard(all);
-const requests = rewardRequests(all);
-const bankPoints = getBankPoints(all);
     const entries = await weekEntries(0);
     const pos  = entries.filter(e=>pointsForEntry(e)>0).reduce((sum,e)=>sum+pointsForEntry(e),0);
     const neg  = Math.abs(entries.filter(e=>pointsForEntry(e)<0).reduce((sum,e)=>sum+pointsForEntry(e),0));
     const bonus = weeklyBonus(entries);
     const net  = pos-neg+bonus.points;
     const maxP = Math.max(...REWARDS.map(r=>r.pts));
-    const pct = Math.min(100, Math.max(0, Math.round(bankPoints / maxP * 100)));
+    const pct  = Math.min(100, Math.max(0, Math.round(net/maxP*100)));
 
     document.getElementById('c-stars').textContent = '⭐'.repeat(Math.min(5,Math.max(1,pos)));
-    document.getElementById('c-score').textContent = bankPoints;
+    document.getElementById('c-score').textContent = net;
     document.getElementById('c-prog').style.width  = pct+'%';
 
-    const nxt = REWARDS.filter(r=>bankPoints<r.pts).sort((a,b)=>a.pts-b.pts)[0];
+    const nxt = REWARDS.filter(r=>net<r.pts).sort((a,b)=>a.pts-b.pts)[0];
     document.getElementById('c-prog-label').textContent = nxt
-     ? `${nxt.pts-bankPoints} more points to unlock ${nxt.name}!`
+      ? `${nxt.pts-net} more points to unlock ${nxt.name}!`
       : '🎉 Amazing — you\'ve unlocked rewards this week!';
 
     const bonusCard = `<div class="rcard${bonus.points?' won':''}">
@@ -1446,23 +833,21 @@ const bankPoints = getBankPoints(all);
         <div class="rstatus">${bonus.points?'✓ +10 bonus points!':bonus.cleanDays+'/5 days with no negatives'}</div>
       </div>`;
 
-    const smallRewards = REWARDS.filter(r => r.tier === 'small');
-const mediumRewards = REWARDS.filter(r => r.tier === 'medium');
-const bigRewards = REWARDS.filter(r => r.tier === 'big');
+    document.getElementById('c-reward-cards').innerHTML = bonusCard + REWARDS.map(r => {
+      const w = net>=r.pts;
+      return `<div class="rcard${w?' won':''}">
+        <div class="ricon">${r.icon}</div>
+        <div class="rname">${r.name}</div>
+        <div class="rstatus">${w?'✓ Unlocked!':r.pts+' pts needed'}</div>
+      </div>`;
+    }).join('');
 
-document.getElementById('c-reward-cards').innerHTML =
-  bonusCard +
-  buildRewardSection('🟢 Small Rewards', smallRewards, bankPoints, requests) +
-  buildRewardSection('🟡 Medium Rewards', mediumRewards, bankPoints, requests) +
-  buildRewardSection('🔴 Big Rewards', bigRewards, bankPoints, requests);
-
-renderBankHistory(entries, "c-bank-history");
     renderCEntries(entries);
   }
 
   function setTab(t) {
     cTab = t;
-    ['all','pos','neg','rewards'].forEach(x => {
+    ['all','pos','neg'].forEach(x => {
       document.getElementById('t-'+x).className = 'tab'+(x===t?' active':'');
     });
     weekEntries(0).then(renderCEntries);
@@ -1470,35 +855,19 @@ renderBankHistory(entries, "c-bank-history");
 
   function renderCEntries(entries) {
     let list = [...entries].reverse();
-    if (cTab==='pos') list = list.filter(e => pointsForEntry(e) > 0 && e.type !== "reward");
-if (cTab==='neg') list = list.filter(e => pointsForEntry(e) < 0 && e.type !== "reward");
-if (cTab==='rewards') list = list.filter(e => e.type === "reward");
+    if (cTab==='pos') list = list.filter(e=>pointsForEntry(e)>0);
+    if (cTab==='neg') list = list.filter(e=>pointsForEntry(e)<0);
     const el = document.getElementById('c-entries');
     if (!list.length) { el.innerHTML = '<p class="empty-msg">Nothing here yet.</p>'; return; }
     el.innerHTML = list.map(e=>`<div class="entry ${pointsForEntry(e)>0?'pos-entry':'neg-entry'}">
       <span class="eicon">${pointsForEntry(e)>0?'⭐':'✖'}</span>
       <div class="ebody">
-        <div class="etext">${e.cat}${e.note?' — '+e.note:''}</div>
+        <div class="etext">${escapeHtml(e.cat)}${e.note?' — '+escapeHtml(e.note):''}</div>
         <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
       </div>
     </div>`).join('');
   }
   loadAndApplyTheme();
-  startRealtime();
-function hideSplash() {
-  const s = document.getElementById('splash');
-
-  if (!s) return;
-
-  s.style.opacity = '0';
-
-  setTimeout(() => {
-    s.style.display = 'none';
-  }, 500);
-}
-
-setTimeout(hideSplash, 2500);
-
 </script>
 </body>
 </html>
