@@ -1087,7 +1087,7 @@ body[data-theme="dark"] .theme-btn.active {
   position: relative;
   border: 8px solid #1a1a2e;
   box-shadow: 0 8px 22px rgba(0,0,0,0.18);
-  transition: transform 4s cubic-bezier(.12,.75,.16,1);
+  transition: transform 10.2s cubic-bezier(.12,.75,.16,1);
   background:
   conic-gradient(
     #ef4444 0deg 51.42deg,
@@ -1169,6 +1169,28 @@ body[data-theme="dark"] .pin-dot.filled {
   cursor: pointer;
 }
 
+.confetti-piece {
+  position: fixed;
+  top: -20px;
+  width: 10px;
+  height: 16px;
+  border-radius: 3px;
+  z-index: 10000;
+  pointer-events: none;
+  animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
 body[data-theme="dark"] .theme-toggle-btn {
   background: #0f172a;
   color: #f8fafc;
@@ -1212,27 +1234,6 @@ body[data-theme="dark"] .theme-toggle-btn {
 
 .day-net {
   font-size: 10px;
-}
-
-
-@media (max-width: 380px) {
-  .wheel-wrap {
-    width: 210px;
-    height: 230px;
-  }
-
-  .spin-wheel {
-    width: 200px;
-    height: 200px;
-  }
-
-  .label-1 { transform: rotate(25deg) translateY(-70px) rotate(-25deg); }
-  .label-2 { transform: rotate(77deg) translateY(-70px) rotate(-77deg); }
-  .label-3 { transform: rotate(129deg) translateY(-70px) rotate(-129deg); }
-  .label-4 { transform: rotate(181deg) translateY(-70px) rotate(-181deg); }
-  .label-5 { transform: rotate(233deg) translateY(-70px) rotate(-233deg); }
-  .label-6 { transform: rotate(285deg) translateY(-70px) rotate(-285deg); }
-  .label-7 { transform: rotate(337deg) translateY(-70px) rotate(-337deg); }
 }
       body {
         overflow-x: hidden;
@@ -1406,6 +1407,23 @@ body[data-theme="dark"] .theme-toggle-btn {
     }
 
     @media (max-width: 380px) {
+      .wheel-wrap {
+    width: 210px;
+    height: 230px;
+  }
+
+  .spin-wheel {
+    width: 200px;
+    height: 200px;
+  }
+
+  .label-1 { transform: rotate(25deg) translateY(-70px) rotate(-25deg); }
+  .label-2 { transform: rotate(77deg) translateY(-70px) rotate(-77deg); }
+  .label-3 { transform: rotate(129deg) translateY(-70px) rotate(-129deg); }
+  .label-4 { transform: rotate(181deg) translateY(-70px) rotate(-181deg); }
+  .label-5 { transform: rotate(233deg) translateY(-70px) rotate(-233deg); }
+  .label-6 { transform: rotate(285deg) translateY(-70px) rotate(-285deg); }
+  .label-7 { transform: rotate(337deg) translateY(-70px) rotate(-337deg); }
       .app {
         padding: 10px;
       }
@@ -1888,10 +1906,8 @@ body[data-theme="dark"] .theme-toggle-btn {
           <span class="role-badge child-badge">Your chart</span>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
-  <div style="display:flex;gap:8px;align-items:center;">
   <button class="theme-toggle-btn" onclick="toggleDarkMode()">🌙 / ☀️</button>
   <button class="logout-btn" onclick="logout()">Log out</button>
-</div>
 </div>
       </div>
 
@@ -1957,6 +1973,7 @@ body[data-theme="dark"] .theme-toggle-btn {
  </div>
 
 <div id="toast"></div>
+<audio id="wheel-sound" src="/sounds/wheel-spin.mp3" preload="auto"></audio>
 
 <script>
     const DEFAULT_PARENT_PIN = '1234';
@@ -2286,6 +2303,22 @@ async function saveWheelSettings() {
     'wheel-settings-msg',
     'Wheel settings saved!'
   );
+}
+function launchConfettiRain() {
+  const colors = ['#ef4444', '#22c55e', '#3b82f6', '#facc15'];
+
+  for (let i = 0; i < 100; i++) {
+    const piece = document.createElement('div');
+
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 0.8 + 's';
+
+    document.body.appendChild(piece);
+
+    setTimeout(() => piece.remove(), 5000);
+  }
 }
 
 function showToast(message) {
@@ -3295,6 +3328,12 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
   const finalRotation = spins + (360 - landingAngle);
 
   if (wheel) {
+  const sound = document.getElementById('wheel-sound');
+
+if (sound) {
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+}
     wheel.style.transform = `rotate(${finalRotation}deg)`;
   }
 
@@ -3318,8 +3357,9 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
 
     await saveData(all);
     showToast(`🎉 You won ${prize.label}!`);
+    launchConfettiRain();
     await renderChild();
-  }, 4200);
+  }, 10200);
 }
 
     function weekKey(off) {
