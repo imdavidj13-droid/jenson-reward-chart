@@ -3321,6 +3321,12 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
     btn.textContent = 'Spinning...';
     btn.style.opacity = '0.65';
   }
+  if (wheel) {
+  wheel.style.transition = 'none';
+  wheel.style.transform = 'rotate(0deg)';
+  wheel.offsetHeight;
+  wheel.style.transition = 'transform 10.2s cubic-bezier(.12,.75,.16,1)';
+}
 
   const slice = 360 / WHEEL_PRIZES.length;
   const landingAngle = prizeIndex * slice + slice / 2;
@@ -3356,10 +3362,19 @@ if (sound) {
     }
 
     await saveData(all);
-    showToast(`🎉 You won ${prize.label}!`);
-    launchConfettiRain();
-    await renderChild();
-  }, 10200);
+showToast(`🎉 You won ${prize.label}!`);
+launchConfettiRain();
+
+if (btn) {
+  btn.disabled = false;
+  btn.textContent = DEBUG_SPIN_WHEEL ? 'Spin again' : 'Already spun';
+  btn.style.opacity = '1';
+}
+
+if (!DEBUG_SPIN_WHEEL) {
+  await renderChild();
+}
+}, 10200);
 }
 
     function weekKey(off) {
