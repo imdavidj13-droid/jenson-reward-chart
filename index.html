@@ -827,6 +827,13 @@
       err.textContent = 'Enter a username first.';
       return;
     }
+    const all = await getData();
+const users = getUsersFromData(all);
+
+if (!users[loginUsername]) {
+  err.textContent = 'No user found with that username.';
+  return;
+}
 
     err.textContent = '';
     document.getElementById('pin-heading').textContent = 'Enter PIN';
