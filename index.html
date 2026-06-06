@@ -1081,8 +1081,8 @@ body[data-theme="dark"] .theme-btn.active {
 }
 
 .spin-wheel {
-  width: 220px;
-  height: 220px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
   position: relative;
   border: 8px solid #1a1a2e;
@@ -3331,7 +3331,7 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
 
   const slice = 360 / WHEEL_PRIZES.length;
   const landingAngle = prizeIndex * slice + slice / 2;
-  const spins = 360 * 14;
+  const spins = 360 * 18;
   const finalRotation = spins + (360 - landingAngle);
 
   if (wheel) {
@@ -3344,7 +3344,7 @@ if (sound) {
 
 setTimeout(() => {
   wheel.style.transform = `rotate(${finalRotation}deg)`;
-}, 900);
+}, 650);
   }
 
   setTimeout(async () => {
