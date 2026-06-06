@@ -1805,23 +1805,29 @@ function useFoundFamilyCode(code) {
 }
 
   async function showLoginForFamily(wasJustCreated = false) {
-    const all = await getData();
-    const familyName = all.__family?.name || 'Reward Chart';
+  const all = await getData();
+  const familyName = all.__family?.name || 'Family Rewards';
 
-    document.getElementById('login-family-title').textContent = familyName;
-    document.getElementById('login-family-subtitle').textContent = `Family code: ${currentFamilyId}`;
-    document.getElementById('login-username').value = '';
-    document.getElementById('login-err').textContent = '';
+  const title = document.getElementById('login-family-title');
+  const subtitle = document.getElementById('login-family-subtitle');
+  const username = document.getElementById('login-username');
+  const loginErr = document.getElementById('login-err');
 
-    const createdCard = document.getElementById('family-created-card');
-    const createdCode = document.getElementById('created-family-code');
-    if (createdCard && createdCode) {
-      createdCard.style.display = wasJustCreated ? 'grid' : 'none';
-      createdCode.textContent = currentFamilyId;
-    }
+  if (title) title.textContent = familyName;
+  if (subtitle) subtitle.textContent = `Family code: ${currentFamilyId}`;
+  if (username) username.value = '';
+  if (loginErr) loginErr.textContent = '';
 
-    show('login');
+  const createdCard = document.getElementById('family-created-card');
+  const createdCode = document.getElementById('created-family-code');
+
+  if (createdCard && createdCode) {
+    createdCard.style.display = wasJustCreated ? 'grid' : 'none';
+    createdCode.textContent = currentFamilyId;
   }
+
+  show('login');
+}
 
   function switchFamily() {
     localStorage.removeItem(FAMILY_STORAGE_KEY);
