@@ -1861,6 +1861,7 @@ body[data-theme="dark"] .wheel-pointer {
     const DEFAULT_PARENT_PIN = '1234';
     const DEFAULT_CHILD_PIN = '0000';
     const DEFAULT_WHEEL_THRESHOLD = 25;
+const DEBUG_SPIN_WHEEL = false;
 
 const WHEEL_PRIZES = [
   { label: '+5 bonus points', points: 5 },
@@ -3167,10 +3168,10 @@ if (total < threshold) {
     return;
   }
 
-  if (false && spin.claimed) {
-    showToast(`Already spun this week: ${spin.prize}`);
-    return;
-  }
+if (!DEBUG_SPIN_WHEEL && spin.claimed) {
+  showToast(`Already spun this week: ${spin.prize}`);
+  return;
+}
 
   const prizeIndex = Math.floor(Math.random() * WHEEL_PRIZES.length);
   const prize = WHEEL_PRIZES[prizeIndex];
