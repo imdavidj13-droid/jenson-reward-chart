@@ -3327,7 +3327,7 @@ if (spinCard && spinStatus && spinBtn) {
     spinBtn.disabled = true;
     spinBtn.textContent = 'Available Sunday';
     spinBtn.style.opacity = '0.65';
-  } else if (currentWeekTotal < WEEKLY_SPIN_THRESHOLD) {
+  } else if (currentWeekTotal < DEFAULT_WHEEL_THRESHOLD) {
     spinStatus.textContent = `You need ${threshold} points to spin. Current total: ${currentWeekTotal}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Not enough points yet';
