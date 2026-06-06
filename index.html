@@ -467,7 +467,6 @@ button {
       <div class="choice-panels">
         <div class="choice-panel positive">
           <h4>⭐ Add positive</h4>
-          <div class="form-group"><label>Icon</label><input id="custom-pos-icon" maxlength="3" placeholder="⭐"></div>
           <div class="form-group"><label>Name</label><input id="custom-pos-label" placeholder="e.g. Fed the pet"></div>
           <div class="form-group"><label>Points</label><input id="custom-pos-points" type="number" inputmode="numeric" min="1" placeholder="2"></div>
           <button class="btn-add-pos" onclick="addCustomBehaviour('positive')" style="margin-top:8px">Add positive</button>
@@ -475,7 +474,6 @@ button {
 
         <div class="choice-panel negative">
           <h4>✖ Add consequence</h4>
-          <div class="form-group"><label>Icon</label><input id="custom-neg-icon" maxlength="3" placeholder="⚠️"></div>
           <div class="form-group"><label>Name</label><input id="custom-neg-label" placeholder="e.g. Messy room"></div>
           <div class="form-group"><label>Points lost</label><input id="custom-neg-points" type="number" inputmode="numeric" min="1" placeholder="1"></div>
           <button class="btn-add-neg" onclick="addCustomBehaviour('negative')" style="margin-top:8px">Add consequence</button>
@@ -485,7 +483,6 @@ button {
       <div class="choice-panel" style="margin-top:12px;">
         <h4>🎁 Add reward</h4>
         <div class="settings-grid">
-          <div class="form-group"><label>Icon</label><input id="custom-reward-icon" maxlength="3" placeholder="🎁"></div>
           <div class="form-group"><label>Reward name</label><input id="custom-reward-name" placeholder="e.g. Park trip"></div>
           <div class="form-group"><label>Points needed</label><input id="custom-reward-points" type="number" inputmode="numeric" min="1" placeholder="20"></div>
           <div class="form-group"><label>Description</label><input id="custom-reward-desc" placeholder="Optional short description"></div>
@@ -494,7 +491,12 @@ button {
       </div>
 
       <div class="settings-msg" id="catalog-msg"></div>
-      <div id="catalog-list" style="display:grid;gap:12px;margin-top:14px;"></div>
+      <details style="margin-top:14px;">
+  <summary style="cursor:pointer;font-weight:800;font-size:14px;">
+    Manage existing options
+  </summary>
+  <div id="catalog-list" style="display:grid;gap:12px;margin-top:14px;"></div>
+</details>
     </div>
 
     <div class="section-card">
