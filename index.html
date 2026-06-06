@@ -987,6 +987,78 @@
       background: var(--accent-soft, #ddeeff);
     }
 
+    body[data-theme="dark"] {
+  color: #e5e7eb;
+}
+
+body[data-theme="dark"] .login-form,
+body[data-theme="dark"] .login-card,
+body[data-theme="dark"] .top-bar,
+body[data-theme="dark"] .section-card,
+body[data-theme="dark"] .day-col,
+body[data-theme="dark"] .stat-box,
+body[data-theme="dark"] .rcard,
+body[data-theme="dark"] .nav-btn,
+body[data-theme="dark"] .theme-btn,
+body[data-theme="dark"] .numpad button {
+  background: #111827;
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] .reward-name,
+body[data-theme="dark"] .rname,
+body[data-theme="dark"] .etext {
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] p,
+body[data-theme="dark"] .reward-pts,
+body[data-theme="dark"] .emeta,
+body[data-theme="dark"] .empty-msg,
+body[data-theme="dark"] .form-group label {
+  color: #cbd5e1;
+}
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea {
+  background: #020617;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .choice-panel {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .entry {
+  background: #0f172a;
+}
+
+body[data-theme="dark"] .tab {
+  background: #111827;
+  color: #cbd5e1;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .tab.active,
+body[data-theme="dark"] .primary-btn {
+  background: #38bdf8;
+  color: #020617;
+  border-color: #38bdf8;
+}
+
+body[data-theme="dark"] .theme-btn.active {
+  background: #1e293b;
+  border-color: #38bdf8;
+}
+
     @media (max-width: 600px) {
 
       .wheel-wrap {
@@ -1019,15 +1091,15 @@
   box-shadow: 0 8px 22px rgba(0,0,0,0.18);
   transition: transform 4s cubic-bezier(.12,.75,.16,1);
   background:
-    conic-gradient(
-      #facc15 0deg 51.42deg,
-      #38bdf8 51.42deg 102.84deg,
-      #fb7185 102.84deg 154.26deg,
-      #4ade80 154.26deg 205.68deg,
-      #f97316 205.68deg 257.1deg,
-      #a78bfa 257.1deg 308.52deg,
-      #22c55e 308.52deg 360deg
-    );
+  conic-gradient(
+    #ef4444 0deg 51.42deg,
+    #22c55e 51.42deg 102.84deg,
+    #3b82f6 102.84deg 154.26deg,
+    #facc15 154.26deg 205.68deg,
+    #ef4444 205.68deg 257.1deg,
+    #22c55e 257.1deg 308.52deg,
+    #3b82f6 308.52deg 360deg
+  );
 }
 
 .spin-wheel::after {
@@ -1637,6 +1709,24 @@ body[data-theme="dark"] .wheel-pointer {
             <div class="settings-msg" id="add-parent-msg"></div>
           </div>
 
+          <div class="section-card">
+  <h3>🎨 App theme</h3>
+  <p style="font-size:13px;color:#666;margin-bottom:12px;">
+    Choose the theme for this family.
+  </p>
+
+  <div class="theme-grid">
+    <button class="theme-btn" data-theme-btn="blue" onclick="saveTheme('blue')">🌊 Ocean</button>
+    <button class="theme-btn" data-theme-btn="green" onclick="saveTheme('green')">🌲 Forest</button>
+    <button class="theme-btn" data-theme-btn="gold" onclick="saveTheme('gold')">🏆 Gold</button>
+    <button class="theme-btn" data-theme-btn="red" onclick="saveTheme('red')">🔥 Ruby</button>
+    <button class="theme-btn" data-theme-btn="football" onclick="saveTheme('football')">⚽ Football</button>
+    <button class="theme-btn" data-theme-btn="dark" onclick="saveTheme('dark')">🌙 Dark</button>
+  </div>
+
+  <div class="settings-msg" id="parent-theme-settings-msg"></div>
+</div>
+
         </div>
       </details>
       <div class="section-card">
@@ -1747,6 +1837,7 @@ body[data-theme="dark"] .wheel-pointer {
           <button class="theme-btn" data-theme-btn="gold" onclick="saveTheme('gold')">🏆 Gold</button>
           <button class="theme-btn" data-theme-btn="red" onclick="saveTheme('red')">🔥 Ruby</button>
           <button class="theme-btn" data-theme-btn="football" onclick="saveTheme('football')">⚽ Football</button>
+       <button class="theme-btn" data-theme-btn="dark" onclick="saveTheme('dark')">🌙 Dark</button>
         </div>
         <div class="settings-msg" id="theme-settings-msg"></div>
       </div>
@@ -2052,11 +2143,13 @@ const WHEEL_PRIZES = [
       all.__settings = { ...getSettingsFromData(all), theme: safeTheme };
       await saveData(all);
       applyTheme(safeTheme);
-      const msg = document.getElementById('theme-settings-msg');
-      if (msg) {
-        msg.textContent = 'Theme saved!';
-        setTimeout(() => msg.textContent = '', 1500);
-      }
+      ['theme-settings-msg', 'parent-theme-settings-msg'].forEach(id => {
+  const msg = document.getElementById(id);
+  if (msg) {
+    msg.textContent = 'Theme saved!';
+    setTimeout(() => msg.textContent = '', 1500);
+  }
+});
     }
 async function saveWheelSettings() {
   const threshold = parseInt(
@@ -3074,7 +3167,7 @@ if (total < threshold) {
     return;
   }
 
-  if (spin.claimed) {
+  if (false && spin.claimed) {
     showToast(`Already spun this week: ${spin.prize}`);
     return;
   }
