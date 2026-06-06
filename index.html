@@ -3620,8 +3620,25 @@ const latestChild = child;
 
   await saveData(latestAll);
 
-  showToast(`🎉 You won ${prize.prize}!`);
-  launchConfettiRain();
+const updatedEntries = latestChild.weeks[todayWeek] || [];
+const updatedPos = updatedEntries
+  .filter(e => pointsForEntry(e) > 0)
+  .reduce((sum, e) => sum + pointsForEntry(e), 0);
+
+const updatedNeg = Math.abs(
+  updatedEntries
+    .filter(e => pointsForEntry(e) < 0)
+    .reduce((sum, e) => sum + pointsForEntry(e), 0)
+);
+
+const updatedBonus = weeklyBonus(updatedEntries);
+const updatedNet = updatedPos - updatedNeg + updatedBonus.points;
+
+const scoreEl = document.getElementById('c-score');
+if (scoreEl) scoreEl.textContent = updatedNet;
+
+showToast(`🎉 You won ${prize.prize}! New total: ${updatedNet}`);
+launchConfettiRain();
 
   if (btn) {
     btn.disabled = true;
