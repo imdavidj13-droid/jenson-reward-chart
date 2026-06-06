@@ -26,6 +26,9 @@
   .login-logo h1 { font-size: 28px; font-weight: 700; color: #1a1a2e; }
   .login-logo p { color: #666; margin-top: 6px; font-size: 15px; }
   .login-cards { display: grid; gap: 14px; }
+  .login-form { background:white; border-radius:16px; padding:20px; box-shadow:0 2px 12px rgba(0,0,0,0.08); display:grid; gap:12px; }
+  .primary-btn { background:#1a1a2e; color:white; border:none; border-radius:10px; padding:12px 16px; font-size:15px; font-weight:700; cursor:pointer; }
+  .primary-btn:hover { filter:brightness(1.08); }
   .login-card { background: white; border-radius: 16px; padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 2px solid transparent; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.2s; }
   .login-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
   .login-card.parent:hover { border-color: var(--accent, #4a90d9); }
@@ -182,29 +185,62 @@
 <body>
 <div class="app" id="app">
 
-  <!-- LOGIN SCREEN -->
-  <div class="screen active" id="s-login">
+  <!-- FAMILY SETUP / JOIN SCREEN -->
+  <div class="screen active" id="s-family">
     <div class="login-wrap">
       <div class="login-logo">
         <span class="big-star">⭐</span>
-        <h1>Jenson's Reward Chart</h1>
-        <p>Who's logging in today?</p>
+        <h1>Reward Chart</h1>
+        <p>Create a family or join one with a family code.</p>
       </div>
-      <div class="login-cards">
-        <div class="login-card parent" onclick="goPin('parent')">
-          <div class="avatar">👩</div>
-          <div>
-            <h3>Parent view</h3>
-            <p>Add behaviours, manage rewards &amp; settings</p>
-          </div>
+
+      <div class="login-form" style="margin-bottom:16px;">
+        <h3>Create a family</h3>
+        <div class="form-group">
+          <label>Family name</label>
+          <input id="create-family-name" placeholder="e.g. Mathie Family">
         </div>
-        <div class="login-card child" onclick="goPin('child')">
-          <div class="avatar">😊</div>
-          <div>
-            <h3>Jenson's view</h3>
-            <p>See your stars and rewards!</p>
-          </div>
+        <div class="settings-grid">
+          <div class="form-group"><label>Parent name</label><input id="create-parent-name" placeholder="e.g. Dad"></div>
+          <div class="form-group"><label>Parent username</label><input id="create-parent-username" placeholder="e.g. dad"></div>
+          <div class="form-group"><label>Parent PIN</label><input id="create-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
+          <div class="form-group"><label>Child name</label><input id="create-child-name" placeholder="e.g. Jenson"></div>
+          <div class="form-group"><label>Child username</label><input id="create-child-username" placeholder="e.g. jenson"></div>
+          <div class="form-group"><label>Child PIN</label><input id="create-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
         </div>
+        <button class="primary-btn" onclick="createFamily()">Create family</button>
+        <div class="pin-error" id="create-family-err"></div>
+      </div>
+
+      <div class="login-form">
+        <h3>Join a family</h3>
+        <div class="form-group">
+          <label>Family code</label>
+          <input id="join-family-code" placeholder="e.g. MATHIE-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
+        </div>
+        <button class="primary-btn" onclick="joinFamily()">Join family</button>
+        <div class="pin-error" id="join-family-err"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN SCREEN -->
+  <div class="screen" id="s-login">
+    <div class="login-wrap">
+      <div class="login-logo">
+        <span class="big-star">⭐</span>
+        <h1 id="login-family-title">Reward Chart</h1>
+        <p id="login-family-subtitle">Who\'s logging in today?</p>
+      </div>
+      <div class="login-form">
+        <div class="form-group">
+          <label>Username</label>
+          <input id="login-username" autocomplete="username" placeholder="e.g. dad or jenson" onkeydown="if(event.key==='Enter') goPin()">
+        </div>
+        <button class="primary-btn" onclick="goPin()">Continue</button>
+        <div class="pin-error" id="login-err"></div>
+        <p style="font-size:12px;color:#888;line-height:1.4;">Log in with the username and PIN created for this family.</p>
+        <button class="back-link" type="button" onclick="switchFamily()">Use a different family code</button>
       </div>
     </div>
   </div>
@@ -244,7 +280,7 @@
   <div class="screen" id="s-parent">
     <div class="top-bar">
       <div style="display:flex;align-items:center">
-        <h2>Jenson's Chart</h2>
+        <h2 id="p-title">Reward Chart</h2>
         <span class="role-badge parent-badge">Parent</span>
       </div>
       <button class="logout-btn" onclick="logout()">Log out</button>
@@ -267,19 +303,71 @@
     </div>
 
     <div class="section-card">
-      <h3>⚙️ Parent settings</h3>
+      <h3>⚙️ Account settings</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.4;">This parent login is linked to one child. Change your login details or the linked child's login details here.</p>
+      <p style="font-size:13px;color:#1a1a2e;margin-bottom:12px;line-height:1.4;"><strong>Family code:</strong> <span id="family-code-display"></span></p>
       <div class="settings-grid">
         <div class="form-group">
-          <label>Parent PIN</label>
-          <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
+          <label>Parent name</label>
+          <input id="set-parent-name" placeholder="Parent name">
         </div>
         <div class="form-group">
-          <label>Jenson's PIN</label>
-          <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits" style="width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
+          <label>Parent username</label>
+          <input id="set-parent-username" autocomplete="username" placeholder="parent username">
+        </div>
+        <div class="form-group">
+          <label>Parent PIN</label>
+          <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
+        </div>
+        <div></div>
+        <div class="form-group">
+          <label>Child name</label>
+          <input id="set-child-name" placeholder="Child name">
+        </div>
+        <div class="form-group">
+          <label>Child username</label>
+          <input id="set-child-username" autocomplete="username" placeholder="child username">
+        </div>
+        <div class="form-group">
+          <label>Child PIN</label>
+          <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
         </div>
       </div>
-      <button class="btn-add-pos" onclick="savePinSettings()" style="margin-top:12px">Save PINs</button>
+      <button class="btn-add-pos" onclick="saveAccountSettings()" style="margin-top:12px">Save account details</button>
       <div class="settings-msg" id="pin-settings-msg"></div>
+    </div>
+
+    <div class="section-card">
+      <h3>➕ Add another parent + child login</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Use this for another child. The new parent account will only see and manage that child's chart.</p>
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>New parent name</label>
+          <input id="new-parent-name" placeholder="e.g. Mum">
+        </div>
+        <div class="form-group">
+          <label>New parent username</label>
+          <input id="new-parent-username" placeholder="e.g. mum">
+        </div>
+        <div class="form-group">
+          <label>New parent PIN</label>
+          <input id="new-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
+        </div>
+        <div class="form-group">
+          <label>New child name</label>
+          <input id="new-child-name" placeholder="e.g. Child name">
+        </div>
+        <div class="form-group">
+          <label>New child username</label>
+          <input id="new-child-username" placeholder="e.g. childname">
+        </div>
+        <div class="form-group">
+          <label>New child PIN</label>
+          <input id="new-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
+        </div>
+      </div>
+      <button class="btn-add-pos" onclick="addFamilyLogin()" style="margin-top:12px">Add login pair</button>
+      <div class="settings-msg" id="add-account-msg"></div>
     </div>
 
     <div class="section-card">
@@ -360,7 +448,7 @@
   <div class="screen" id="s-child">
     <div class="top-bar">
       <div style="display:flex;align-items:center">
-        <h2>Hi Jenson! 👋</h2>
+        <h2 id="c-title">Hi! 👋</h2>
         <span class="role-badge child-badge">Your chart</span>
       </div>
       <button class="logout-btn" onclick="logout()">Log out</button>
@@ -445,6 +533,85 @@
     'Unsafe behaviour': -5,
   };
 
+  function normalizeUsername(value) {
+    return String(value || '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '');
+  }
+
+  function makeChildId(username) {
+    return 'child_' + normalizeUsername(username || ('child-' + Date.now()));
+  }
+
+  function defaultUsersFromSettings(settings = {}) {
+    return {
+      dad: {
+        username: 'dad',
+        pin: settings.parentPin || DEFAULT_PARENT_PIN,
+        role: 'parent',
+        name: 'Parent',
+        childId: 'jenson'
+      },
+      jenson: {
+        username: 'jenson',
+        pin: settings.childPin || DEFAULT_CHILD_PIN,
+        role: 'child',
+        name: 'Jenson',
+        childId: 'jenson'
+      }
+    };
+  }
+
+  function ensureMultiUserData(all) {
+    all = all && typeof all === 'object' ? all : {};
+    if (!all.__settings) all.__settings = { theme: 'blue' };
+    if (!all.__children) all.__children = {};
+    if (!all.__users) all.__users = defaultUsersFromSettings(all.__settings);
+
+    if (!all.__children.jenson) {
+      all.__children.jenson = { id: 'jenson', name: 'Jenson', weeks: {} };
+    }
+    if (!all.__children.jenson.weeks) all.__children.jenson.weeks = {};
+
+    // Migrate old single-child week data into Jenson's child profile without deleting the backup.
+    Object.keys(all).forEach(key => {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(key) && Array.isArray(all[key]) && !all.__children.jenson.weeks[key]) {
+        all.__children.jenson.weeks[key] = all[key];
+      }
+    });
+
+    // Make sure every user is stored under its normalized username.
+    const normalizedUsers = {};
+    Object.values(all.__users).forEach(user => {
+      if (!user || !user.username) return;
+      const key = normalizeUsername(user.username);
+      normalizedUsers[key] = { ...user, username: key };
+    });
+    all.__users = Object.keys(normalizedUsers).length ? normalizedUsers : defaultUsersFromSettings(all.__settings);
+
+    Object.values(all.__users).forEach(user => {
+      if (user.role === 'child' && user.childId && !all.__children[user.childId]) {
+        all.__children[user.childId] = { id: user.childId, name: user.name || user.username, weeks: {} };
+      }
+    });
+
+    return all;
+  }
+
+  function getUsersFromData(all) {
+    return ensureMultiUserData(all).__users;
+  }
+
+  function getChildFromData(all, childId) {
+    all = ensureMultiUserData(all);
+    const id = childId || 'jenson';
+    if (!all.__children[id]) all.__children[id] = { id, name: 'Child', weeks: {} };
+    if (!all.__children[id].weeks) all.__children[id].weeks = {};
+    return all.__children[id];
+  }
+
+  function findChildUser(users, childId) {
+    return Object.values(users).find(u => u.role === 'child' && u.childId === childId) || null;
+  }
+
   function pointsForEntry(e) {
     if (typeof e.points === 'number') return e.points;
     if (typeof e.pts === 'number') return e.pts;
@@ -491,9 +658,8 @@
   }
 
   function getSettingsFromData(all) {
+    all = ensureMultiUserData(all);
     return {
-      parentPin: all.__settings?.parentPin || DEFAULT_PARENT_PIN,
-      childPin: all.__settings?.childPin || DEFAULT_CHILD_PIN,
       theme: all.__settings?.theme || 'blue'
     };
   }
@@ -527,40 +693,119 @@
     }
   }
 
-  async function savePinSettings() {
-    const parentInput = document.getElementById('set-parent-pin');
-    const childInput = document.getElementById('set-child-pin');
-    const msg = document.getElementById('pin-settings-msg');
-    const parentPin = parentInput.value.trim();
-    const childPin = childInput.value.trim();
+  function setMsg(id, text, ok = true) {
+    const msg = document.getElementById(id);
+    if (!msg) return;
+    msg.style.color = ok ? '#27ae60' : '#e74c3c';
+    msg.textContent = text;
+    if (ok) setTimeout(() => msg.textContent = '', 1800);
+  }
 
-    if (!/^\d{4}$/.test(parentPin) || !/^\d{4}$/.test(childPin)) {
-      msg.style.color = '#e74c3c';
-      msg.textContent = 'Both PINs must be exactly 4 numbers.';
-      return;
-    }
+  function validPin(pin) {
+    return /^\d{4}$/.test(String(pin || '').trim());
+  }
+
+  async function saveAccountSettings() {
+    if (!currentUser || currentUser.role !== 'parent') return;
+
+    const parentName = document.getElementById('set-parent-name').value.trim() || 'Parent';
+    const parentUsername = normalizeUsername(document.getElementById('set-parent-username').value);
+    const parentPin = document.getElementById('set-parent-pin').value.trim();
+    const childName = document.getElementById('set-child-name').value.trim() || 'Child';
+    const childUsername = normalizeUsername(document.getElementById('set-child-username').value);
+    const childPin = document.getElementById('set-child-pin').value.trim();
+
+    if (!parentUsername || !childUsername) return setMsg('pin-settings-msg', 'Usernames cannot be blank.', false);
+    if (parentUsername === childUsername) return setMsg('pin-settings-msg', 'Parent and child usernames must be different.', false);
+    if (!validPin(parentPin) || !validPin(childPin)) return setMsg('pin-settings-msg', 'Both PINs must be exactly 4 numbers.', false);
 
     const all = await getData();
-    all.__settings = { ...getSettingsFromData(all), parentPin, childPin };
-    await saveData(all);
+    const users = getUsersFromData(all);
+    const childId = currentUser.childId;
+    const childUser = findChildUser(users, childId);
+    const oldParentKey = currentUserKey;
+    const oldChildKey = childUser ? normalizeUsername(childUser.username) : null;
 
-    msg.style.color = '#27ae60';
-    msg.textContent = 'PINs saved!';
-    setTimeout(() => msg.textContent = '', 1800);
+    if (users[parentUsername] && parentUsername !== oldParentKey) return setMsg('pin-settings-msg', 'That parent username already exists.', false);
+    if (users[childUsername] && childUsername !== oldChildKey) return setMsg('pin-settings-msg', 'That child username already exists.', false);
+
+    if (oldParentKey && oldParentKey !== parentUsername) delete all.__users[oldParentKey];
+    if (oldChildKey && oldChildKey !== childUsername) delete all.__users[oldChildKey];
+
+    all.__users[parentUsername] = { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId };
+    all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
+    all.__children[childId] = { ...getChildFromData(all, childId), name: childName };
+
+    currentUserKey = parentUsername;
+    currentUser = all.__users[parentUsername];
+    activeChildId = childId;
+
+    await saveData(all);
+    await fillParentSettings();
+    await renderParent();
+    setMsg('pin-settings-msg', 'Account details saved!');
+  }
+
+  async function addFamilyLogin() {
+    const parentName = document.getElementById('new-parent-name').value.trim() || 'Parent';
+    const parentUsername = normalizeUsername(document.getElementById('new-parent-username').value);
+    const parentPin = document.getElementById('new-parent-pin').value.trim();
+    const childName = document.getElementById('new-child-name').value.trim() || 'Child';
+    const childUsername = normalizeUsername(document.getElementById('new-child-username').value);
+    const childPin = document.getElementById('new-child-pin').value.trim();
+
+    if (!parentUsername || !childUsername) return setMsg('add-account-msg', 'Both usernames are required.', false);
+    if (parentUsername === childUsername) return setMsg('add-account-msg', 'Parent and child usernames must be different.', false);
+    if (!validPin(parentPin) || !validPin(childPin)) return setMsg('add-account-msg', 'Both PINs must be exactly 4 numbers.', false);
+
+    const all = await getData();
+    const users = getUsersFromData(all);
+    if (users[parentUsername] || users[childUsername]) return setMsg('add-account-msg', 'One of those usernames already exists.', false);
+
+    let childId = makeChildId(childUsername);
+    let n = 2;
+    while (all.__children[childId]) childId = makeChildId(childUsername) + '-' + n++;
+
+    all.__children[childId] = { id: childId, name: childName, weeks: {} };
+    all.__users[parentUsername] = { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId };
+    all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
+
+    await saveData(all);
+    ['new-parent-name','new-parent-username','new-parent-pin','new-child-name','new-child-username','new-child-pin'].forEach(id => document.getElementById(id).value = '');
+    setMsg('add-account-msg', 'New parent and child logins added!');
   }
 
   async function fillParentSettings() {
-    const settings = await getSettings();
-    const parentInput = document.getElementById('set-parent-pin');
-    const childInput = document.getElementById('set-child-pin');
-    if (parentInput) parentInput.value = settings.parentPin;
-    if (childInput) childInput.value = settings.childPin;
+    const familyDisplay = document.getElementById('family-code-display');
+    if (familyDisplay) familyDisplay.textContent = currentFamilyId || '';
+    const all = await getData();
+    const users = getUsersFromData(all);
+    const child = getChildFromData(all, activeChildId);
+    const childUser = findChildUser(users, activeChildId);
+
+    const parentName = document.getElementById('set-parent-name');
+    const parentUsername = document.getElementById('set-parent-username');
+    const parentPin = document.getElementById('set-parent-pin');
+    const childName = document.getElementById('set-child-name');
+    const childUsername = document.getElementById('set-child-username');
+    const childPin = document.getElementById('set-child-pin');
+
+    if (parentName) parentName.value = currentUser?.name || 'Parent';
+    if (parentUsername) parentUsername.value = currentUserKey || currentUser?.username || '';
+    if (parentPin) parentPin.value = currentUser?.pin || '';
+    if (childName) childName.value = child.name || childUser?.name || 'Child';
+    if (childUsername) childUsername.value = childUser?.username || '';
+    if (childPin) childPin.value = childUser?.pin || '';
   }
 
   const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const DAYSFULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
   let loginWho = '';
+  let loginUsername = '';
+  let currentUserKey = '';
+  let currentUser = null;
+  let activeChildId = 'jenson';
   let pinBuf   = '';
   let wkOff    = 0;
   let cTab     = 'all';
@@ -570,13 +815,22 @@
     document.getElementById('s-' + id).classList.add('active');
   }
 
-  function goPin(who) {
-    loginWho = who;
+  async function goPin() {
+    const input = document.getElementById('login-username');
+    const err = document.getElementById('login-err');
+    loginUsername = normalizeUsername(input.value);
     pinBuf = '';
     updateDots();
     document.getElementById('pin-err').textContent = '';
-    document.getElementById('pin-heading').textContent = who === 'parent' ? 'Parent PIN' : "Jenson's PIN";
-    document.getElementById('pin-hint').textContent   = who === 'parent' ? 'Enter your 4-digit parent PIN' : 'Enter your PIN to see your chart';
+
+    if (!loginUsername) {
+      err.textContent = 'Enter a username first.';
+      return;
+    }
+
+    err.textContent = '';
+    document.getElementById('pin-heading').textContent = 'Enter PIN';
+    document.getElementById('pin-hint').textContent = `Enter the 4-digit PIN for ${loginUsername}`;
     show('pin');
   }
 
@@ -597,11 +851,17 @@
 
   async function checkPin() {
     await loadAndApplyTheme();
-    const settings = await getSettings();
-    const ok = loginWho === 'parent' ? settings.parentPin : settings.childPin;
+    const all = await getData();
+    const users = getUsersFromData(all);
+    const user = users[loginUsername];
 
-    if (pinBuf === ok) {
-      if (loginWho === 'parent') {
+    if (user && pinBuf === user.pin) {
+      currentUserKey = loginUsername;
+      currentUser = user;
+      loginWho = user.role;
+      activeChildId = user.childId || 'jenson';
+
+      if (user.role === 'parent') {
         wkOff = 0;
         await renderParent();
         await fillParentSettings();
@@ -611,21 +871,27 @@
         show('child');
       }
     } else {
-      document.getElementById('pin-err').textContent = 'Wrong PIN — try again';
+      document.getElementById('pin-err').textContent = 'Wrong username or PIN — try again';
       pinBuf = '';
       updateDots();
     }
   }
 
-  function logout() { show('login'); }
+  function logout() {
+    currentUserKey = '';
+    currentUser = null;
+    loginWho = '';
+    pinBuf = '';
+    updateDots();
+    show('login');
+  }
 
   // CLOUD SETTINGS
-  // 1) Create the Supabase table using the SQL file I gave you.
-  // 2) Paste your Project URL and anon public key below.
-  // 3) Use the same CHART_ID on every device you want synced.
-  const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_PROJECT_URL_HERE';
-  const SUPABASE_ANON_KEY = 'PASTE_YOUR_SUPABASE_ANON_KEY_HERE';
-  const CHART_ID = 'jenson-main-chart';
+  // Each family gets its own family code, and that code is saved as chart_id in Supabase.
+  const SUPABASE_URL = 'https://yxciwwcfjwsxlksqkmto.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
+
+  const FAMILY_STORAGE_KEY = 'reward_chart_family_code';
 
   const CLOUD_READY =
     SUPABASE_URL.startsWith('https://') &&
@@ -633,51 +899,240 @@
     window.supabase;
 
   const db = CLOUD_READY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+  let currentFamilyId = localStorage.getItem(FAMILY_STORAGE_KEY) || '';
   let cachedData = null;
 
-  function getLocalData() {
-    try { return JSON.parse(localStorage.getItem('jenson_v2') || '{}'); } catch(e) { return {}; }
+  function cleanFamilyCode(value) {
+    return String(value || '').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '');
   }
 
-  function saveLocalData(d) { localStorage.setItem('jenson_v2', JSON.stringify(d)); }
+  function generateFamilyCode(familyName) {
+    const prefix = String(familyName || 'FAMILY')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 12) || 'FAMILY';
 
-  async function getData() {
-    if (!CLOUD_READY) return getLocalData();
-    if (cachedData) return cachedData;
+    const code = Math.random().toString(36).slice(2, 6).toUpperCase();
+    return `${prefix}-${code}`;
+  }
+
+  function createStarterData({ familyName, parentName, parentUsername, parentPin, childName, childUsername, childPin }) {
+    const childId = makeChildId(childUsername);
+    return ensureMultiUserData({
+      __settings: { theme: 'blue' },
+      __family: { name: familyName, createdAt: new Date().toISOString() },
+      __children: {
+        [childId]: { id: childId, name: childName, weeks: {} }
+      },
+      __users: {
+        [parentUsername]: { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId },
+        [childUsername]: { username: childUsername, pin: childPin, role: 'child', name: childName, childId }
+      }
+    });
+  }
+
+  function getLocalData() {
+    if (!currentFamilyId) return {};
+    try {
+      return JSON.parse(localStorage.getItem('jenson_v2_' + currentFamilyId) || '{}');
+    } catch(e) {
+      return {};
+    }
+  }
+
+  function saveLocalData(d) {
+    if (!currentFamilyId) return;
+    localStorage.setItem('jenson_v2_' + currentFamilyId, JSON.stringify(d));
+  }
+
+  async function loadCloudFamily(familyId) {
+    if (!CLOUD_READY || !familyId) return null;
 
     const { data, error } = await db
       .from('reward_chart_data')
       .select('data')
-      .eq('chart_id', CHART_ID)
+      .eq('chart_id', familyId)
       .maybeSingle();
 
     if (error) {
-      console.warn('Cloud load failed, using local backup:', error.message);
-      cachedData = getLocalData();
-      return cachedData;
+      console.warn('Cloud load failed:', error.message);
+      return null;
     }
 
-    const localBackup = getLocalData();
-    const cloudData = data?.data && Object.keys(data.data).length ? data.data : null;
-    cachedData = cloudData || localBackup || {};
+    return data?.data || null;
+  }
 
-    // First cloud load: if the cloud row is missing or empty but this device has local data, upload it.
-    if ((!data || !cloudData) && Object.keys(localBackup).length) await saveData(cachedData);
+  async function saveCloudFamily(familyId, appData) {
+    if (!CLOUD_READY || !familyId) return false;
+
+    const { error } = await db
+      .from('reward_chart_data')
+      .upsert(
+        { chart_id: familyId, data: appData, updated_at: new Date().toISOString() },
+        { onConflict: 'chart_id' }
+      );
+
+    if (error) {
+      console.warn('Cloud save failed:', error.message);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function getData() {
+    if (!currentFamilyId) return ensureMultiUserData({});
+    if (cachedData) return cachedData;
+
+    const cloudData = await loadCloudFamily(currentFamilyId);
+    const localBackup = getLocalData();
+
+    cachedData = ensureMultiUserData(cloudData || localBackup || {});
+
+    if (!cloudData && Object.keys(localBackup).length) {
+      await saveData(cachedData);
+    }
 
     return cachedData;
   }
 
   async function saveData(d) {
+    d = ensureMultiUserData(d);
     cachedData = d;
-    saveLocalData(d); // backup on this device as well
+    saveLocalData(d);
 
-    if (!CLOUD_READY) return;
+    if (currentFamilyId) {
+      await saveCloudFamily(currentFamilyId, d);
+    }
+  }
 
-    const { error } = await db
-      .from('reward_chart_data')
-      .upsert({ chart_id: CHART_ID, data: d, updated_at: new Date().toISOString() }, { onConflict: 'chart_id' });
+  async function createFamily() {
+    const err = document.getElementById('create-family-err');
+    err.textContent = '';
 
-    if (error) console.warn('Cloud save failed, local backup saved:', error.message);
+    const familyName = document.getElementById('create-family-name').value.trim() || 'My Family';
+    const parentName = document.getElementById('create-parent-name').value.trim() || 'Parent';
+    const parentUsername = normalizeUsername(document.getElementById('create-parent-username').value);
+    const parentPin = document.getElementById('create-parent-pin').value.trim();
+    const childName = document.getElementById('create-child-name').value.trim() || 'Child';
+    const childUsername = normalizeUsername(document.getElementById('create-child-username').value);
+    const childPin = document.getElementById('create-child-pin').value.trim();
+
+    if (!parentUsername || !childUsername) {
+      err.textContent = 'Parent and child usernames are required.';
+      return;
+    }
+
+    if (parentUsername === childUsername) {
+      err.textContent = 'Parent and child usernames must be different.';
+      return;
+    }
+
+    if (!validPin(parentPin) || !validPin(childPin)) {
+      err.textContent = 'Both PINs must be exactly 4 numbers.';
+      return;
+    }
+
+    let familyCode = generateFamilyCode(familyName);
+    let tries = 0;
+
+    while (tries < 5 && await loadCloudFamily(familyCode)) {
+      familyCode = generateFamilyCode(familyName);
+      tries++;
+    }
+
+    const starterData = createStarterData({
+      familyName,
+      parentName,
+      parentUsername,
+      parentPin,
+      childName,
+      childUsername,
+      childPin
+    });
+
+    currentFamilyId = familyCode;
+    cachedData = starterData;
+    localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
+    saveLocalData(starterData);
+
+    const saved = await saveCloudFamily(currentFamilyId, starterData);
+    if (!saved && CLOUD_READY) {
+      err.textContent = 'Could not save to Supabase. Check the table/policies.';
+      return;
+    }
+
+    await showLoginForFamily();
+  }
+
+  async function joinFamily() {
+    const err = document.getElementById('join-family-err');
+    err.textContent = '';
+
+    const familyCode = cleanFamilyCode(document.getElementById('join-family-code').value);
+
+    if (!familyCode) {
+      err.textContent = 'Enter a family code.';
+      return;
+    }
+
+    const cloudData = await loadCloudFamily(familyCode);
+
+    if (!cloudData) {
+      err.textContent = 'Family code not found.';
+      return;
+    }
+
+    currentFamilyId = familyCode;
+    cachedData = ensureMultiUserData(cloudData);
+    localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
+    saveLocalData(cachedData);
+
+    await showLoginForFamily();
+  }
+
+  async function showLoginForFamily() {
+    const all = await getData();
+    const familyName = all.__family?.name || 'Reward Chart';
+
+    document.getElementById('login-family-title').textContent = familyName;
+    document.getElementById('login-family-subtitle').textContent = `Family code: ${currentFamilyId}`;
+    document.getElementById('login-username').value = '';
+    document.getElementById('login-err').textContent = '';
+
+    show('login');
+  }
+
+  function switchFamily() {
+    localStorage.removeItem(FAMILY_STORAGE_KEY);
+    currentFamilyId = '';
+    cachedData = null;
+    currentUserKey = '';
+    currentUser = null;
+    loginWho = '';
+    show('family');
+  }
+
+  async function initApp() {
+    if (!currentFamilyId) {
+      show('family');
+      return;
+    }
+
+    const cloudData = await loadCloudFamily(currentFamilyId);
+    const localData = getLocalData();
+
+    if (!cloudData && !Object.keys(localData).length) {
+      switchFamily();
+      return;
+    }
+
+    cachedData = ensureMultiUserData(cloudData || localData);
+    saveLocalData(cachedData);
+
+    await loadAndApplyTheme();
+    await showLoginForFamily();
   }
 
   function weekKey(off) {
@@ -688,7 +1143,8 @@
 
   async function weekEntries(off) {
     const all = await getData();
-    return all[weekKey(off)] || [];
+    const child = getChildFromData(all, activeChildId);
+    return child.weeks[weekKey(off)] || [];
   }
 
   function weekDates(off) {
@@ -700,9 +1156,14 @@
   async function wk(dir) { wkOff += dir; await renderParent(); }
 
   async function renderParent() {
-    const entries = await weekEntries(wkOff);
+    const allForChild = await getData();
+    const child = getChildFromData(allForChild, activeChildId);
+    const entries = child.weeks[weekKey(wkOff)] || [];
     const dates   = weekDates(wkOff);
     const today   = new Date();
+
+    const parentTitle = document.getElementById('p-title');
+    if (parentTitle) parentTitle.textContent = `${child.name || 'Child'}'s Chart`;
 
     const lbl = wkOff===0 ? 'This week' : wkOff===-1 ? 'Last week' :
       'Week of ' + dates[0].toLocaleDateString('en-GB',{day:'numeric',month:'short'});
@@ -792,8 +1253,9 @@
     const points = parseInt(selected.value, 10);
     const note= document.getElementById('f-note').value.trim();
     const all = await getData();
-    if (!all[wk]) all[wk] = [];
-    all[wk].push({ day, cat, note, pos: points > 0, points });
+    const child = getChildFromData(all, activeChildId);
+    if (!child.weeks[wk]) child.weeks[wk] = [];
+    child.weeks[wk].push({ day, cat, note, pos: points > 0, points });
     await saveData(all);
     document.getElementById('f-note').value = '';
     await renderParent();
@@ -802,15 +1264,20 @@
   async function del(idx) {
     const wk  = weekKey(wkOff);
     const all = await getData();
-    if (!all[wk]) return;
-    all[wk].splice(idx,1);
+    const child = getChildFromData(all, activeChildId);
+    if (!child.weeks[wk]) return;
+    child.weeks[wk].splice(idx,1);
     await saveData(all);
     await renderParent();
   }
 
   async function renderChild() {
     await loadAndApplyTheme();
-    const entries = await weekEntries(0);
+    const allForChild = await getData();
+    const child = getChildFromData(allForChild, activeChildId);
+    const childTitle = document.getElementById('c-title');
+    if (childTitle) childTitle.textContent = `Hi ${child.name || currentUser?.name || 'there'}! 👋`;
+    const entries = child.weeks[weekKey(0)] || [];
     const pos  = entries.filter(e=>pointsForEntry(e)>0).reduce((sum,e)=>sum+pointsForEntry(e),0);
     const neg  = Math.abs(entries.filter(e=>pointsForEntry(e)<0).reduce((sum,e)=>sum+pointsForEntry(e),0));
     const bonus = weeklyBonus(entries);
@@ -867,7 +1334,7 @@
       </div>
     </div>`).join('');
   }
-  loadAndApplyTheme();
+  initApp();
 </script>
 </body>
 </html>
