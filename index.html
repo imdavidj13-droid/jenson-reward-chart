@@ -2,12 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Jenson's Reward Chart</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--page-bg, #f0f4f8); min-height: 100vh; color: #1a1a2e; }
+html {
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
 
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: var(--page-bg, #f0f4f8);
+  min-height: 100vh;
+  color: #1a1a2e;
+  width: 100%;
+  overflow-x: hidden;
+}
+input,
+select,
+textarea {
+  font-size: 16px !important;
+  touch-action: manipulation;
+}
+
+button {
+  touch-action: manipulation;
+}
   body[data-theme="blue"] { --page-bg:#eef6ff; --hero-a:#0f172a; --hero-b:#2563eb; --accent:#2563eb; --accent-soft:#dbeafe; }
   body[data-theme="green"] { --page-bg:#ecfdf5; --hero-a:#064e3b; --hero-b:#16a34a; --accent:#16a34a; --accent-soft:#dcfce7; }
   body[data-theme="gold"] { --page-bg:#fffbeb; --hero-a:#78350f; --hero-b:#d97706; --accent:#f59e0b; --accent-soft:#fef3c7; }
@@ -23,6 +45,13 @@
   .login-wrap { max-width: 420px; margin: 40px auto; }
   .login-logo { text-align: center; margin-bottom: 32px; }
   .login-logo .big-star { font-size: 56px; display: block; margin-bottom: 10px; }
+  .app-logo {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 20px;
+}
   .login-logo h1 { font-size: 28px; font-weight: 700; color: #1a1a2e; }
   .login-logo p { color: #666; margin-top: 6px; font-size: 15px; }
   .login-cards { display: grid; gap: 14px; }
@@ -223,51 +252,105 @@
 
   <!-- FAMILY SETUP / JOIN SCREEN -->
   <div class="screen active" id="s-family">
-    <div class="login-wrap">
-      <div class="login-logo">
-        <span class="big-star">⭐</span>
-        <h1>Reward Chart</h1>
-        <p>Create a new family or open an existing family with its code.</p>
-      </div>
+  <div class="login-wrap">
+    <div class="login-logo">
+      <img
+  src="/images/family-rewards-logo.png"
+  alt="Family Rewards"
+  class="app-logo"
+/>
+      <h1>Family Rewards</h1>
+      <p>Choose how you want to start.</p>
+    </div>
 
-      <div class="login-form" style="margin-bottom:16px;">
-        <h3>Create a family</h3>
-        <div class="form-group">
-          <label>Family name</label>
-          <input id="create-family-name" placeholder="e.g. Mathie Family">
-        </div>
-        <div class="settings-grid">
-          <div class="form-group"><label>Parent name</label><input id="create-parent-name" placeholder="e.g. Dad"></div>
-          <div class="form-group"><label>Parent username</label><input id="create-parent-username" placeholder="e.g. dad"></div>
-          <div class="form-group"><label>Parent PIN</label><input id="create-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
-          <div class="form-group"><label>Child name</label><input id="create-child-name" placeholder="e.g. Jenson"></div>
-          <div class="form-group"><label>Child username</label><input id="create-child-username" placeholder="e.g. jenson"></div>
-          <div class="form-group"><label>Child PIN</label><input id="create-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
-        </div>
-        <button class="primary-btn" id="create-family-btn" onclick="createFamily()">Create family</button>
-        <div class="pin-error" id="create-family-err"></div>
-      </div>
+    <div class="login-form" style="margin-bottom:16px;">
+      <h3>New to Family Rewards?</h3>
+      <p style="font-size:13px;color:#666;line-height:1.4;">
+        Create a family, add your parent and child login, then get your family code.
+      </p>
+      <button class="primary-btn" onclick="show('create-family')">Sign up here</button>
+    </div>
 
-      <div class="login-form">
-        <h3>Open Existing Family</h3>
-        <div class="form-group">
-          <label>Family code</label>
-          <input id="join-family-code" placeholder="e.g. MATHIE-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
-        </div>
-        <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Open Family</button>
-        <div class="pin-error" id="join-family-err"></div>
-      </div>
+    <div class="login-form">
+      <h3>Already in a family?</h3>
+      <p style="font-size:13px;color:#666;line-height:1.4;">
+        Use your family code to open your family reward chart.
+      </p>
+      <button class="primary-btn" onclick="show('join-family')">Log in here</button>
     </div>
   </div>
+</div>
+
+<div class="screen" id="s-create-family">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <span class="big-star">⭐</span>
+      <h1>Create Family</h1>
+      <p>Set up your family reward chart.</p>
+    </div>
+
+    <div class="login-form">
+      <h3>Create a family</h3>
+
+      <div class="form-group">
+        <label>Family name</label>
+        <input id="create-family-name" placeholder="e.g. Mathie Family">
+      </div>
+
+      <div class="settings-grid">
+        <div class="form-group"><label>Parent name</label><input id="create-parent-name" placeholder="e.g. Dad"></div>
+        <div class="form-group"><label>Parent username</label><input id="create-parent-username" placeholder="e.g. dad"></div>
+        <div class="form-group"><label>Parent PIN</label><input id="create-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
+        <div class="form-group"><label>Child name</label><input id="create-child-name" placeholder="e.g. Jenson"></div>
+        <div class="form-group"><label>Child username</label><input id="create-child-username" placeholder="e.g. jenson"></div>
+        <div class="form-group"><label>Child PIN</label><input id="create-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits"></div>
+      </div>
+
+      <button class="primary-btn" id="create-family-btn" onclick="createFamily()">Create family</button>
+      <div class="pin-error" id="create-family-err"></div>
+
+      <button class="back-link" type="button" onclick="show('family')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s-join-family">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <span class="big-star">⭐</span>
+      <h1>Open Family</h1>
+      <p>Enter your family code.</p>
+    </div>
+
+    <div class="login-form">
+      <h3>Already in a family?</h3>
+
+      <div class="form-group">
+        <label>Family code</label>
+        <input id="join-family-code" placeholder="e.g. MATHIE-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
+      </div>
+
+      <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Open Family</button>
+      <div class="pin-error" id="join-family-err"></div>
+
+      <button class="back-link" type="button" onclick="show('family')">← Back</button>
+    </div>
+  </div>
+</div>
 
   <!-- LOGIN SCREEN -->
   <div class="screen" id="s-login">
     <div class="login-wrap">
       <div class="login-logo">
-        <span class="big-star">⭐</span>
-        <h1 id="login-family-title">Reward Chart</h1>
-        <p id="login-family-subtitle">Who's logging in today?</p>
-      </div>
+  <img
+    src="/images/family-rewards-logo.png"
+    alt="Family Rewards"
+    class="app-logo"
+  />
+
+  <h1>Family Rewards</h1>
+  <p>Choose how you want to start.</p>
+</div>
       <div class="login-form" id="family-created-card" style="display:none;margin-bottom:16px;background:#f0fbf0;border:1.5px solid #b5dfb5;">
         <h3>✅ Family created!</h3>
         <p style="font-size:13px;color:#1a1a2e;line-height:1.4;margin-bottom:10px;">Save this family code. Anyone joining this family will need it.</p>
@@ -1295,31 +1378,36 @@
     document.getElementById('s-' + id).classList.add('active');
   }
 
-  async function goPin() {
-    const input = document.getElementById('login-username');
-    const err = document.getElementById('login-err');
-    loginUsername = normalizeUsername(input.value);
-    pinBuf = '';
-    updateDots();
-    document.getElementById('pin-err').textContent = '';
+ async function goPin() {
+  const input = document.getElementById('login-username');
+  const err = document.getElementById('login-err');
+  loginUsername = normalizeUsername(input.value);
+  pinBuf = '';
+  updateDots();
+  document.getElementById('pin-err').textContent = '';
 
-    if (!loginUsername) {
-      err.textContent = 'Enter a username first.';
-      return;
-    }
-    const all = await getData();
-const users = getUsersFromData(all);
-
-if (!users[loginUsername]) {
-  err.textContent = 'No user found with that username.';
-  return;
-}
-
-    err.textContent = '';
-    document.getElementById('pin-heading').textContent = 'Enter PIN';
-    document.getElementById('pin-hint').textContent = `Enter the 4-digit PIN for ${loginUsername}`;
-    show('pin');
+  if (!loginUsername) {
+    err.textContent = 'Enter a username first.';
+    return;
   }
+
+  const all = await getData();
+  const users = getUsersFromData(all);
+
+  if (!users[loginUsername]) {
+    err.textContent = 'No user found with that username.';
+    return;
+  }
+
+  err.textContent = '';
+  document.getElementById('pin-heading').textContent = 'Enter PIN';
+  document.getElementById('pin-hint').textContent = `Enter the 4-digit PIN for ${loginUsername}`;
+
+  if (document.activeElement) document.activeElement.blur();
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+  show('pin');
+}
 
   function kp(v) {
     if (v === 'back') pinBuf = pinBuf.slice(0,-1);
@@ -1336,33 +1424,38 @@ if (!users[loginUsername]) {
     }
   }
 
-  async function checkPin() {
-    await loadAndApplyTheme();
-    const all = await getData();
-    const users = getUsersFromData(all);
-    const user = users[loginUsername];
+async function checkPin() {
+  await loadAndApplyTheme();
+  const all = await getData();
+  const users = getUsersFromData(all);
+  const user = users[loginUsername];
 
-    if (user && pinBuf === user.pin) {
-      currentUserKey = loginUsername;
-      currentUser = user;
-      loginWho = user.role;
-      activeChildId = user.role === 'parent' ? (getParentChildIds(user)[0] || user.childId || 'jenson') : (user.childId || 'jenson');
+  if (user && pinBuf === user.pin) {
+    currentUserKey = loginUsername;
+    currentUser = user;
+    loginWho = user.role;
+    activeChildId = user.role === 'parent'
+      ? (getParentChildIds(user)[0] || user.childId || 'jenson')
+      : (user.childId || 'jenson');
 
-      if (user.role === 'parent') {
-        wkOff = 0;
-        await renderParent();
-        await fillParentSettings();
-        show('parent');
-      } else {
-        await renderChild();
-        show('child');
-      }
+    if (document.activeElement) document.activeElement.blur();
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    if (user.role === 'parent') {
+      wkOff = 0;
+      await renderParent();
+      await fillParentSettings();
+      show('parent');
     } else {
-      document.getElementById('pin-err').textContent = 'Wrong username or PIN — try again';
-      pinBuf = '';
-      updateDots();
+      await renderChild();
+      show('child');
     }
+  } else {
+    document.getElementById('pin-err').textContent = 'Wrong username or PIN — try again';
+    pinBuf = '';
+    updateDots();
   }
+}
 
   function logout() {
     currentUserKey = '';
