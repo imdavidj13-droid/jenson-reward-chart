@@ -87,6 +87,13 @@
       --accent: #16a34a;
       --accent-soft: #dcfce7;
     }
+    body[data-theme="dark"] {
+  --page-bg: #0f172a;
+  --hero-a: #020617;
+  --hero-b: #1e293b;
+  --accent: #38bdf8;
+  --accent-soft: #1e293b;
+}
 
     .app {
       max-width: 700px;
@@ -486,11 +493,13 @@
     }
 
     .day-summary {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 6px;
-    }
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 6px;
+  white-space: nowrap;
+}
 
     .day-pos,
     .day-neg {
@@ -1037,10 +1046,10 @@
       }
 
       .day-col {
-        min-height: 95px;
-        padding: 6px 2px;
-        border-radius: 10px;
-      }
+  min-height: 76px;
+  padding: 6px 2px;
+  border-radius: 10px;
+}
 
       .day-col .dname,
       .day-col .ddate {
@@ -1863,10 +1872,9 @@
     }
 
     function normaliseTheme(theme) {
-      const allowedThemes = ['blue', 'green', 'gold', 'red', 'football'];
-      if (theme === 'pink' || theme === 'purple') return 'blue';
-      return allowedThemes.includes(theme) ? theme : 'blue';
-    }
+  const allowedThemes = ['blue', 'green', 'gold', 'red', 'football', 'dark'];
+  return allowedThemes.includes(theme) ? theme : 'blue';
+}
 
     function getSettingsFromData(all) {
       all = ensureMultiUserData(all);
