@@ -1830,6 +1830,118 @@ body[data-theme="dark"] .theme-toggle-btn {
       placeholder="25">
   </div>
 
+<details style="margin-top:12px;">
+  <summary style="cursor:pointer;font-weight:800;font-size:14px;">
+    Edit wheel prizes
+  </summary>
+
+  <div id="wheel-prize-settings" style="display:grid;gap:10px;margin-top:12px;">
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 1 wheel label</label>
+        <input id="wheel-label-input-0" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 1 prize shown</label>
+        <input id="wheel-prize-input-0" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 1 points</label>
+        <input id="wheel-points-input-0" type="number" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 2 wheel label</label>
+        <input id="wheel-label-input-1" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 2 prize shown</label>
+        <input id="wheel-prize-input-1" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 2 points</label>
+        <input id="wheel-points-input-1" type="number" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 3 wheel label</label>
+        <input id="wheel-label-input-2" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 3 prize shown</label>
+        <input id="wheel-prize-input-2" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 3 points</label>
+        <input id="wheel-points-input-2" type="number" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 4 wheel label</label>
+        <input id="wheel-label-input-3" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 4 prize shown</label>
+        <input id="wheel-prize-input-3" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 4 points</label>
+        <input id="wheel-points-input-3" type="number" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 5 wheel label</label>
+        <input id="wheel-label-input-4" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 5 prize shown</label>
+        <input id="wheel-prize-input-4" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 5 points</label>
+        <input id="wheel-points-input-4" type="number" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 6 wheel label</label>
+        <input id="wheel-label-input-5" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 6 prize shown</label>
+        <input id="wheel-prize-input-5" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 6 points</label>
+        <input id="wheel-points-input-5" type="number" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <div class="form-group">
+        <label>Slot 7 wheel label</label>
+        <input id="wheel-label-input-6" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>Slot 7 prize shown</label>
+        <input id="wheel-prize-input-6" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Slot 7 points</label>
+        <input id="wheel-points-input-6" type="number" inputmode="numeric">
+      </div>
+    </div>
+  </div>
+</details>
   <button
     class="btn-add-pos"
     onclick="saveWheelSettings()"
@@ -1929,13 +2041,13 @@ body[data-theme="dark"] .theme-toggle-btn {
   <div class="wheel-wrap">
     <div class="wheel-pointer">▼</div>
     <div class="spin-wheel" id="spin-wheel">
-      <div class="wheel-label label-1">+5</div>
-      <div class="wheel-label label-2">+10</div>
-      <div class="wheel-label label-3">+15</div>
-      <div class="wheel-label label-4">Treat</div>
-      <div class="wheel-label label-5">Movie</div>
-      <div class="wheel-label label-6">Dessert</div>
-      <div class="wheel-label label-7">+25</div>
+      <div class="wheel-label label-1" id="wheel-label-0">+5</div>
+<div class="wheel-label label-2" id="wheel-label-1">+10</div>
+<div class="wheel-label label-3" id="wheel-label-2">+15</div>
+<div class="wheel-label label-4" id="wheel-label-3">Treat</div>
+<div class="wheel-label label-5" id="wheel-label-4">Movie</div>
+<div class="wheel-label label-6" id="wheel-label-5">Dessert</div>
+<div class="wheel-label label-7" id="wheel-label-6">+25</div>
     </div>
   </div>
 
@@ -1981,14 +2093,14 @@ body[data-theme="dark"] .theme-toggle-btn {
     const DEFAULT_WHEEL_THRESHOLD = 25;
 const DEBUG_SPIN_WHEEL = true;
 
-const WHEEL_PRIZES = [
-  { label: '+5 bonus points', points: 5 },
-  { label: '+10 bonus points', points: 10 },
-  { label: '+15 bonus points', points: 15 },
-  { label: 'Small treat voucher', points: 0 },
-  { label: 'Movie choice voucher', points: 0 },
-  { label: 'Pick dessert voucher', points: 0 },
-  { label: 'Jackpot +25 points', points: 25 }
+const DEFAULT_WHEEL_PRIZES = [
+  { label: '+5', prize: '+5 bonus points', points: 5 },
+  { label: '+10', prize: '+10 bonus points', points: 10 },
+  { label: '+15', prize: '+15 bonus points', points: 15 },
+  { label: 'Treat', prize: 'Small treat voucher', points: 0 },
+  { label: 'Movie', prize: 'Movie choice voucher', points: 0 },
+  { label: 'Dessert', prize: 'Pick dessert voucher', points: 0 },
+  { label: '+25', prize: 'Jackpot +25 points', points: 25 }
 ];
 
 
@@ -2228,13 +2340,41 @@ const WHEEL_PRIZES = [
   const allowedThemes = ['blue', 'green', 'gold', 'red', 'football', 'dark'];
   return allowedThemes.includes(theme) ? theme : 'blue';
 }
+function getWheelPrizesFromSettings(settings = {}) {
+  const saved = Array.isArray(settings.wheelPrizes) ? settings.wheelPrizes : [];
 
-    function getSettingsFromData(all) {
+  return DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
+    const savedPrize = saved[index] || {};
+
+    return {
+      label: String(savedPrize.label || defaultPrize.label).slice(0, 8),
+      prize: String(savedPrize.prize || defaultPrize.prize).slice(0, 60),
+      points: parseInt(savedPrize.points, 10) || 0
+    };
+  });
+}
+
+    function getWheelPrizesFromSettings(settings = {}) {
+  const saved = Array.isArray(settings.wheelPrizes) ? settings.wheelPrizes : [];
+
+  return DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
+    const savedPrize = saved[index] || {};
+
+    return {
+      label: String(savedPrize.label || defaultPrize.label).slice(0, 8),
+      prize: String(savedPrize.prize || defaultPrize.prize).slice(0, 60),
+      points: parseInt(savedPrize.points, 10) || 0
+    };
+  });
+}
+
+function getSettingsFromData(all) {
   all = ensureMultiUserData(all);
 
   return {
     theme: normaliseTheme(all.__settings?.theme || 'blue'),
-    wheelThreshold: all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD
+    wheelThreshold: all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD,
+    wheelPrizes: getWheelPrizesFromSettings(all.__settings)
   };
 }
 
@@ -2276,6 +2416,54 @@ async function toggleDarkMode() {
   }
 });
     }
+
+    function populateWheelPrizeSettings(settings) {
+  const prizes = getWheelPrizesFromSettings(settings);
+
+  prizes.forEach((prize, index) => {
+    const labelInput = document.getElementById(`wheel-label-input-${index}`);
+    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
+    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
+    const wheelLabel = document.getElementById(`wheel-label-${index}`);
+
+    if (labelInput) labelInput.value = prize.label;
+    if (prizeInput) prizeInput.value = prize.prize;
+    if (pointsInput) pointsInput.value = prize.points;
+    if (wheelLabel) wheelLabel.textContent = prize.label;
+  });
+}
+
+function populateWheelPrizeSettings(settings) {
+  const prizes = getWheelPrizesFromSettings(settings);
+
+  prizes.forEach((prize, index) => {
+    const labelInput = document.getElementById(`wheel-label-input-${index}`);
+    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
+    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
+    const wheelLabel = document.getElementById(`wheel-label-${index}`);
+
+    if (labelInput) labelInput.value = prize.label;
+    if (prizeInput) prizeInput.value = prize.prize;
+    if (pointsInput) pointsInput.value = prize.points;
+    if (wheelLabel) wheelLabel.textContent = prize.label;
+  });
+}
+function populateWheelPrizeSettings(settings = {}) {
+  const prizes = getWheelPrizesFromSettings(settings);
+
+  prizes.forEach((prize, index) => {
+    const labelInput = document.getElementById(`wheel-label-input-${index}`);
+    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
+    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
+    const wheelLabel = document.getElementById(`wheel-label-${index}`);
+
+    if (labelInput) labelInput.value = prize.label;
+    if (prizeInput) prizeInput.value = prize.prize;
+    if (pointsInput) pointsInput.value = prize.points;
+    if (wheelLabel) wheelLabel.textContent = prize.label;
+  });
+}
+
 async function saveWheelSettings() {
   const threshold = parseInt(
     document.getElementById('wheel-threshold').value,
@@ -2290,14 +2478,28 @@ async function saveWheelSettings() {
     );
   }
 
+  const wheelPrizes = DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
+    const labelInput = document.getElementById(`wheel-label-input-${index}`);
+    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
+    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
+
+    return {
+      label: String(labelInput?.value || defaultPrize.label).trim().slice(0, 8),
+      prize: String(prizeInput?.value || defaultPrize.prize).trim().slice(0, 60),
+      points: parseInt(pointsInput?.value, 10) || 0
+    };
+  });
+
   const all = await getData();
 
   all.__settings = {
     ...all.__settings,
-    wheelThreshold: threshold
+    wheelThreshold: threshold,
+    wheelPrizes
   };
 
   await saveData(all);
+  populateWheelPrizeSettings(all.__settings);
 
   setMsg(
     'wheel-settings-msg',
@@ -2468,6 +2670,12 @@ function showToast(message) {
       if (!rawPoints || rawPoints < 1) return setMsg('catalog-msg', 'Points must be at least 1.', false);
 
       const all = await getData();
+      const wheelThresholdInput = document.getElementById('wheel-threshold');
+if (wheelThresholdInput) {
+  wheelThresholdInput.value = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+}
+
+populateWheelPrizeSettings(all.__settings);
       const catalog = getCatalogFromData(all);
       const item = normaliseBehaviourItem({
         icon: fallbackIcon,
@@ -3314,8 +3522,9 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
   return;
 }
 
-  const prizeIndex = Math.floor(Math.random() * WHEEL_PRIZES.length);
-  const prize = WHEEL_PRIZES[prizeIndex];
+const wheelPrizes = getWheelPrizesFromSettings(all.__settings);
+const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
+const prize = wheelPrizes[prizeIndex];
 
   if (btn) {
     btn.disabled = true;
@@ -3329,7 +3538,7 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
   wheel.style.transition = 'transform 10.2s cubic-bezier(0.08, 0.95, 0.18, 1)';
 }
 
-  const slice = 360 / WHEEL_PRIZES.length;
+  const slice = 360 / wheelPrizes.length;
   const landingAngle = prizeIndex * slice + slice / 2;
   const spins = 360 * 14;
   const finalRotation = spins + (360 - landingAngle);
@@ -3349,7 +3558,7 @@ setTimeout(() => {
 
   setTimeout(async () => {
     spin.claimed = true;
-    spin.prize = prize.label;
+    spin.prize = prize.prize;
     spin.points = prize.points || 0;
     spin.claimedAt = new Date().toISOString();
 
@@ -3357,7 +3566,7 @@ setTimeout(() => {
       if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
       child.weeks[todayWeek].push({
         day: 6,
-        cat: `Sunday Spin Wheel: ${prize.label}`,
+        cat: `Sunday Spin Wheel: ${prize.prize}`,
         icon: '🎡',
         note: 'Weekly wheel prize',
         pos: true,
@@ -3366,7 +3575,7 @@ setTimeout(() => {
     }
 
     await saveData(all);
-showToast(`🎉 You won ${prize.label}!`);
+showToast(`🎉 You won ${prize.prize}!`);
 launchConfettiRain();
 
 if (btn) {
@@ -3403,6 +3612,7 @@ if (!DEBUG_SPIN_WHEEL) {
 
     async function renderParent() {
       const allForChild = await getData();
+      populateWheelPrizeSettings(allForChild.__settings);
       const all = allForChild;
       const child = getChildFromData(allForChild, activeChildId);
       const entries = child.weeks[weekKey(wkOff)] || [];
