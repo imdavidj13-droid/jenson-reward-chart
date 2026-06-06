@@ -1087,7 +1087,7 @@ body[data-theme="dark"] .theme-btn.active {
   position: relative;
   border: 8px solid #1a1a2e;
   box-shadow: 0 8px 22px rgba(0,0,0,0.18);
-  transition: transform 10.2s cubic-bezier(.12,.75,.16,1);
+  transition: transform 10.2s cubic-bezier(0.08, 0.95, 0.18, 1);
   background:
   conic-gradient(
     #ef4444 0deg 51.42deg,
@@ -2304,6 +2304,24 @@ async function saveWheelSettings() {
     'Wheel settings saved!'
   );
 }
+function prepWheelSound() {
+  const sound = document.getElementById('wheel-sound');
+  if (!sound) return;
+
+  sound.load();
+
+  // Quietly primes the audio after a user action.
+  sound.volume = 0;
+  sound.play()
+    .then(() => {
+      sound.pause();
+      sound.currentTime = 0;
+      sound.volume = 1;
+    })
+    .catch(() => {
+      sound.volume = 1;
+    });
+}
 function launchConfettiRain() {
   const colors = ['#ef4444', '#22c55e', '#3b82f6', '#facc15'];
 
@@ -3325,12 +3343,12 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
   wheel.style.transition = 'none';
   wheel.style.transform = 'rotate(0deg)';
   wheel.offsetHeight;
-  wheel.style.transition = 'transform 10.2s cubic-bezier(.12,.75,.16,1)';
+  wheel.style.transition = 'transform 10.2s cubic-bezier(0.08, 0.95, 0.18, 1)';
 }
 
   const slice = 360 / WHEEL_PRIZES.length;
   const landingAngle = prizeIndex * slice + slice / 2;
-  const spins = 360 * 6;
+  const spins = 360 * 14;
   const finalRotation = spins + (360 - landingAngle);
 
   if (wheel) {
@@ -3530,9 +3548,12 @@ const summary = (posCount || negCount) ? `
     }
 
     async function renderChild() {
-      await loadAndApplyTheme();
-      const allForChild = await getData();
-      const child = getChildFromData(allForChild, activeChildId);
+  await loadAndApplyTheme();
+  const allForChild = await getData();
+
+  prepWheelSound();
+
+  const child = getChildFromData(allForChild, activeChildId);
       const childTitle = document.getElementById('c-title');
       if (childTitle) childTitle.textContent = `Hi ${child.name || currentUser?.name || 'there'}! 👋`;
       const entries = child.weeks[weekKey(0)] || [];
