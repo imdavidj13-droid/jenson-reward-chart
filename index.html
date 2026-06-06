@@ -2322,11 +2322,14 @@ const DEFAULT_WHEEL_PRIZES = [
     }
 
     function pointsForEntry(e) {
-      if (typeof e.points === 'number') return e.points;
-      if (typeof e.pts === 'number') return e.pts;
-      if (e.cat && OLD_BEHAVIOUR_POINTS[e.cat] !== undefined) return OLD_BEHAVIOUR_POINTS[e.cat];
-      return e.pos ? 1 : -1;
-    }
+  const rawPoints =
+    Number.isFinite(Number(e.points)) ? Number(e.points) :
+    Number.isFinite(Number(e.pts)) ? Number(e.pts) :
+    e.cat && OLD_BEHAVIOUR_POINTS[e.cat] !== undefined ? Number(OLD_BEHAVIOUR_POINTS[e.cat]) :
+    1;
+
+  return e.pos === false ? -Math.abs(rawPoints) : Math.abs(rawPoints);
+}
 
     function formatPoints(points) {
       return `${points > 0 ? '+' : ''}${points} ${Math.abs(points) === 1 ? 'point' : 'points'}`;
@@ -3600,17 +3603,24 @@ spin.claimedAt = new Date().toISOString();
 
 if (prizePoints > 0) {
   if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
-  child.weeks[todayWeek].push({
-    day: 6,
-    cat: `Sunday Spin Wheel: ${prize.prize}`,
-    icon: '🎡',
-    note: 'Weekly wheel prize',
-    pos: true,
-    points: prizePoints
-  });
+ child.weeks[todayWeek].push({
+  day: 6,
+  cat: `Sunday Spin Wheel: ${prize.prize}`,
+  icon: '🎡',
+  note: 'Weekly wheel prize',
+  pos: true,
+  points: prizePoints,
+  pts: prizePoints
+});
 }
 
-    await saveData(all);
+   await saveData(all);
+
+const refreshedAll = await getData();
+const refreshedChild = getChildFromData(refreshedAll, activeChildId);
+const refreshedEntries = refreshedChild.weeks[todayWeek] || [];
+console.log('Wheel saved entries:', refreshedEntries);
+
 showToast(`🎉 You won ${prize.prize}!`);
 launchConfettiRain();
 
@@ -3620,9 +3630,7 @@ if (btn) {
   btn.style.opacity = '1';
 }
 
-if (!DEBUG_SPIN_WHEEL) {
-  await renderChild();
-}
+await renderChild();
 }, 11000);
 }
 
@@ -3793,6 +3801,19 @@ const summary = (posCount || negCount) ? `
       const neg = Math.abs(entries.filter(e => pointsForEntry(e) < 0).reduce((sum, e) => sum + pointsForEntry(e), 0));
       const bonus = weeklyBonus(entries);
       const net = pos - neg + bonus.points;
+      console.log('CHILD SCORE DEBUG', {
+  entriesCount: entries.length,
+  pos,
+  neg,
+  bonus: bonus.points,
+  net,
+  wheelEntries: entries.filter(e => String(e.cat || '').includes('Sunday Spin Wheel')).map(e => ({
+    cat: e.cat,
+    points: e.points,
+    pts: e.pts,
+    calculated: pointsForEntry(e)
+  }))
+});
       const rewards = getRewardsFromData(allForChild);
       const rewardTarget = Math.max(1, ...rewards.map(r => r.pts));
       const maxP = Math.max(35, rewardTarget);
