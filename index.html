@@ -1220,6 +1220,23 @@ body[data-theme="dark"] .theme-toggle-btn {
   margin-top: 5px;
 }
 
+body[data-theme="dark"] #forgot-family-result {
+  background: #0f172a !important;
+  border: 1.5px solid #334155;
+  border-radius: 10px;
+  color: #f8fafc !important;
+}
+
+body[data-theme="dark"] #forgot-family-result * {
+  color: #f8fafc !important;
+}
+
+body[data-theme="dark"] #forgot-family-result .btn-add-pos {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+  border-color: #86efac !important;
+}
+
     @media (max-width: 600px) {
 
 .day-summary {
@@ -1830,118 +1847,119 @@ body[data-theme="dark"] .theme-toggle-btn {
       placeholder="25">
   </div>
 
-<details style="margin-top:12px;">
-  <summary style="cursor:pointer;font-weight:800;font-size:14px;">
-    Edit wheel prizes
-  </summary>
+  <details style="margin-top:12px;">
+    <summary style="cursor:pointer;font-weight:800;font-size:14px;">
+      Edit wheel prizes
+    </summary>
 
-  <div id="wheel-prize-settings" style="display:grid;gap:10px;margin-top:12px;">
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 1 wheel label</label>
-        <input id="wheel-label-input-0" maxlength="8">
+    <div id="wheel-prize-settings" style="display:grid;gap:10px;margin-top:12px;">
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 1 prize type</label>
+          <select id="wheel-label-input-0"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-0" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-0" type="number" inputmode="numeric" min="0" step="1">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Slot 1 prize shown</label>
-        <input id="wheel-prize-input-0" maxlength="60">
+
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 2 prize type</label>
+          <select id="wheel-label-input-1"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-1" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-1" type="number" inputmode="numeric" min="0" step="1">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Slot 1 points</label>
-        <input id="wheel-points-input-0" type="number" inputmode="numeric">
+
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 3 prize type</label>
+          <select id="wheel-label-input-2"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-2" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-2" type="number" inputmode="numeric" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 4 prize type</label>
+          <select id="wheel-label-input-3"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-3" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-3" type="number" inputmode="numeric" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 5 prize type</label>
+          <select id="wheel-label-input-4"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-4" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-4" type="number" inputmode="numeric" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 6 prize type</label>
+          <select id="wheel-label-input-5"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-5" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-5" type="number" inputmode="numeric" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Slot 7 prize type</label>
+          <select id="wheel-label-input-6"></select>
+        </div>
+        <div class="form-group">
+          <label>Reward text</label>
+          <input id="wheel-prize-input-6" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label>Points awarded</label>
+          <input id="wheel-points-input-6" type="number" inputmode="numeric" min="0" step="1">
+        </div>
       </div>
     </div>
+  </details>
 
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 2 wheel label</label>
-        <input id="wheel-label-input-1" maxlength="8">
-      </div>
-      <div class="form-group">
-        <label>Slot 2 prize shown</label>
-        <input id="wheel-prize-input-1" maxlength="60">
-      </div>
-      <div class="form-group">
-        <label>Slot 2 points</label>
-        <input id="wheel-points-input-1" type="number" inputmode="numeric">
-      </div>
-    </div>
-
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 3 wheel label</label>
-        <input id="wheel-label-input-2" maxlength="8">
-      </div>
-      <div class="form-group">
-        <label>Slot 3 prize shown</label>
-        <input id="wheel-prize-input-2" maxlength="60">
-      </div>
-      <div class="form-group">
-        <label>Slot 3 points</label>
-        <input id="wheel-points-input-2" type="number" inputmode="numeric">
-      </div>
-    </div>
-
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 4 wheel label</label>
-        <input id="wheel-label-input-3" maxlength="8">
-      </div>
-      <div class="form-group">
-        <label>Slot 4 prize shown</label>
-        <input id="wheel-prize-input-3" maxlength="60">
-      </div>
-      <div class="form-group">
-        <label>Slot 4 points</label>
-        <input id="wheel-points-input-3" type="number" inputmode="numeric">
-      </div>
-    </div>
-
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 5 wheel label</label>
-        <input id="wheel-label-input-4" maxlength="8">
-      </div>
-      <div class="form-group">
-        <label>Slot 5 prize shown</label>
-        <input id="wheel-prize-input-4" maxlength="60">
-      </div>
-      <div class="form-group">
-        <label>Slot 5 points</label>
-        <input id="wheel-points-input-4" type="number" inputmode="numeric">
-      </div>
-    </div>
-
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 6 wheel label</label>
-        <input id="wheel-label-input-5" maxlength="8">
-      </div>
-      <div class="form-group">
-        <label>Slot 6 prize shown</label>
-        <input id="wheel-prize-input-5" maxlength="60">
-      </div>
-      <div class="form-group">
-        <label>Slot 6 points</label>
-        <input id="wheel-points-input-5" type="number" inputmode="numeric">
-      </div>
-    </div>
-
-    <div class="settings-grid">
-      <div class="form-group">
-        <label>Slot 7 wheel label</label>
-        <input id="wheel-label-input-6" maxlength="8">
-      </div>
-      <div class="form-group">
-        <label>Slot 7 prize shown</label>
-        <input id="wheel-prize-input-6" maxlength="60">
-      </div>
-      <div class="form-group">
-        <label>Slot 7 points</label>
-        <input id="wheel-points-input-6" type="number" inputmode="numeric">
-      </div>
-    </div>
-  </div>
-</details>
   <button
     class="btn-add-pos"
     onclick="saveWheelSettings()"
@@ -2092,6 +2110,18 @@ body[data-theme="dark"] .theme-toggle-btn {
     const DEFAULT_CHILD_PIN = '0000';
     const DEFAULT_WHEEL_THRESHOLD = 25;
 const DEBUG_SPIN_WHEEL = true;
+
+const WHEEL_PRIZE_OPTIONS = [
+  { value: 'plus5', label: '+5 points', wheelLabel: '+5', prize: '+5 bonus points', points: 5 },
+  { value: 'plus10', label: '+10 points', wheelLabel: '+10', prize: '+10 bonus points', points: 10 },
+  { value: 'plus15', label: '+15 points', wheelLabel: '+15', prize: '+15 bonus points', points: 15 },
+  { value: 'plus25', label: '+25 points', wheelLabel: '+25', prize: 'Jackpot +25 points', points: 25 },
+  { value: 'treat', label: 'Small treat', wheelLabel: 'Treat', prize: 'Small treat voucher', points: 0 },
+  { value: 'movie', label: 'Movie choice', wheelLabel: 'Movie', prize: 'Movie choice voucher', points: 0 },
+  { value: 'dessert', label: 'Dessert choice', wheelLabel: 'Dessert', prize: 'Pick dessert voucher', points: 0 },
+  { value: 'game', label: 'Extra game time', wheelLabel: 'Game', prize: 'Extra game time voucher', points: 0 },
+  { value: 'surprise', label: 'Surprise reward', wheelLabel: 'Prize', prize: 'Surprise reward voucher', points: 0 }
+];
 
 const DEFAULT_WHEEL_PRIZES = [
   { label: '+5', prize: '+5 bonus points', points: 5 },
@@ -2417,53 +2447,53 @@ async function toggleDarkMode() {
 });
     }
 
-    function populateWheelPrizeSettings(settings) {
-  const prizes = getWheelPrizesFromSettings(settings);
 
-  prizes.forEach((prize, index) => {
-    const labelInput = document.getElementById(`wheel-label-input-${index}`);
-    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
-    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
-    const wheelLabel = document.getElementById(`wheel-label-${index}`);
-
-    if (labelInput) labelInput.value = prize.label;
-    if (prizeInput) prizeInput.value = prize.prize;
-    if (pointsInput) pointsInput.value = prize.points;
-    if (wheelLabel) wheelLabel.textContent = prize.label;
-  });
-}
-
-function populateWheelPrizeSettings(settings) {
-  const prizes = getWheelPrizesFromSettings(settings);
-
-  prizes.forEach((prize, index) => {
-    const labelInput = document.getElementById(`wheel-label-input-${index}`);
-    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
-    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
-    const wheelLabel = document.getElementById(`wheel-label-${index}`);
-
-    if (labelInput) labelInput.value = prize.label;
-    if (prizeInput) prizeInput.value = prize.prize;
-    if (pointsInput) pointsInput.value = prize.points;
-    if (wheelLabel) wheelLabel.textContent = prize.label;
-  });
-}
 function populateWheelPrizeSettings(settings = {}) {
   const prizes = getWheelPrizesFromSettings(settings);
 
   prizes.forEach((prize, index) => {
-    const labelInput = document.getElementById(`wheel-label-input-${index}`);
+    const select = document.getElementById(`wheel-label-input-${index}`);
     const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
     const pointsInput = document.getElementById(`wheel-points-input-${index}`);
     const wheelLabel = document.getElementById(`wheel-label-${index}`);
 
-    if (labelInput) labelInput.value = prize.label;
+    if (select) {
+      select.innerHTML = WHEEL_PRIZE_OPTIONS.map(option => `
+        <option value="${option.value}">${option.label}</option>
+      `).join('');
+
+      const matchingOption = WHEEL_PRIZE_OPTIONS.find(option =>
+        option.wheelLabel === prize.label || option.prize === prize.prize
+      );
+
+      select.value = matchingOption?.value || WHEEL_PRIZE_OPTIONS[0].value;
+
+select.onchange = () => {
+  const selectedOption =
+    WHEEL_PRIZE_OPTIONS.find(option => option.value === select.value) ||
+    WHEEL_PRIZE_OPTIONS[0];
+
+  if (prizeInput) prizeInput.value = selectedOption.prize;
+  if (pointsInput) pointsInput.value = selectedOption.points;
+  if (wheelLabel) wheelLabel.textContent = selectedOption.wheelLabel;
+};
+
+select.onchange = () => {
+  const selectedOption =
+    WHEEL_PRIZE_OPTIONS.find(option => option.value === select.value) ||
+    WHEEL_PRIZE_OPTIONS[0];
+
+  if (prizeInput) prizeInput.value = selectedOption.prize;
+  if (pointsInput) pointsInput.value = selectedOption.points;
+  if (wheelLabel) wheelLabel.textContent = selectedOption.wheelLabel;
+};
+    }
+
     if (prizeInput) prizeInput.value = prize.prize;
-    if (pointsInput) pointsInput.value = prize.points;
+    if (pointsInput) pointsInput.value = parseInt(prize.points, 10) || 0;
     if (wheelLabel) wheelLabel.textContent = prize.label;
   });
 }
-
 async function saveWheelSettings() {
   const threshold = parseInt(
     document.getElementById('wheel-threshold').value,
@@ -2478,26 +2508,30 @@ async function saveWheelSettings() {
     );
   }
 
-  const wheelPrizes = DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
-    const labelInput = document.getElementById(`wheel-label-input-${index}`);
-    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
-    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
+ const wheelPrizes = DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
+  const select = document.getElementById(`wheel-label-input-${index}`);
+  const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
+  const pointsInput = document.getElementById(`wheel-points-input-${index}`);
 
-    return {
-      label: String(labelInput?.value || defaultPrize.label).trim().slice(0, 8),
-      prize: String(prizeInput?.value || defaultPrize.prize).trim().slice(0, 60),
-      points: parseInt(pointsInput?.value, 10) || 0
-    };
-  });
+  const selectedOption =
+    WHEEL_PRIZE_OPTIONS.find(option => option.value === select?.value) ||
+    WHEEL_PRIZE_OPTIONS[index] ||
+    WHEEL_PRIZE_OPTIONS[0];
+
+  return {
+    label: selectedOption.wheelLabel,
+    prize: String(prizeInput?.value || selectedOption.prize).trim().slice(0, 60),
+    points: parseInt(pointsInput?.value, 10) || 0
+  };
+});
 
   const all = await getData();
 
   all.__settings = {
-    ...all.__settings,
-    wheelThreshold: threshold,
-    wheelPrizes
-  };
-
+  ...all.__settings,
+  wheelThreshold: threshold,
+  wheelPrizes
+};
   await saveData(all);
   populateWheelPrizeSettings(all.__settings);
 
@@ -3557,22 +3591,24 @@ setTimeout(() => {
   }
 
   setTimeout(async () => {
-    spin.claimed = true;
-    spin.prize = prize.prize;
-    spin.points = prize.points || 0;
-    spin.claimedAt = new Date().toISOString();
+    const prizePoints = parseInt(prize.points, 10) || 0;
 
-    if (prize.points) {
-      if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
-      child.weeks[todayWeek].push({
-        day: 6,
-        cat: `Sunday Spin Wheel: ${prize.prize}`,
-        icon: '🎡',
-        note: 'Weekly wheel prize',
-        pos: true,
-        points: prize.points
-      });
-    }
+spin.claimed = true;
+spin.prize = prize.prize;
+spin.points = prizePoints;
+spin.claimedAt = new Date().toISOString();
+
+if (prizePoints > 0) {
+  if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
+  child.weeks[todayWeek].push({
+    day: 6,
+    cat: `Sunday Spin Wheel: ${prize.prize}`,
+    icon: '🎡',
+    note: 'Weekly wheel prize',
+    pos: true,
+    points: prizePoints
+  });
+}
 
     await saveData(all);
 showToast(`🎉 You won ${prize.prize}!`);
@@ -3746,6 +3782,7 @@ const summary = (posCount || negCount) ? `
     async function renderChild() {
   await loadAndApplyTheme();
   const allForChild = await getData();
+  populateWheelPrizeSettings(allForChild.__settings);
 
 
   const child = getChildFromData(allForChild, activeChildId);
