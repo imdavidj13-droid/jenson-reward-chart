@@ -988,6 +988,115 @@
     }
 
     @media (max-width: 600px) {
+
+      .wheel-wrap {
+  position: relative;
+  width: 230px;
+  height: 250px;
+  margin: 8px auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-size: 28px;
+  color: #1a1a2e;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.18);
+}
+
+.spin-wheel {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: relative;
+  border: 8px solid #1a1a2e;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+  transition: transform 4s cubic-bezier(.12,.75,.16,1);
+  background:
+    conic-gradient(
+      #facc15 0deg 51.42deg,
+      #38bdf8 51.42deg 102.84deg,
+      #fb7185 102.84deg 154.26deg,
+      #4ade80 154.26deg 205.68deg,
+      #f97316 205.68deg 257.1deg,
+      #a78bfa 257.1deg 308.52deg,
+      #22c55e 308.52deg 360deg
+    );
+}
+
+.spin-wheel::after {
+  content: "🎡";
+  position: absolute;
+  inset: 50%;
+  width: 54px;
+  height: 54px;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 5px solid #1a1a2e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.wheel-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  margin-left: -27px;
+  margin-top: -11px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+  color: #1a1a2e;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.65);
+  transform-origin: 27px 11px;
+}
+
+.label-1 { transform: rotate(25deg) translateY(-78px) rotate(-25deg); }
+.label-2 { transform: rotate(77deg) translateY(-78px) rotate(-77deg); }
+.label-3 { transform: rotate(129deg) translateY(-78px) rotate(-129deg); }
+.label-4 { transform: rotate(181deg) translateY(-78px) rotate(-181deg); }
+.label-5 { transform: rotate(233deg) translateY(-78px) rotate(-233deg); }
+.label-6 { transform: rotate(285deg) translateY(-78px) rotate(-285deg); }
+.label-7 { transform: rotate(337deg) translateY(-78px) rotate(-337deg); }
+
+body[data-theme="dark"] .spin-wheel {
+  border-color: #e5e7eb;
+}
+
+body[data-theme="dark"] .wheel-pointer {
+  color: #e5e7eb;
+}
+
+@media (max-width: 380px) {
+  .wheel-wrap {
+    width: 210px;
+    height: 230px;
+  }
+
+  .spin-wheel {
+    width: 200px;
+    height: 200px;
+  }
+
+  .label-1 { transform: rotate(25deg) translateY(-70px) rotate(-25deg); }
+  .label-2 { transform: rotate(77deg) translateY(-70px) rotate(-77deg); }
+  .label-3 { transform: rotate(129deg) translateY(-70px) rotate(-129deg); }
+  .label-4 { transform: rotate(181deg) translateY(-70px) rotate(-181deg); }
+  .label-5 { transform: rotate(233deg) translateY(-70px) rotate(-233deg); }
+  .label-6 { transform: rotate(285deg) translateY(-70px) rotate(-285deg); }
+  .label-7 { transform: rotate(337deg) translateY(-70px) rotate(-337deg); }
+}
       body {
         overflow-x: hidden;
       }
@@ -1609,7 +1718,22 @@
       <div class="reward-cards" id="c-reward-cards"></div>
       <div class="section-card" id="weekly-spin-card" style="display:none;">
   <h3>🎡 Sunday Spin Wheel</h3>
+
+  <div class="wheel-wrap">
+    <div class="wheel-pointer">▼</div>
+    <div class="spin-wheel" id="spin-wheel">
+      <div class="wheel-label label-1">+5</div>
+      <div class="wheel-label label-2">+10</div>
+      <div class="wheel-label label-3">+15</div>
+      <div class="wheel-label label-4">Treat</div>
+      <div class="wheel-label label-5">Movie</div>
+      <div class="wheel-label label-6">Dessert</div>
+      <div class="wheel-label label-7">+25</div>
+    </div>
+  </div>
+
   <p id="weekly-spin-status" style="font-size:14px;color:#666;line-height:1.4;margin-bottom:12px;"></p>
+
   <button class="primary-btn" id="weekly-spin-btn" onclick="spinWeeklyWheel()">
     Spin the Wheel
   </button>
@@ -1645,7 +1769,7 @@
 <script>
     const DEFAULT_PARENT_PIN = '1234';
     const DEFAULT_CHILD_PIN = '0000';
-    const WEEKLY_SPIN_THRESHOLD = 25;
+    const DEFAULT_WHEEL_THRESHOLD = 25;
 
 const WHEEL_PRIZES = [
   { label: '+5 bonus points', points: 5 },
@@ -1896,11 +2020,13 @@ const WHEEL_PRIZES = [
 }
 
     function getSettingsFromData(all) {
-      all = ensureMultiUserData(all);
-      return {
-        theme: normaliseTheme(all.__settings?.theme || 'blue')
-      };
-    }
+  all = ensureMultiUserData(all);
+
+  return {
+    theme: normaliseTheme(all.__settings?.theme || 'blue'),
+    wheelThreshold: all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD
+  };
+}
 
     async function getSettings() {
       const all = await getData();
@@ -1932,6 +2058,35 @@ const WHEEL_PRIZES = [
         setTimeout(() => msg.textContent = '', 1500);
       }
     }
+async function saveWheelSettings() {
+  const threshold = parseInt(
+    document.getElementById('wheel-threshold').value,
+    10
+  );
+
+  if (!threshold || threshold < 1) {
+    return setMsg(
+      'wheel-settings-msg',
+      'Enter a valid number.',
+      false
+    );
+  }
+
+  const all = await getData();
+
+  all.__settings = {
+    ...all.__settings,
+    wheelThreshold: threshold
+  };
+
+  await saveData(all);
+
+  setMsg(
+    'wheel-settings-msg',
+    'Wheel settings saved!'
+  );
+}
+
 function showToast(message) {
   const toast = document.getElementById('toast');
   if (!toast) return;
@@ -2347,13 +2502,15 @@ showToast('🎁 Reward added!');
       const childName = document.getElementById('set-child-name');
       const childUsername = document.getElementById('set-child-username');
       const childPin = document.getElementById('set-child-pin');
+const wheelThreshold = document.getElementById('wheel-threshold');
 
-      if (parentName) parentName.value = currentUser?.name || 'Parent';
-      if (parentUsername) parentUsername.value = currentUserKey || currentUser?.username || '';
-      if (parentPin) parentPin.value = currentUser?.pin || '';
-      if (childName) childName.value = child.name || childUser?.name || 'Child';
-      if (childUsername) childUsername.value = childUser?.username || '';
-      if (childPin) childPin.value = childUser?.pin || '';
+if (parentName) parentName.value = currentUser?.name || 'Parent';
+if (parentUsername) parentUsername.value = currentUserKey || currentUser?.username || '';
+if (parentPin) parentPin.value = currentUser?.pin || '';
+if (childName) childName.value = child.name || childUser?.name || 'Child';
+if (childUsername) childUsername.value = childUser?.username || '';
+if (childPin) childPin.value = childUser?.pin || '';
+if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
     }
 
     async function renderChildSwitcher() {
@@ -2896,6 +3053,8 @@ async function spinWeeklyWheel() {
   if (!currentUser || currentUser.role !== 'child') return;
 
   const todayWeek = weekKey(0);
+  const wheel = document.getElementById('spin-wheel');
+  const btn = document.getElementById('weekly-spin-btn');
 
   if (!isSundayToday()) {
     showToast('🎡 The spin wheel opens on Sunday!');
@@ -2908,8 +3067,10 @@ async function spinWeeklyWheel() {
   const total = weekTotal(entries);
   const spin = getWeeklySpin(child, todayWeek);
 
-  if (total < WEEKLY_SPIN_THRESHOLD) {
-    showToast(`You need ${WEEKLY_SPIN_THRESHOLD} points this week to spin.`);
+  const threshold = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+
+if (total < threshold) {
+    showToast(`You need ${threshold} points this week to spin.`);
     return;
   }
 
@@ -2918,28 +3079,46 @@ async function spinWeeklyWheel() {
     return;
   }
 
-  const prize = WHEEL_PRIZES[Math.floor(Math.random() * WHEEL_PRIZES.length)];
+  const prizeIndex = Math.floor(Math.random() * WHEEL_PRIZES.length);
+  const prize = WHEEL_PRIZES[prizeIndex];
 
-  spin.claimed = true;
-  spin.prize = prize.label;
-  spin.points = prize.points || 0;
-  spin.claimedAt = new Date().toISOString();
-
-  if (prize.points) {
-    if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
-    child.weeks[todayWeek].push({
-      day: 6,
-      cat: `Sunday Spin Wheel: ${prize.label}`,
-      icon: '🎡',
-      note: 'Weekly wheel prize',
-      pos: true,
-      points: prize.points
-    });
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Spinning...';
+    btn.style.opacity = '0.65';
   }
 
-  await saveData(all);
-  showToast(`🎉 You won ${prize.label}!`);
-  await renderChild();
+  const slice = 360 / WHEEL_PRIZES.length;
+  const landingAngle = prizeIndex * slice + slice / 2;
+  const spins = 360 * 6;
+  const finalRotation = spins + (360 - landingAngle);
+
+  if (wheel) {
+    wheel.style.transform = `rotate(${finalRotation}deg)`;
+  }
+
+  setTimeout(async () => {
+    spin.claimed = true;
+    spin.prize = prize.label;
+    spin.points = prize.points || 0;
+    spin.claimedAt = new Date().toISOString();
+
+    if (prize.points) {
+      if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
+      child.weeks[todayWeek].push({
+        day: 6,
+        cat: `Sunday Spin Wheel: ${prize.label}`,
+        icon: '🎡',
+        note: 'Weekly wheel prize',
+        pos: true,
+        points: prize.points
+      });
+    }
+
+    await saveData(all);
+    showToast(`🎉 You won ${prize.label}!`);
+    await renderChild();
+  }, 4200);
 }
 
     function weekKey(off) {
@@ -3144,12 +3323,12 @@ if (spinCard && spinStatus && spinBtn) {
   spinCard.style.display = 'block';
 
   if (!isSundayToday()) {
-    spinStatus.textContent = `Come back on Sunday. You need ${WEEKLY_SPIN_THRESHOLD} points this week to unlock the wheel. Current total: ${currentWeekTotal}.`;
+    spinStatus.textContent = `Come back on Sunday. You need ${threshold} points this week to unlock the wheel. Current total: ${currentWeekTotal}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Available Sunday';
     spinBtn.style.opacity = '0.65';
   } else if (currentWeekTotal < WEEKLY_SPIN_THRESHOLD) {
-    spinStatus.textContent = `You need ${WEEKLY_SPIN_THRESHOLD} points to spin. Current total: ${currentWeekTotal}.`;
+    spinStatus.textContent = `You need ${threshold} points to spin. Current total: ${currentWeekTotal}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Not enough points yet';
     spinBtn.style.opacity = '0.65';
