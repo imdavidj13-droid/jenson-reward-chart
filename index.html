@@ -169,15 +169,51 @@
   .theme-btn { border: 2px solid transparent; border-radius: 12px; padding: 10px 6px; background: white; cursor: pointer; font-size: 12px; font-weight: 800; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
   .theme-btn.active { border-color: var(--accent, #4a90d9); background: var(--accent-soft, #ddeeff); }
 
-  @media (max-width: 500px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .days-grid { gap: 4px; }
-    .day-col { padding: 6px 3px; }
-    .reward-cards { grid-template-columns: 1fr 1fr; }
-    .log-grid { grid-template-columns: 1fr; }
-    .choice-panels { grid-template-columns: 1fr; }
-    .settings-grid { grid-template-columns: 1fr; }
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    .app { max-width: 100%; padding: 12px; }
+    .login-wrap { margin: 18px auto; max-width: 100%; }
+    .login-logo { margin-bottom: 20px; }
+    .login-logo .big-star { font-size: 44px; }
+    .login-logo h1 { font-size: 24px; }
+    .login-form, .section-card { border-radius: 16px; padding: 16px; }
+    .top-bar { align-items: flex-start; gap: 10px; padding: 12px 14px; }
+    .top-bar h2 { font-size: 16px; line-height: 1.25; }
+    .logout-btn { padding: 7px 10px; white-space: nowrap; }
+    .week-nav-bar { gap: 10px; }
+    .days-grid { grid-template-columns: repeat(7, minmax(38px, 1fr)); gap: 4px; }
+    .day-col { min-height: 74px; padding: 6px 2px; border-radius: 10px; }
+    .day-col .dname, .day-col .ddate { font-size: 10px; }
+    .sym-star { font-size: 13px; }
+    .sym-cross { font-size: 12px; }
+    .day-net { font-size: 11px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .stat-box { padding: 12px 8px; }
+    .stat-box .sval { font-size: 24px; }
+    .reward-row { align-items: flex-start; gap: 10px; }
+    .reward-left { gap: 10px; min-width: 0; }
+    .badge { white-space: nowrap; }
+    .hero-card { border-radius: 18px; padding: 22px 18px; }
+    .hero-stars { font-size: 30px; letter-spacing: 3px; }
+    .hero-score { font-size: 54px; }
+    .reward-cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rcard { padding: 16px 10px; }
+    .rcard .ricon { font-size: 36px; }
+    .log-grid, .choice-panels, .settings-grid { grid-template-columns: 1fr; }
+    .action-btns { flex-direction: column; }
+    .primary-btn, .btn-add-pos, .btn-add-neg { width: 100%; }
     .theme-grid { grid-template-columns: repeat(2, 1fr); }
+    .tabs { overflow-x: auto; padding-bottom: 2px; }
+    .tab { white-space: nowrap; }
+    input, select, textarea, button { font-size: 16px; }
+  }
+
+  @media (max-width: 380px) {
+    .app { padding: 10px; }
+    .days-grid { grid-template-columns: repeat(7, minmax(34px, 1fr)); }
+    .day-col { min-height: 68px; }
+    .hero-score { font-size: 48px; }
+    .reward-cards { grid-template-columns: 1fr; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -315,6 +351,43 @@
     </div>
 
     <div class="section-card">
+      <h3>🛠️ Family points & rewards</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Parents can add their own positive points, consequences and rewards for this family.</p>
+
+      <div class="choice-panels">
+        <div class="choice-panel positive">
+          <h4>⭐ Add positive</h4>
+          <div class="form-group"><label>Icon</label><input id="custom-pos-icon" maxlength="3" placeholder="⭐"></div>
+          <div class="form-group"><label>Name</label><input id="custom-pos-label" placeholder="e.g. Fed the pet"></div>
+          <div class="form-group"><label>Points</label><input id="custom-pos-points" type="number" inputmode="numeric" min="1" placeholder="2"></div>
+          <button class="btn-add-pos" onclick="addCustomBehaviour('positive')" style="margin-top:8px">Add positive</button>
+        </div>
+
+        <div class="choice-panel negative">
+          <h4>✖ Add consequence</h4>
+          <div class="form-group"><label>Icon</label><input id="custom-neg-icon" maxlength="3" placeholder="⚠️"></div>
+          <div class="form-group"><label>Name</label><input id="custom-neg-label" placeholder="e.g. Messy room"></div>
+          <div class="form-group"><label>Points lost</label><input id="custom-neg-points" type="number" inputmode="numeric" min="1" placeholder="1"></div>
+          <button class="btn-add-neg" onclick="addCustomBehaviour('negative')" style="margin-top:8px">Add consequence</button>
+        </div>
+      </div>
+
+      <div class="choice-panel" style="margin-top:12px;">
+        <h4>🎁 Add reward</h4>
+        <div class="settings-grid">
+          <div class="form-group"><label>Icon</label><input id="custom-reward-icon" maxlength="3" placeholder="🎁"></div>
+          <div class="form-group"><label>Reward name</label><input id="custom-reward-name" placeholder="e.g. Park trip"></div>
+          <div class="form-group"><label>Points needed</label><input id="custom-reward-points" type="number" inputmode="numeric" min="1" placeholder="20"></div>
+          <div class="form-group"><label>Description</label><input id="custom-reward-desc" placeholder="Optional short description"></div>
+        </div>
+        <button class="btn-add-pos" onclick="addCustomReward()" style="margin-top:8px">Add reward</button>
+      </div>
+
+      <div class="settings-msg" id="catalog-msg"></div>
+      <div id="catalog-list" style="display:grid;gap:12px;margin-top:14px;"></div>
+    </div>
+
+    <div class="section-card">
       <h3>⚙️ Account settings</h3>
       <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.4;">Change your parent login details or the currently selected child login details here.</p>
       <p style="font-size:13px;color:#1a1a2e;margin-bottom:12px;line-height:1.4;"><strong>Family code:</strong> <span id="family-code-display"></span> <button class="btn-add-pos" type="button" onclick="copyFamilyCode()" style="padding:6px 10px;margin-left:8px;">Copy</button></p>
@@ -414,16 +487,7 @@
           <div class="form-group">
             <label>Positive category</label>
             <select id="f-pos-cat">
-              <option value="3" data-label="Brilliant morning routine">🌅 Brilliant morning routine (+3 points)</option>
-              <option value="2" data-label="Listened first time">👂 Listened first time (+2 points)</option>
-              <option value="2" data-label="Kind / helpful to others">😊 Kind / helpful to others (+2 points)</option>
-              <option value="2" data-label="Did homework or schoolwork">📚 Did homework or schoolwork (+2 points)</option>
-              <option value="3" data-label="Stayed calm when frustrated">😌 Stayed calm when frustrated (+3 points)</option>
-              <option value="3" data-label="Told the truth / owned up">✅ Told the truth / owned up (+3 points)</option>
-              <option value="2" data-label="Tidied room">🧹 Tidied room (+2 points)</option>
-              <option value="2" data-label="Got ready without fuss">👕 Got ready without fuss (+2 points)</option>
-              <option value="2" data-label="Good bedtime routine">🌙 Good bedtime routine (+2 points)</option>
-              <option value="3" data-label="Tried hard at something difficult">💪 Tried hard at something difficult (+3 points)</option>
+              <option value="">Loading positives...</option>
             </select>
           </div>
         </div>
@@ -433,17 +497,7 @@
           <div class="form-group">
             <label>Consequence category</label>
             <select id="f-neg-cat">
-              <option value="-1" data-label="Told more than once to do something">⚠️ Told more than once to do something (-1 point)</option>
-              <option value="-1" data-label="Shouting">📢 Shouting (-1 point)</option>
-              <option value="-2" data-label="Screaming">😡 Screaming (-2 points)</option>
-              <option value="-2" data-label="Rude or disrespectful">🙄 Rude or disrespectful (-2 points)</option>
-              <option value="-2" data-label="Refused to cooperate">🙅 Refused to cooperate (-2 points)</option>
-              <option value="-2" data-label="Left without asking">🚪 Left without asking (-2 points)</option>
-              <option value="-2" data-label="Broke a rule">📏 Broke a rule (-2 points)</option>
-              <option value="-3" data-label="Reckless behaviour">🏃 Reckless behaviour (-3 points)</option>
-              <option value="-3" data-label="Damaged item">💥 Damaged item (-3 points)</option>
-              <option value="-4" data-label="Threatening behaviour">👊 Threatening behaviour (-4 points)</option>
-              <option value="-5" data-label="Aggressive behaviour">🚫 Aggressive behaviour (-5 points)</option>
+              <option value="">Loading consequences...</option>
             </select>
           </div>
         </div>
@@ -515,17 +569,42 @@
   const DEFAULT_PARENT_PIN = '1234';
   const DEFAULT_CHILD_PIN  = '0000';
 
-  const REWARDS = [
-    { icon:'🍫', name:'Small treat',        pts:8,  desc:'A small snack or sweet treat' },
+  const DEFAULT_REWARDS = [
+    { icon:'🎁', name:'Small treat',        pts:8,  desc:'A small snack or sweet treat' },
     { icon:'🎬', name:'Movie night',        pts:14, desc:'Choose a film for everyone' },
     { icon:'🍕', name:'Takeaway choice',    pts:18, desc:'Pick the family takeaway' },
-    { icon:'🟩', name:'100 Robux',          pts:20, desc:'Roblox reward' },
-    { icon:'🎮', name:'Extra game time',    pts:22, desc:'Bonus PS5 / tablet time' },
-    { icon:'🛍️', name:'Pocket money bonus',pts:28, desc:'A small weekend bonus' },
+    { icon:'🎮', name:'Extra game time',    pts:22, desc:'Bonus screen/game time' },
     { icon:'⭐', name:'Big reward choice',  pts:35, desc:'Choose a bigger weekend reward' },
   ];
 
-  const BEHAVIOUR_POINTS = {
+  const DEFAULT_POSITIVE_BEHAVIOURS = [
+    { icon:'🌅', label:'Brilliant morning routine', points:3 },
+    { icon:'👂', label:'Listened first time', points:2 },
+    { icon:'😊', label:'Kind / helpful to others', points:2 },
+    { icon:'📚', label:'Did homework or schoolwork', points:2 },
+    { icon:'😌', label:'Stayed calm when frustrated', points:3 },
+    { icon:'✅', label:'Told the truth / owned up', points:3 },
+    { icon:'🧹', label:'Tidied room', points:2 },
+    { icon:'👕', label:'Got ready without fuss', points:2 },
+    { icon:'🌙', label:'Good bedtime routine', points:2 },
+    { icon:'💪', label:'Tried hard at something difficult', points:3 },
+  ];
+
+  const DEFAULT_NEGATIVE_BEHAVIOURS = [
+    { icon:'⚠️', label:'Told more than once to do something', points:-1 },
+    { icon:'📢', label:'Shouting', points:-1 },
+    { icon:'😡', label:'Screaming', points:-2 },
+    { icon:'🙄', label:'Rude or disrespectful', points:-2 },
+    { icon:'🙅', label:'Refused to cooperate', points:-2 },
+    { icon:'🚪', label:'Left without asking', points:-2 },
+    { icon:'📏', label:'Broke a rule', points:-2 },
+    { icon:'🏃', label:'Reckless behaviour', points:-3 },
+    { icon:'💥', label:'Damaged item', points:-3 },
+    { icon:'👊', label:'Threatening behaviour', points:-4 },
+    { icon:'🚫', label:'Aggressive behaviour', points:-5 },
+  ];
+
+  const OLD_BEHAVIOUR_POINTS = {
     'Brilliant morning routine': 3,
     'Listened first time': 2,
     'Kind / helpful to others': 2,
@@ -536,7 +615,6 @@
     'Got ready without fuss': 2,
     'Good bedtime routine': 2,
     'Tried hard at something difficult': 3,
-
     'Told more than once to do something': -1,
     'Shouting': -1,
     'Screaming': -2,
@@ -548,11 +626,13 @@
     'Damaged item': -3,
     'Threatening behaviour': -4,
     'Aggressive behaviour': -5,
-
-    // Old saved labels still supported
     'Damaged something on purpose': -5,
     'Unsafe behaviour': -5,
   };
+
+  function makeCatalogId(prefix) {
+    return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+  }
 
   function normalizeUsername(value) {
     return String(value || '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '');
@@ -628,6 +708,17 @@
       }
     });
 
+    if (!all.__catalog) all.__catalog = {};
+    all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
+      ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+      : DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive'));
+    all.__catalog.negatives = Array.isArray(all.__catalog.negatives) && all.__catalog.negatives.length
+      ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+      : DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative'));
+    all.__catalog.rewards = Array.isArray(all.__catalog.rewards) && all.__catalog.rewards.length
+      ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+      : DEFAULT_REWARDS.map(normaliseRewardItem);
+
     return all;
   }
 
@@ -668,7 +759,7 @@
   function pointsForEntry(e) {
     if (typeof e.points === 'number') return e.points;
     if (typeof e.pts === 'number') return e.pts;
-    if (e.cat && BEHAVIOUR_POINTS[e.cat] !== undefined) return BEHAVIOUR_POINTS[e.cat];
+    if (e.cat && OLD_BEHAVIOUR_POINTS[e.cat] !== undefined) return OLD_BEHAVIOUR_POINTS[e.cat];
     return e.pos ? 1 : -1;
   }
 
@@ -787,6 +878,167 @@
 
   function validPin(pin) {
     return /^\d{4}$/.test(String(pin || '').trim());
+  }
+
+  function normaliseIcon(icon, fallback = '🎁') {
+    const clean = String(icon || '').trim();
+    return clean || fallback;
+  }
+
+  function normaliseBehaviourItem(item, type) {
+    const positive = type === 'positive';
+    const points = Math.abs(parseInt(item?.points, 10) || 1) * (positive ? 1 : -1);
+    return {
+      id: item?.id || makeCatalogId(positive ? 'pos' : 'neg'),
+      icon: normaliseIcon(item?.icon, positive ? '⭐' : '⚠️'),
+      label: String(item?.label || 'Untitled').trim(),
+      points
+    };
+  }
+
+  function normaliseRewardItem(item) {
+    return {
+      id: item?.id || makeCatalogId('reward'),
+      icon: normaliseIcon(item?.icon, '🎁'),
+      name: String(item?.name || 'Reward').trim(),
+      pts: Math.max(1, parseInt(item?.pts ?? item?.points, 10) || 1),
+      desc: String(item?.desc || item?.description || '').trim()
+    };
+  }
+
+  function getCatalogFromData(all) {
+    all = ensureMultiUserData(all);
+    return all.__catalog;
+  }
+
+  function getBehaviourItems(all, type) {
+    const catalog = getCatalogFromData(all);
+    return type === 'positive' ? catalog.positives : catalog.negatives;
+  }
+
+  function getRewardsFromData(all) {
+    return getCatalogFromData(all).rewards;
+  }
+
+  function renderBehaviourOptions(all) {
+    const posSelect = document.getElementById('f-pos-cat');
+    const negSelect = document.getElementById('f-neg-cat');
+    if (!posSelect || !negSelect) return;
+
+    const positives = getBehaviourItems(all, 'positive');
+    const negatives = getBehaviourItems(all, 'negative');
+
+    posSelect.innerHTML = positives.map(item =>
+      `<option value="${item.points}" data-label="${escapeHtml(item.label)}" data-icon="${escapeHtml(item.icon)}">${escapeHtml(item.icon)} ${escapeHtml(item.label)} (${formatPoints(item.points)})</option>`
+    ).join('');
+
+    negSelect.innerHTML = negatives.map(item =>
+      `<option value="${item.points}" data-label="${escapeHtml(item.label)}" data-icon="${escapeHtml(item.icon)}">${escapeHtml(item.icon)} ${escapeHtml(item.label)} (${formatPoints(item.points)})</option>`
+    ).join('');
+  }
+
+  function renderCatalogList(all) {
+    const el = document.getElementById('catalog-list');
+    if (!el) return;
+
+    const catalog = getCatalogFromData(all);
+    const groupHtml = (title, type, items) => `
+      <div style="background:#fafafa;border:1px solid #eee;border-radius:12px;padding:12px;">
+        <h4 style="font-size:13px;margin-bottom:8px;">${title}</h4>
+        ${items.map(item => `
+          <div class="reward-row">
+            <div class="reward-left">
+              <span class="reward-emoji">${escapeHtml(item.icon || '🎁')}</span>
+              <div>
+                <div class="reward-name">${escapeHtml(item.label || item.name)}</div>
+                <div class="reward-pts">${type === 'reward' ? `${item.pts} points${item.desc ? ' • ' + escapeHtml(item.desc) : ''}` : formatPoints(item.points)}</div>
+              </div>
+            </div>
+            <button class="edel" onclick="deleteCatalogItem('${type}','${escapeHtml(item.id)}')" title="Delete">✕</button>
+          </div>
+        `).join('')}
+      </div>`;
+
+    el.innerHTML =
+      groupHtml('Positive options', 'positive', catalog.positives) +
+      groupHtml('Consequence options', 'negative', catalog.negatives) +
+      groupHtml('Rewards', 'reward', catalog.rewards);
+  }
+
+  async function addCustomBehaviour(type) {
+    if (!currentUser || currentUser.role !== 'parent') return;
+    const positive = type === 'positive';
+    const iconId = positive ? 'custom-pos-icon' : 'custom-neg-icon';
+    const labelId = positive ? 'custom-pos-label' : 'custom-neg-label';
+    const pointsId = positive ? 'custom-pos-points' : 'custom-neg-points';
+    const fallbackIcon = positive ? '⭐' : '⚠️';
+
+    const label = document.getElementById(labelId).value.trim();
+    const rawPoints = parseInt(document.getElementById(pointsId).value, 10);
+    if (!label) return setMsg('catalog-msg', 'Add a name first.', false);
+    if (!rawPoints || rawPoints < 1) return setMsg('catalog-msg', 'Points must be at least 1.', false);
+
+    const all = await getData();
+    const catalog = getCatalogFromData(all);
+    const item = normaliseBehaviourItem({
+      icon: normaliseIcon(document.getElementById(iconId).value, fallbackIcon),
+      label,
+      points: rawPoints
+    }, type);
+
+    const listName = positive ? 'positives' : 'negatives';
+    if (catalog[listName].some(existing => existing.label.toLowerCase() === label.toLowerCase())) {
+      return setMsg('catalog-msg', 'That option already exists.', false);
+    }
+
+    catalog[listName].push(item);
+    await saveData(all);
+    [iconId, labelId, pointsId].forEach(id => document.getElementById(id).value = '');
+    renderBehaviourOptions(all);
+    renderCatalogList(all);
+    setMsg('catalog-msg', positive ? 'Positive option added!' : 'Consequence option added!');
+  }
+
+  async function addCustomReward() {
+    if (!currentUser || currentUser.role !== 'parent') return;
+    const name = document.getElementById('custom-reward-name').value.trim();
+    const pts = parseInt(document.getElementById('custom-reward-points').value, 10);
+    if (!name) return setMsg('catalog-msg', 'Add a reward name first.', false);
+    if (!pts || pts < 1) return setMsg('catalog-msg', 'Reward points must be at least 1.', false);
+
+    const all = await getData();
+    const catalog = getCatalogFromData(all);
+    if (catalog.rewards.some(existing => existing.name.toLowerCase() === name.toLowerCase())) {
+      return setMsg('catalog-msg', 'That reward already exists.', false);
+    }
+
+    catalog.rewards.push(normaliseRewardItem({
+      icon: normaliseIcon(document.getElementById('custom-reward-icon').value, '🎁'),
+      name,
+      pts,
+      desc: document.getElementById('custom-reward-desc').value.trim()
+    }));
+
+    await saveData(all);
+    ['custom-reward-icon','custom-reward-name','custom-reward-points','custom-reward-desc'].forEach(id => document.getElementById(id).value = '');
+    renderCatalogList(all);
+    await renderParent();
+    setMsg('catalog-msg', 'Reward added!');
+  }
+
+  async function deleteCatalogItem(type, id) {
+    if (!currentUser || currentUser.role !== 'parent') return;
+    const all = await getData();
+    const catalog = getCatalogFromData(all);
+    const key = type === 'positive' ? 'positives' : type === 'negative' ? 'negatives' : 'rewards';
+    if (!catalog[key]) return;
+    if (catalog[key].length <= 1) return setMsg('catalog-msg', 'Leave at least one option in each list.', false);
+    catalog[key] = catalog[key].filter(item => item.id !== id);
+    await saveData(all);
+    renderBehaviourOptions(all);
+    renderCatalogList(all);
+    await renderParent();
+    setMsg('catalog-msg', 'Option deleted.');
   }
 
   async function saveAccountSettings() {
@@ -924,10 +1176,13 @@
     all.__children[childId] = { id: childId, name: childName, weeks: {} };
     all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
 
-    const parent = users[currentUserKey] || currentUser;
-    const childIds = getParentChildIds(parent);
-    childIds.push(childId);
-    all.__users[currentUserKey] = setParentChildIds(parent, childIds);
+    // Give every parent in this family access to the new child.
+    getParentUsers(users).forEach(parentUser => {
+      const parentKey = normalizeUsername(parentUser.username);
+      const childIds = getParentChildIds(parentUser);
+      childIds.push(childId);
+      all.__users[parentKey] = setParentChildIds(parentUser, childIds);
+    });
 
     currentUser = all.__users[currentUserKey];
     activeChildId = childId;
@@ -936,7 +1191,7 @@
     ['add-child-name','add-child-username','add-child-pin'].forEach(id => document.getElementById(id).value = '');
     await fillParentSettings();
     await renderParent();
-    setMsg('add-child-msg', 'Child added to this parent!');
+    setMsg('add-child-msg', 'Child added to all parent logins!');
   }
 
   async function renderParentAdminControls() {
@@ -1153,6 +1408,11 @@ if (!users[loginUsername]) {
     const childId = makeChildId(childUsername);
     return ensureMultiUserData({
       __settings: { theme: 'blue' },
+      __catalog: {
+        positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
+        negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
+        rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
+      },
       __family: { name: familyName, createdAt: new Date().toISOString() },
       __children: {
         [childId]: { id: childId, name: childName, weeks: {} }
@@ -1412,6 +1672,9 @@ if (!users[loginUsername]) {
     const allForChild = await getData();
     const child = getChildFromData(allForChild, activeChildId);
     const entries = child.weeks[weekKey(wkOff)] || [];
+    const rewards = getRewardsFromData(allForChild);
+    renderBehaviourOptions(allForChild);
+    renderCatalogList(allForChild);
     const dates   = weekDates(wkOff);
     const today   = new Date();
 
@@ -1463,12 +1726,12 @@ if (!users[loginUsername]) {
         <span class="badge ${bonus.points?'unlocked':'locked'}">${bonus.points?'✓ +10 added!':bonus.cleanDays+'/5'}</span>
       </div>`;
 
-    document.getElementById('p-rewards').innerHTML = bonusHtml + REWARDS.map(r => {
+    document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
       const u = net >= r.pts;
       return `<div class="reward-row">
         <div class="reward-left">
-          <span class="reward-emoji">${r.icon}</span>
-          <div><div class="reward-name">${r.name}</div><div class="reward-pts">${r.desc} • Needs ${r.pts} points</div></div>
+          <span class="reward-emoji">${escapeHtml(r.icon || '🎁')}</span>
+          <div><div class="reward-name">${escapeHtml(r.name)}</div><div class="reward-pts">${escapeHtml(r.desc || 'Reward')} • Needs ${r.pts} points</div></div>
         </div>
         <span class="badge ${u?'unlocked':'locked'}">${u?'✓ Unlocked!': net+'/'+r.pts}</span>
       </div>`;
@@ -1488,7 +1751,7 @@ if (!users[loginUsername]) {
     el.innerHTML = rev.map((e,ri) => {
       const idx = entries.length-1-ri;
       return `<div class="entry ${pointsForEntry(e)>0?'pos-entry':'neg-entry'}">
-        <span class="eicon">${pointsForEntry(e)>0?'⭐':'✖'}</span>
+        <span class="eicon">${escapeHtml(e.icon || (pointsForEntry(e)>0?'⭐':'✖'))}</span>
         <div class="ebody">
           <div class="etext">${escapeHtml(e.cat)}${e.note?' — '+escapeHtml(e.note):''}</div>
           <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
@@ -1504,13 +1767,15 @@ if (!users[loginUsername]) {
     const day = parseInt(document.getElementById('f-day').value);
     const select = document.getElementById(isPositive ? 'f-pos-cat' : 'f-neg-cat');
     const selected = select.options[select.selectedIndex];
+    if (!selected) return;
+    const icon = selected.dataset.icon || (isPositive ? '⭐' : '✖');
     const cat = selected.dataset.label || selected.textContent;
     const points = parseInt(selected.value, 10);
     const note= document.getElementById('f-note').value.trim();
     const all = await getData();
     const child = getChildFromData(all, activeChildId);
     if (!child.weeks[wk]) child.weeks[wk] = [];
-    child.weeks[wk].push({ day, cat, note, pos: points > 0, points });
+    child.weeks[wk].push({ day, cat, icon, note, pos: points > 0, points });
     await saveData(all);
     document.getElementById('f-note').value = '';
     await renderParent();
@@ -1537,14 +1802,16 @@ if (!users[loginUsername]) {
     const neg  = Math.abs(entries.filter(e=>pointsForEntry(e)<0).reduce((sum,e)=>sum+pointsForEntry(e),0));
     const bonus = weeklyBonus(entries);
     const net  = pos-neg+bonus.points;
-    const maxP = Math.max(...REWARDS.map(r=>r.pts));
+    const rewards = getRewardsFromData(allForChild);
+    const rewardTarget = Math.max(1, ...rewards.map(r=>r.pts));
+    const maxP = Math.max(35, rewardTarget);
     const pct  = Math.min(100, Math.max(0, Math.round(net/maxP*100)));
 
     document.getElementById('c-stars').textContent = '⭐'.repeat(Math.min(5,Math.max(1,pos)));
     document.getElementById('c-score').textContent = net;
     document.getElementById('c-prog').style.width  = pct+'%';
 
-    const nxt = REWARDS.filter(r=>net<r.pts).sort((a,b)=>a.pts-b.pts)[0];
+    const nxt = rewards.filter(r=>net<r.pts).sort((a,b)=>a.pts-b.pts)[0];
     document.getElementById('c-prog-label').textContent = nxt
       ? `${nxt.pts-net} more points to unlock ${nxt.name}!`
       : '🎉 Amazing — you\'ve unlocked rewards this week!';
@@ -1555,11 +1822,11 @@ if (!users[loginUsername]) {
         <div class="rstatus">${bonus.points?'✓ +10 bonus points!':bonus.cleanDays+'/5 days with no negatives'}</div>
       </div>`;
 
-    document.getElementById('c-reward-cards').innerHTML = bonusCard + REWARDS.map(r => {
+    document.getElementById('c-reward-cards').innerHTML = bonusCard + rewards.map(r => {
       const w = net>=r.pts;
       return `<div class="rcard${w?' won':''}">
-        <div class="ricon">${r.icon}</div>
-        <div class="rname">${r.name}</div>
+        <div class="ricon">${escapeHtml(r.icon || '🎁')}</div>
+        <div class="rname">${escapeHtml(r.name)}</div>
         <div class="rstatus">${w?'✓ Unlocked!':r.pts+' pts needed'}</div>
       </div>`;
     }).join('');
@@ -1582,13 +1849,55 @@ if (!users[loginUsername]) {
     const el = document.getElementById('c-entries');
     if (!list.length) { el.innerHTML = '<p class="empty-msg">Nothing here yet.</p>'; return; }
     el.innerHTML = list.map(e=>`<div class="entry ${pointsForEntry(e)>0?'pos-entry':'neg-entry'}">
-      <span class="eicon">${pointsForEntry(e)>0?'⭐':'✖'}</span>
+      <span class="eicon">${escapeHtml(e.icon || (pointsForEntry(e)>0?'⭐':'✖'))}</span>
       <div class="ebody">
         <div class="etext">${escapeHtml(e.cat)}${e.note?' — '+escapeHtml(e.note):''}</div>
         <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
       </div>
     </div>`).join('');
   }
+
+  async function refreshFromCloud(reason = 'timer') {
+    if (!currentFamilyId || !CLOUD_READY || !loginWho) return;
+
+    const cloudData = await loadCloudFamily(currentFamilyId);
+    if (!cloudData) return;
+
+    const incoming = ensureMultiUserData(cloudData);
+    const before = JSON.stringify(cachedData || {});
+    const after = JSON.stringify(incoming);
+    if (before === after) return;
+
+    cachedData = incoming;
+    saveLocalData(cachedData);
+
+    const users = getUsersFromData(cachedData);
+    if (currentUserKey && users[currentUserKey]) {
+      currentUser = users[currentUserKey];
+    }
+
+    if (currentUser?.role === 'parent') {
+      const allowedChildren = getParentChildIds(currentUser);
+      if (!allowedChildren.includes(activeChildId)) {
+        activeChildId = allowedChildren[0] || activeChildId;
+      }
+      await renderParent();
+      await fillParentSettings();
+    } else if (currentUser?.role === 'child') {
+      await renderChild();
+    }
+  }
+
+  setInterval(() => refreshFromCloud('timer'), 15000);
+
+  window.addEventListener('focus', () => {
+    refreshFromCloud('focus');
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshFromCloud('visible');
+  });
+
   initApp();
 </script>
 </body>
