@@ -3279,6 +3279,7 @@ if (!DEBUG_SPIN_WHEEL && spin.claimed) {
 
     async function renderParent() {
       const allForChild = await getData();
+      const all = allForChild;
       const child = getChildFromData(allForChild, activeChildId);
       const entries = child.weeks[weekKey(wkOff)] || [];
       const rewards = getRewardsFromData(allForChild);
