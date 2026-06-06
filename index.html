@@ -1703,12 +1703,12 @@ async function checkPin() {
 async function findFamilyCode() {
   const err = document.getElementById('forgot-family-err');
   const result = document.getElementById('forgot-family-result');
-  const input = document.getElementById('forgot-family-name');
+  const input = document.querySelector('#forgot-family-box #forgot-family-name');
 
   err.textContent = '';
   result.innerHTML = '';
 
-  const familyName = String(input.value || '').trim().toLowerCase();
+  const familyName = String(input?.value || '').trim().toLowerCase();
 
   if (!familyName) {
     err.textContent = 'Enter your family surname.';
