@@ -506,6 +506,29 @@
       color: #e74c3c;
     }
 
+    #toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, bottom .25s ease;
+  z-index: 9999;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+#toast.show {
+  opacity: 1;
+  bottom: 32px;
+}
+
     /* STATS */
     .stats-row {
       display: grid;
@@ -1599,9 +1622,11 @@
       </div>
     </div>
 
-  </div>
+ </div>
 
-  <script>
+<div id="toast"></div>
+
+<script>
     const DEFAULT_PARENT_PIN = '1234';
     const DEFAULT_CHILD_PIN = '0000';
 
@@ -1880,7 +1905,18 @@
         setTimeout(() => msg.textContent = '', 1500);
       }
     }
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
 
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2400);
+}
     function setMsg(id, text, ok = true) {
       const msg = document.getElementById(id);
       if (!msg) return;
@@ -2034,9 +2070,10 @@ renderBehaviourOptions(all);
 renderCatalogList(all);
 await renderParent();
 
-setMsg(
-  'catalog-msg',
-  positive ? 'Positive option added!' : 'Consequence option added!'
+showToast(
+  positive
+    ? '⭐ Positive option added!'
+    : '⚠️ Consequence option added!'
 );
     }
 
@@ -2068,7 +2105,7 @@ setMsg(
 renderCatalogList(all);
 await renderParent();
 
-setMsg('catalog-msg', 'Reward added!');
+showToast('🎁 Reward added!');
     }
 
     async function deleteCatalogItem(type, id) {
