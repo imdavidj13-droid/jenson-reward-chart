@@ -3597,7 +3597,7 @@ setTimeout(() => {
 
   const latestAll = all;
 const latestChild = child;
-  const latestSpin = getWeeklySpin(latestChild, todayWeek);
+const latestSpin = getWeeklySpin(latestChild, todayWeek);
 
   latestSpin.claimed = true;
   latestSpin.prize = prize.prize;
@@ -3617,6 +3617,7 @@ const latestChild = child;
       pts: prizePoints
     });
   }
+cachedData = latestAll;
 
   await saveData(latestAll);
 
