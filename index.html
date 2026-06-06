@@ -3616,10 +3616,6 @@ if (prizePoints > 0) {
 
    await saveData(all);
 
-const refreshedAll = await getData();
-const refreshedChild = getChildFromData(refreshedAll, activeChildId);
-const refreshedEntries = refreshedChild.weeks[todayWeek] || [];
-console.log('Wheel saved entries:', refreshedEntries);
 
 showToast(`🎉 You won ${prize.prize}!`);
 launchConfettiRain();
@@ -3801,19 +3797,7 @@ const summary = (posCount || negCount) ? `
       const neg = Math.abs(entries.filter(e => pointsForEntry(e) < 0).reduce((sum, e) => sum + pointsForEntry(e), 0));
       const bonus = weeklyBonus(entries);
       const net = pos - neg + bonus.points;
-      console.log('CHILD SCORE DEBUG', {
-  entriesCount: entries.length,
-  pos,
-  neg,
-  bonus: bonus.points,
-  net,
-  wheelEntries: entries.filter(e => String(e.cat || '').includes('Sunday Spin Wheel')).map(e => ({
-    cat: e.cat,
-    points: e.points,
-    pts: e.pts,
-    calculated: pointsForEntry(e)
-  }))
-});
+   
       const rewards = getRewardsFromData(allForChild);
       const rewardTarget = Math.max(1, ...rewards.map(r => r.pts));
       const maxP = Math.max(35, rewardTarget);
