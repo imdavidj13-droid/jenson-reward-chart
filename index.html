@@ -1059,8 +1059,6 @@ body[data-theme="dark"] .theme-btn.active {
   border-color: #38bdf8;
 }
 
-    @media (max-width: 600px) {
-
       .wheel-wrap {
   position: relative;
   width: 230px;
@@ -1149,6 +1147,10 @@ body[data-theme="dark"] .spin-wheel {
 body[data-theme="dark"] .wheel-pointer {
   color: #e5e7eb;
 }
+
+    @media (max-width: 600px) {
+
+
 
 @media (max-width: 380px) {
   .wheel-wrap {
@@ -1727,6 +1729,39 @@ body[data-theme="dark"] .wheel-pointer {
   <div class="settings-msg" id="parent-theme-settings-msg"></div>
 </div>
 
+<div class="settings-msg" id="parent-theme-settings-msg"></div>
+</div>
+
+<div class="section-card">
+  <h3>🎡 Weekly Spin Wheel</h3>
+
+  <p style="font-size:13px;color:#666;margin-bottom:12px;">
+    Set how many points are needed to unlock the Sunday wheel spin.
+  </p>
+
+  <div class="form-group">
+    <label>Points required</label>
+    <input
+      id="wheel-threshold"
+      type="number"
+      min="1"
+      max="999"
+      placeholder="25">
+  </div>
+
+  <button
+    class="btn-add-pos"
+    onclick="saveWheelSettings()"
+    style="margin-top:12px">
+    Save wheel settings
+  </button>
+
+  <div class="settings-msg" id="wheel-settings-msg"></div>
+</div>
+
+        </div>
+      </details>
+
         </div>
       </details>
       <div class="section-card">
@@ -1861,7 +1896,7 @@ body[data-theme="dark"] .wheel-pointer {
     const DEFAULT_PARENT_PIN = '1234';
     const DEFAULT_CHILD_PIN = '0000';
     const DEFAULT_WHEEL_THRESHOLD = 25;
-const DEBUG_SPIN_WHEEL = false;
+const DEBUG_SPIN_WHEEL = true;
 
 const WHEEL_PRIZES = [
   { label: '+5 bonus points', points: 5 },
@@ -3411,6 +3446,7 @@ const spinBtn = document.getElementById('weekly-spin-btn');
 
 if (spinCard && spinStatus && spinBtn) {
   const todayWeek = weekKey(0);
+  const threshold = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
   const currentWeekTotal = weekTotal(entries);
   const spin = getWeeklySpin(child, todayWeek);
 
@@ -3421,12 +3457,12 @@ if (spinCard && spinStatus && spinBtn) {
     spinBtn.disabled = true;
     spinBtn.textContent = 'Available Sunday';
     spinBtn.style.opacity = '0.65';
-  } else if (currentWeekTotal < DEFAULT_WHEEL_THRESHOLD) {
+  } else if (currentWeekTotal < threshold) {
     spinStatus.textContent = `You need ${threshold} points to spin. Current total: ${currentWeekTotal}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Not enough points yet';
     spinBtn.style.opacity = '0.65';
-  } else if (spin.claimed) {
+  } else if (!DEBUG_SPIN_WHEEL && spin.claimed) {
     spinStatus.textContent = `You already spun this week and won: ${spin.prize}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Already spun';
