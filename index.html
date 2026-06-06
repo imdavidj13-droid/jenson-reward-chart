@@ -2110,7 +2110,6 @@ body[data-theme="dark"] #forgot-family-result .btn-add-pos {
     const DEFAULT_CHILD_PIN = '0000';
     const DEFAULT_WHEEL_THRESHOLD = 25;
 const DEBUG_SPIN_WHEEL = true;
-
 const WHEEL_PRIZE_OPTIONS = [
   { value: 'plus5', label: '+5 points', wheelLabel: '+5', prize: '+5 bonus points', points: 5 },
   { value: 'plus10', label: '+10 points', wheelLabel: '+10', prize: '+10 bonus points', points: 10 },
@@ -3594,39 +3593,43 @@ setTimeout(() => {
   }
 
   setTimeout(async () => {
-    const prizePoints = parseInt(prize.points, 10) || 0;
+  const prizePoints = parseInt(prize.points, 10) || 0;
 
-spin.claimed = true;
-spin.prize = prize.prize;
-spin.points = prizePoints;
-spin.claimedAt = new Date().toISOString();
+  const latestAll = await getData();
+  const latestChild = getChildFromData(latestAll, activeChildId);
+  const latestSpin = getWeeklySpin(latestChild, todayWeek);
 
-if (prizePoints > 0) {
-  if (!child.weeks[todayWeek]) child.weeks[todayWeek] = [];
- child.weeks[todayWeek].push({
-  day: 6,
-  cat: `Sunday Spin Wheel: ${prize.prize}`,
-  icon: '🎡',
-  note: 'Weekly wheel prize',
-  pos: true,
-  points: prizePoints,
-  pts: prizePoints
-});
-}
+  latestSpin.claimed = true;
+  latestSpin.prize = prize.prize;
+  latestSpin.points = prizePoints;
+  latestSpin.claimedAt = new Date().toISOString();
 
-   await saveData(all);
+  if (prizePoints > 0) {
+    if (!latestChild.weeks[todayWeek]) latestChild.weeks[todayWeek] = [];
 
+    latestChild.weeks[todayWeek].push({
+      day: 6,
+      cat: `Sunday Spin Wheel: ${prize.prize}`,
+      icon: '🎡',
+      note: 'Weekly wheel prize',
+      pos: true,
+      points: prizePoints,
+      pts: prizePoints
+    });
+  }
 
-showToast(`🎉 You won ${prize.prize}!`);
-launchConfettiRain();
+  await saveData(latestAll);
 
-if (btn) {
-  btn.disabled = false;
-  btn.textContent = DEBUG_SPIN_WHEEL ? 'Spin again' : 'Already spun';
-  btn.style.opacity = '1';
-}
+  showToast(`🎉 You won ${prize.prize}!`);
+  launchConfettiRain();
 
-await renderChild();
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Already spun';
+    btn.style.opacity = '0.65';
+  }
+
+  await renderChild();
 }, 11000);
 }
 
