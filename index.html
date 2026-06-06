@@ -8,10 +8,10 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--page-bg, #f0f4f8); min-height: 100vh; color: #1a1a2e; }
 
-  body[data-theme="blue"] { --page-bg:#eef6ff; --hero-a:#1a1a2e; --hero-b:#2563eb; --accent:#4a90d9; --accent-soft:#ddeeff; }
-  body[data-theme="green"] { --page-bg:#effaf1; --hero-a:#064e3b; --hero-b:#16a34a; --accent:#22c55e; --accent-soft:#dcfce7; }
-  body[data-theme="purple"] { --page-bg:#f5f0ff; --hero-a:#3b0764; --hero-b:#8b5cf6; --accent:#8b5cf6; --accent-soft:#ede9fe; }
-  body[data-theme="pink"] { --page-bg:#fff1f6; --hero-a:#831843; --hero-b:#ec4899; --accent:#ec4899; --accent-soft:#fce7f3; }
+  body[data-theme="blue"] { --page-bg:#eef6ff; --hero-a:#0f172a; --hero-b:#2563eb; --accent:#2563eb; --accent-soft:#dbeafe; }
+  body[data-theme="green"] { --page-bg:#ecfdf5; --hero-a:#064e3b; --hero-b:#16a34a; --accent:#16a34a; --accent-soft:#dcfce7; }
+  body[data-theme="gold"] { --page-bg:#fffbeb; --hero-a:#78350f; --hero-b:#d97706; --accent:#f59e0b; --accent-soft:#fef3c7; }
+  body[data-theme="red"] { --page-bg:#fff1f2; --hero-a:#7f1d1d; --hero-b:#dc2626; --accent:#dc2626; --accent-soft:#fee2e2; }
   body[data-theme="football"] { --page-bg:#ecfdf5; --hero-a:#052e16; --hero-b:#15803d; --accent:#16a34a; --accent-soft:#dcfce7; }
 
   .app { max-width: 700px; margin: 0 auto; padding: 20px; }
@@ -191,7 +191,7 @@
       <div class="login-logo">
         <span class="big-star">⭐</span>
         <h1>Reward Chart</h1>
-        <p>Create a family or join one with a family code.</p>
+        <p>Create a new family or open an existing family with its code.</p>
       </div>
 
       <div class="login-form" style="margin-bottom:16px;">
@@ -213,12 +213,12 @@
       </div>
 
       <div class="login-form">
-        <h3>Join a family</h3>
+        <h3>Open Existing Family</h3>
         <div class="form-group">
           <label>Family code</label>
           <input id="join-family-code" placeholder="e.g. MATHIE-A7K2" onkeydown="if(event.key==='Enter') joinFamily()">
         </div>
-        <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Join family</button>
+        <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Open Family</button>
         <div class="pin-error" id="join-family-err"></div>
       </div>
     </div>
@@ -246,7 +246,7 @@
         <button class="primary-btn" onclick="goPin()">Continue</button>
         <div class="pin-error" id="login-err"></div>
         <p style="font-size:12px;color:#888;line-height:1.4;">Log in with the username and PIN created for this family.</p>
-        <button class="back-link" type="button" onclick="switchFamily()">Use a different family code</button>
+        <button class="back-link" type="button" onclick="switchFamily()">Open a different family</button>
       </div>
     </div>
   </div>
@@ -303,6 +303,12 @@
     <div class="days-grid" id="p-days"></div>
     <div class="stats-row" id="p-stats"></div>
 
+    <div class="section-card" id="child-switch-card" style="display:none;">
+      <h3>👧 Children</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Choose which child you want to view or update.</p>
+      <div class="tabs" id="p-child-buttons"></div>
+    </div>
+
     <div class="section-card">
       <h3>🎁 Rewards this week</h3>
       <div id="p-rewards"></div>
@@ -310,7 +316,7 @@
 
     <div class="section-card">
       <h3>⚙️ Account settings</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.4;">This parent login is linked to one child. Change your login details or the linked child's login details here.</p>
+      <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.4;">Change your parent login details or the currently selected child login details here.</p>
       <p style="font-size:13px;color:#1a1a2e;margin-bottom:12px;line-height:1.4;"><strong>Family code:</strong> <span id="family-code-display"></span> <button class="btn-add-pos" type="button" onclick="copyFamilyCode()" style="padding:6px 10px;margin-left:8px;">Copy</button></p>
       <div class="settings-grid">
         <div class="form-group">
@@ -344,36 +350,45 @@
     </div>
 
     <div class="section-card">
-      <h3>➕ Add another parent + child login</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Use this for another child. The new parent account will only see and manage that child's chart.</p>
+      <h3>➕ Add child to this parent</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Use this when one parent needs to manage more than one child.</p>
       <div class="settings-grid">
         <div class="form-group">
-          <label>New parent name</label>
-          <input id="new-parent-name" placeholder="e.g. Mum">
+          <label>Child name</label>
+          <input id="add-child-name" placeholder="e.g. Emily">
         </div>
         <div class="form-group">
-          <label>New parent username</label>
-          <input id="new-parent-username" placeholder="e.g. mum">
+          <label>Child username</label>
+          <input id="add-child-username" placeholder="e.g. emily">
         </div>
         <div class="form-group">
-          <label>New parent PIN</label>
-          <input id="new-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
-        </div>
-        <div class="form-group">
-          <label>New child name</label>
-          <input id="new-child-name" placeholder="e.g. Child name">
-        </div>
-        <div class="form-group">
-          <label>New child username</label>
-          <input id="new-child-username" placeholder="e.g. childname">
-        </div>
-        <div class="form-group">
-          <label>New child PIN</label>
-          <input id="new-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
+          <label>Child PIN</label>
+          <input id="add-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
         </div>
       </div>
-      <button class="btn-add-pos" onclick="addFamilyLogin()" style="margin-top:12px">Add login pair</button>
-      <div class="settings-msg" id="add-account-msg"></div>
+      <button class="btn-add-pos" onclick="addChildToParent()" style="margin-top:12px">Add child</button>
+      <div class="settings-msg" id="add-child-msg"></div>
+    </div>
+
+    <div class="section-card" id="second-parent-card">
+      <h3>➕ Add second parent</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Use this for Mum/Dad/guardian. Maximum 2 parents per family. The second parent will manage the same child or children as this parent.</p>
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>Second parent name</label>
+          <input id="second-parent-name" placeholder="e.g. Mum">
+        </div>
+        <div class="form-group">
+          <label>Second parent username</label>
+          <input id="second-parent-username" placeholder="e.g. mum">
+        </div>
+        <div class="form-group">
+          <label>Second parent PIN</label>
+          <input id="second-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
+        </div>
+      </div>
+      <button class="btn-add-pos" id="second-parent-btn" onclick="addSecondParentToFamily()" style="margin-top:12px">Add second parent</button>
+      <div class="settings-msg" id="add-parent-msg"></div>
     </div>
 
     <div class="section-card">
@@ -474,10 +489,10 @@
     <div class="section-card">
       <h3>🎨 Choose your theme</h3>
       <div class="theme-grid">
-        <button class="theme-btn" data-theme-btn="blue" onclick="saveTheme('blue')">🔵 Blue</button>
-        <button class="theme-btn" data-theme-btn="green" onclick="saveTheme('green')">🟢 Green</button>
-        <button class="theme-btn" data-theme-btn="purple" onclick="saveTheme('purple')">🟣 Purple</button>
-        <button class="theme-btn" data-theme-btn="pink" onclick="saveTheme('pink')">💖 Pink</button>
+        <button class="theme-btn" data-theme-btn="blue" onclick="saveTheme('blue')">🌊 Ocean</button>
+        <button class="theme-btn" data-theme-btn="green" onclick="saveTheme('green')">🌲 Forest</button>
+        <button class="theme-btn" data-theme-btn="gold" onclick="saveTheme('gold')">🏆 Gold</button>
+        <button class="theme-btn" data-theme-btn="red" onclick="saveTheme('red')">🔥 Ruby</button>
         <button class="theme-btn" data-theme-btn="football" onclick="saveTheme('football')">⚽ Football</button>
       </div>
       <div class="settings-msg" id="theme-settings-msg"></div>
@@ -594,8 +609,22 @@
     all.__users = Object.keys(normalizedUsers).length ? normalizedUsers : defaultUsersFromSettings(all.__settings);
 
     Object.values(all.__users).forEach(user => {
+      if (user.role === 'parent') {
+        setParentChildIds(user, getParentChildIds(user));
+      }
+
       if (user.role === 'child' && user.childId && !all.__children[user.childId]) {
         all.__children[user.childId] = { id: user.childId, name: user.name || user.username, weeks: {} };
+      }
+    });
+
+    Object.values(all.__users).forEach(user => {
+      if (user.role === 'parent') {
+        getParentChildIds(user).forEach(childId => {
+          if (childId && !all.__children[childId]) {
+            all.__children[childId] = { id: childId, name: 'Child', weeks: {} };
+          }
+        });
       }
     });
 
@@ -616,6 +645,24 @@
 
   function findChildUser(users, childId) {
     return Object.values(users).find(u => u.role === 'child' && u.childId === childId) || null;
+  }
+
+  function getParentChildIds(user) {
+    if (!user || user.role !== 'parent') return [];
+    if (Array.isArray(user.childIds) && user.childIds.length) return user.childIds;
+    return user.childId ? [user.childId] : [];
+  }
+
+  function setParentChildIds(user, childIds) {
+    const uniqueIds = [...new Set((childIds || []).filter(Boolean))];
+    user.childIds = uniqueIds;
+    user.childId = uniqueIds[0] || user.childId || '';
+    return user;
+  }
+
+
+  function getParentUsers(users) {
+    return Object.values(users || {}).filter(user => user && user.role === 'parent');
   }
 
   function pointsForEntry(e) {
@@ -663,10 +710,16 @@
     };
   }
 
+  function normaliseTheme(theme) {
+    const allowedThemes = ['blue', 'green', 'gold', 'red', 'football'];
+    if (theme === 'pink' || theme === 'purple') return 'blue';
+    return allowedThemes.includes(theme) ? theme : 'blue';
+  }
+
   function getSettingsFromData(all) {
     all = ensureMultiUserData(all);
     return {
-      theme: all.__settings?.theme || 'blue'
+      theme: normaliseTheme(all.__settings?.theme || 'blue')
     };
   }
 
@@ -676,9 +729,10 @@
   }
 
   function applyTheme(theme) {
-    document.body.dataset.theme = theme || 'blue';
+    const safeTheme = normaliseTheme(theme);
+    document.body.dataset.theme = safeTheme;
     document.querySelectorAll('[data-theme-btn]').forEach(btn => {
-      btn.className = 'theme-btn' + (btn.dataset.themeBtn === theme ? ' active' : '');
+      btn.className = 'theme-btn' + (btn.dataset.themeBtn === safeTheme ? ' active' : '');
     });
   }
 
@@ -688,10 +742,11 @@
   }
 
   async function saveTheme(theme) {
+    const safeTheme = normaliseTheme(theme);
     const all = await getData();
-    all.__settings = { ...getSettingsFromData(all), theme };
+    all.__settings = { ...getSettingsFromData(all), theme: safeTheme };
     await saveData(all);
-    applyTheme(theme);
+    applyTheme(safeTheme);
     const msg = document.getElementById('theme-settings-msg');
     if (msg) {
       msg.textContent = 'Theme saved!';
@@ -750,10 +805,12 @@
 
     const all = await getData();
     const users = getUsersFromData(all);
-    const childId = currentUser.childId;
+    const childId = activeChildId || currentUser.childId;
     const childUser = findChildUser(users, childId);
     const oldParentKey = currentUserKey;
     const oldChildKey = childUser ? normalizeUsername(childUser.username) : null;
+    const existingParent = users[oldParentKey] || currentUser;
+    const parentChildIds = getParentChildIds(existingParent);
 
     if (users[parentUsername] && parentUsername !== oldParentKey) return setMsg('pin-settings-msg', 'That parent username already exists.', false);
     if (users[childUsername] && childUsername !== oldChildKey) return setMsg('pin-settings-msg', 'That child username already exists.', false);
@@ -761,7 +818,10 @@
     if (oldParentKey && oldParentKey !== parentUsername) delete all.__users[oldParentKey];
     if (oldChildKey && oldChildKey !== childUsername) delete all.__users[oldChildKey];
 
-    all.__users[parentUsername] = { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId };
+    all.__users[parentUsername] = setParentChildIds(
+      { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId: parentChildIds[0] || childId },
+      parentChildIds.length ? parentChildIds : [childId]
+    );
     all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
     all.__children[childId] = { ...getChildFromData(all, childId), name: childName };
 
@@ -773,6 +833,41 @@
     await fillParentSettings();
     await renderParent();
     setMsg('pin-settings-msg', 'Account details saved!');
+  }
+
+  async function addSecondParentToFamily() {
+    if (!currentUser || currentUser.role !== 'parent') return;
+
+    const parentName = document.getElementById('second-parent-name').value.trim() || 'Parent';
+    const parentUsername = normalizeUsername(document.getElementById('second-parent-username').value);
+    const parentPin = document.getElementById('second-parent-pin').value.trim();
+
+    if (!parentUsername) return setMsg('add-parent-msg', 'Second parent username is required.', false);
+    if (!validPin(parentPin)) return setMsg('add-parent-msg', 'Second parent PIN must be exactly 4 numbers.', false);
+
+    const all = await getData();
+    const users = getUsersFromData(all);
+    const parents = getParentUsers(users);
+
+    if (parents.length >= 2) return setMsg('add-parent-msg', 'This family already has 2 parents.', false);
+    if (users[parentUsername]) return setMsg('add-parent-msg', 'That username already exists.', false);
+
+    const currentParent = users[currentUserKey] || currentUser;
+    const childIds = getParentChildIds(currentParent).length
+      ? getParentChildIds(currentParent)
+      : Object.keys(all.__children || {});
+
+    if (!childIds.length) return setMsg('add-parent-msg', 'Add a child before adding another parent.', false);
+
+    all.__users[parentUsername] = setParentChildIds(
+      { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId: childIds[0] },
+      childIds
+    );
+
+    await saveData(all);
+    ['second-parent-name','second-parent-username','second-parent-pin'].forEach(id => document.getElementById(id).value = '');
+    await renderParentAdminControls();
+    setMsg('add-parent-msg', 'Second parent added. They can now log in and manage these children!');
   }
 
   async function addFamilyLogin() {
@@ -796,12 +891,82 @@
     while (all.__children[childId]) childId = makeChildId(childUsername) + '-' + n++;
 
     all.__children[childId] = { id: childId, name: childName, weeks: {} };
-    all.__users[parentUsername] = { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId };
+    all.__users[parentUsername] = setParentChildIds(
+      { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId },
+      [childId]
+    );
     all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
 
     await saveData(all);
     ['new-parent-name','new-parent-username','new-parent-pin','new-child-name','new-child-username','new-child-pin'].forEach(id => document.getElementById(id).value = '');
     setMsg('add-account-msg', 'New parent and child logins added!');
+  }
+
+  async function addChildToParent() {
+    if (!currentUser || currentUser.role !== 'parent') return;
+
+    const childName = document.getElementById('add-child-name').value.trim() || 'Child';
+    const childUsername = normalizeUsername(document.getElementById('add-child-username').value);
+    const childPin = document.getElementById('add-child-pin').value.trim();
+
+    if (!childUsername) return setMsg('add-child-msg', 'Child username is required.', false);
+    if (!validPin(childPin)) return setMsg('add-child-msg', 'Child PIN must be exactly 4 numbers.', false);
+
+    const all = await getData();
+    const users = getUsersFromData(all);
+
+    if (users[childUsername]) return setMsg('add-child-msg', 'That child username already exists.', false);
+
+    let childId = makeChildId(childUsername);
+    let n = 2;
+    while (all.__children[childId]) childId = makeChildId(childUsername) + '-' + n++;
+
+    all.__children[childId] = { id: childId, name: childName, weeks: {} };
+    all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
+
+    const parent = users[currentUserKey] || currentUser;
+    const childIds = getParentChildIds(parent);
+    childIds.push(childId);
+    all.__users[currentUserKey] = setParentChildIds(parent, childIds);
+
+    currentUser = all.__users[currentUserKey];
+    activeChildId = childId;
+
+    await saveData(all);
+    ['add-child-name','add-child-username','add-child-pin'].forEach(id => document.getElementById(id).value = '');
+    await fillParentSettings();
+    await renderParent();
+    setMsg('add-child-msg', 'Child added to this parent!');
+  }
+
+  async function renderParentAdminControls() {
+    const all = await getData();
+    const users = getUsersFromData(all);
+    const parentCount = getParentUsers(users).length;
+    const card = document.getElementById('second-parent-card');
+    const btn = document.getElementById('second-parent-btn');
+    const msg = document.getElementById('add-parent-msg');
+
+    if (!card) return;
+
+    if (parentCount >= 2) {
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '2 parents already added';
+        btn.style.opacity = '0.65';
+      }
+      if (msg) {
+        msg.style.color = '#666';
+        msg.textContent = 'This family already has 2 parent logins.';
+      }
+    } else {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Add second parent';
+        btn.style.opacity = '1';
+      }
+      if (msg && msg.textContent === 'This family already has 2 parent logins.') msg.textContent = '';
+    }
   }
 
   async function fillParentSettings() {
@@ -825,6 +990,37 @@
     if (childName) childName.value = child.name || childUser?.name || 'Child';
     if (childUsername) childUsername.value = childUser?.username || '';
     if (childPin) childPin.value = childUser?.pin || '';
+  }
+
+  async function renderChildSwitcher() {
+    const card = document.getElementById('child-switch-card');
+    const buttons = document.getElementById('p-child-buttons');
+    if (!card || !buttons || !currentUser || currentUser.role !== 'parent') return;
+
+    const all = await getData();
+    const childIds = getParentChildIds(currentUser);
+
+    if (childIds.length <= 1) {
+      card.style.display = 'none';
+      buttons.innerHTML = '';
+      return;
+    }
+
+    card.style.display = 'block';
+    buttons.innerHTML = childIds.map(childId => {
+      const child = getChildFromData(all, childId);
+      return `<button class="tab${childId === activeChildId ? ' active' : ''}" onclick="switchActiveChild('${escapeHtml(childId)}')">${escapeHtml(child.name || 'Child')}</button>`;
+    }).join('');
+  }
+
+  async function switchActiveChild(childId) {
+    if (!currentUser || currentUser.role !== 'parent') return;
+    if (!getParentChildIds(currentUser).includes(childId)) return;
+
+    activeChildId = childId;
+    wkOff = 0;
+    await renderParent();
+    await fillParentSettings();
   }
 
   const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -895,7 +1091,7 @@ if (!users[loginUsername]) {
       currentUserKey = loginUsername;
       currentUser = user;
       loginWho = user.role;
-      activeChildId = user.childId || 'jenson';
+      activeChildId = user.role === 'parent' ? (getParentChildIds(user)[0] || user.childId || 'jenson') : (user.childId || 'jenson');
 
       if (user.role === 'parent') {
         wkOff = 0;
@@ -962,7 +1158,7 @@ if (!users[loginUsername]) {
         [childId]: { id: childId, name: childName, weeks: {} }
       },
       __users: {
-        [parentUsername]: { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId },
+        [parentUsername]: setParentChildIds({ username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId }, [childId]),
         [childUsername]: { username: childUsername, pin: childPin, role: 'child', name: childName, childId }
       }
     });
@@ -1122,12 +1318,12 @@ if (!users[loginUsername]) {
       return;
     }
 
-    setButtonLoading('join-family-btn', true, 'Joining family...', 'Join family');
+    setButtonLoading('join-family-btn', true, 'Opening family...', 'Open Family');
     const cloudData = await loadCloudFamily(familyCode);
 
     if (!cloudData) {
       err.textContent = 'Family code not found.';
-      setButtonLoading('join-family-btn', false, 'Joining family...', 'Join family');
+      setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
       return;
     }
 
@@ -1136,7 +1332,7 @@ if (!users[loginUsername]) {
     localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
     saveLocalData(cachedData);
 
-    setButtonLoading('join-family-btn', false, 'Joining family...', 'Join family');
+    setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
     await showLoginForFamily(false);
   }
 
@@ -1221,6 +1417,8 @@ if (!users[loginUsername]) {
 
     const parentTitle = document.getElementById('p-title');
     if (parentTitle) parentTitle.textContent = `${child.name || 'Child'}'s Chart`;
+    await renderParentAdminControls();
+    await renderChildSwitcher();
 
     const lbl = wkOff===0 ? 'This week' : wkOff===-1 ? 'Last week' :
       'Week of ' + dates[0].toLocaleDateString('en-GB',{day:'numeric',month:'short'});
