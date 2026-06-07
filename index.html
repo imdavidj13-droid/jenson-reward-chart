@@ -3004,7 +3004,7 @@ function getCatalogFromData(all) {
 }
 
 function getBehaviourItems(all, type) {
-  const catalog = getCustomCatalogFromData(all);
+  const catalog = getCatalogFromData(all);
   return type === 'positive' ? catalog.positives : catalog.negatives;
 }
 
