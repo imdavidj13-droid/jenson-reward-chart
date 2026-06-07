@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-
-  <link rel="apple-touch-icon" href="/images/icon-180.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/icon-180.png">
-  <link rel="icon" type="image/png" href="/images/icon.png">
-  <link rel="manifest" href="/manifest.json">
-
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Family Rewards">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
   <title>Family Rewards</title>
+  <meta name="description" content="Family Rewards helps families track positive behaviour, consequences, rewards, requests and weekly spin bonuses." />
+
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    :root {
+      --navy: #0f172a;
+      --blue: #2563eb;
+      --green: #16a34a;
+      --red: #dc2626;
+      --gold: #f59e0b;
+      --soft-blue: #dbeafe;
+      --soft-green: #dcfce7;
+      --soft-red: #fee2e2;
+      --soft-gold: #fef3c7;
+      --text: #172033;
+      --muted: #64748b;
+      --card: #ffffff;
+      --page: #eef6ff;
     }
 
     html {
@@ -29,4667 +36,720 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: var(--page-bg, #f0f4f8);
-      min-height: 100vh;
-      color: #1a1a2e;
       width: 100%;
+      min-height: 100vh;
       overflow-x: hidden;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.22), transparent 32%),
+        radial-gradient(circle at top right, rgba(22, 163, 74, 0.18), transparent 32%),
+        linear-gradient(180deg, #eef6ff 0%, #f8fafc 52%, #ecfdf5 100%);
+      color: var(--text);
     }
 
-    input,
-    select,
-    textarea {
-      font-size: 16px !important;
-      touch-action: manipulation;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    button {
-      touch-action: manipulation;
-    }
-
-    body[data-theme="blue"] {
-      --page-bg: #eef6ff;
-      --hero-a: #0f172a;
-      --hero-b: #2563eb;
-      --accent: #2563eb;
-      --accent-soft: #dbeafe;
-    }
-
-    body[data-theme="green"] {
-      --page-bg: #ecfdf5;
-      --hero-a: #064e3b;
-      --hero-b: #16a34a;
-      --accent: #16a34a;
-      --accent-soft: #dcfce7;
-    }
-
-    body[data-theme="gold"] {
-      --page-bg: #fffbeb;
-      --hero-a: #78350f;
-      --hero-b: #d97706;
-      --accent: #f59e0b;
-      --accent-soft: #fef3c7;
-    }
-
-    body[data-theme="red"] {
-      --page-bg: #fff1f2;
-      --hero-a: #7f1d1d;
-      --hero-b: #dc2626;
-      --accent: #dc2626;
-      --accent-soft: #fee2e2;
-    }
-
-    body[data-theme="football"] {
-      --page-bg: #ecfdf5;
-      --hero-a: #052e16;
-      --hero-b: #15803d;
-      --accent: #16a34a;
-      --accent-soft: #dcfce7;
-    }
-    body[data-theme="dark"] {
-  --page-bg: #172033;
-  --hero-a: #111827;
-  --hero-b: #2563eb;
-  --accent: #60a5fa;
-  --accent-soft: #24324a;
-}
-
-    .app {
-      max-width: 700px;
+    .page {
+      width: min(1120px, 100%);
       margin: 0 auto;
       padding: 20px;
     }
 
-    .screen {
-      display: none;
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    /* LOGIN */
-    .login-wrap {
-      max-width: 420px;
-      margin: 40px auto;
-    }
-
-    .login-logo {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .login-logo .big-star {
-      font-size: 56px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .app-logo {
-      width: 180px;
-      height: 180px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto 20px;
-    }
-
-    .login-logo h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1a1a2e;
-    }
-
-    .login-logo p {
-      color: #666;
-      margin-top: 6px;
-      font-size: 15px;
-    }
-
-    .login-cards {
-      display: grid;
-      gap: 14px;
-    }
-
-    .login-form {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-      display: grid;
-      gap: 12px;
-    }
-
-    .primary-btn {
-      background: #1a1a2e;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .primary-btn:hover {
-      filter: brightness(1.08);
-    }
-
-    .login-card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      cursor: pointer;
+    .nav {
       display: flex;
       align-items: center;
-      gap: 16px;
-      border: 2px solid transparent;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-      transition: all 0.2s;
-    }
-
-    .login-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    }
-
-    .login-card.parent:hover {
-      border-color: var(--accent, #4a90d9);
-    }
-
-    .login-card.child:hover {
-      border-color: #5cb85c;
-    }
-
-    .login-card .avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      flex-shrink: 0;
-    }
-
-    .login-card.parent .avatar {
-      background: #e8f0fb;
-    }
-
-    .login-card.child .avatar {
-      background: #e8f8e8;
-    }
-
-    .login-card h3 {
-      font-size: 17px;
-      font-weight: 600;
-    }
-
-    .login-card p {
-      font-size: 13px;
-      color: #888;
-      margin-top: 3px;
-    }
-
-    /* PIN */
-    .pin-wrap {
-      max-width: 320px;
-      margin: 40px auto;
-      text-align: center;
-    }
-
-    .pin-wrap h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .pin-wrap .hint {
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 28px;
-    }
-
-    .pin-dots {
-      display: flex;
+      justify-content: space-between;
       gap: 14px;
-      justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: 22px;
     }
 
-    .pin-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid #ccc;
-      transition: all 0.15s;
-    }
-
-    .pin-dot.filled {
-      background: #1a1a2e;
-      border-color: #1a1a2e;
-      transform: scale(1.1);
-    }
-
-    .numpad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      max-width: 260px;
-      margin: 0 auto;
-    }
-
-    .numpad button {
-      height: 58px;
-      font-size: 22px;
-      font-weight: 500;
-      border-radius: 12px;
-      background: white;
-      border: 1.5px solid #e0e0e0;
-      cursor: pointer;
-      color: #1a1a2e;
-      transition: all 0.1s;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-    }
-
-    .numpad button:hover {
-      background: #f5f5f5;
-      border-color: #bbb;
-    }
-
-    .numpad button:active {
-      transform: scale(0.94);
-    }
-
-    .pin-error {
-      color: #e74c3c;
-      font-size: 13px;
-      margin-top: 14px;
-      min-height: 20px;
-      font-weight: 500;
-    }
-
-    .back-link {
-      background: none;
-      border: none;
-      color: #888;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 20px;
+    .brand {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      text-decoration: underline;
-    }
-
-    .back-link:hover {
-      color: #444;
-    }
-
-    /* TOP BAR */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: white;
-      border-radius: 14px;
-      padding: 14px 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-    }
-
-    .top-bar h2 {
+      gap: 10px;
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 900;
+      color: var(--navy);
     }
 
-    .role-badge {
-      font-size: 12px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-weight: 600;
-      margin-left: 10px;
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--green), #22c55e);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 8px 18px rgba(22, 163, 74, 0.28);
     }
 
-    .parent-badge {
-      background: var(--accent-soft, #ddeeff);
-      color: #1a5faa;
-    }
-
-    .child-badge {
-      background: #ddf4dd;
-      color: #2a7a2a;
-    }
-
-    .logout-btn {
-      background: none;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      color: #666;
-      transition: all 0.15s;
-    }
-
-    .logout-btn:hover {
-      background: #fee;
-      border-color: #e74c3c;
-      color: #e74c3c;
-    }
-
-    /* WEEK NAV */
-    .week-nav-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .week-nav-bar h3 {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .nav-btns {
-      display: flex;
-      gap: 8px;
-    }
-
-    .nav-btn {
+    .nav-link {
       background: white;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      width: 34px;
-      height: 34px;
-      cursor: pointer;
-      font-size: 16px;
+      border: 1.5px solid rgba(15, 23, 42, 0.08);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--navy);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #2563eb 100%);
+      border-radius: 34px;
+      padding: 42px;
+      color: white;
+      box-shadow: 0 22px 54px rgba(15, 23, 42, 0.28);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "⭐";
+      position: absolute;
+      right: -30px;
+      top: -42px;
+      font-size: 210px;
+      opacity: 0.07;
+      transform: rotate(10deg);
+    }
+
+    .hero::after {
+      content: "🎁";
+      position: absolute;
+      left: 46%;
+      bottom: -34px;
+      font-size: 118px;
+      opacity: 0.08;
+      transform: rotate(-12deg);
+    }
+
+    .hero-copy,
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: white;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -2.4px;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy p {
+      max-width: 560px;
+      color: rgba(255,255,255,0.84);
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .actions {
       display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
+      gap: 8px;
+      min-height: 50px;
     }
 
-    .nav-btn:hover {
-      background: #f0f0f0;
-      border-color: #bbb;
+    .btn-primary {
+      background: var(--green);
+      color: white;
+      border: 1.5px solid #15803d;
+      box-shadow: 0 10px 24px rgba(22, 163, 74, 0.32);
     }
 
-    /* DAYS GRID */
-    .days-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      margin-bottom: 20px;
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.28);
     }
 
-    .day-col {
-      background: white;
-      border-radius: 12px;
-      padding: 10px 6px;
-      text-align: center;
-      min-height: 110px;
-      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-      border: 2px solid transparent;
-      transition: border-color 0.2s;
-    }
-
-    .day-col.today {
-      border-color: var(--accent, #4a90d9);
-    }
-
-    .day-col .dname {
-      font-size: 11px;
-      font-weight: 700;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .day-col.today .dname {
-      color: var(--accent, #4a90d9);
-    }
-
-    .day-col .ddate {
-      font-size: 11px;
-      color: #bbb;
-      margin: 2px 0 6px;
-    }
-
-    .day-symbols {
+    .trust-row {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
-      align-items: center;
-    }
-
-    .sym-star {
-      font-size: 15px;
-      line-height: 1.2;
-    }
-
-    .sym-cross {
+      gap: 10px;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,0.8);
       font-size: 13px;
-      color: #e74c3c;
-      line-height: 1.2;
+      font-weight: 800;
     }
 
-    .day-net {
-      font-size: 12px;
-      font-weight: 700;
+    .trust-row span {
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      padding: 7px 10px;
+    }
+
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone {
+      width: min(330px, 100%);
+      background: #111827;
+      border-radius: 38px;
+      padding: 10px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      transform: rotate(2deg);
+    }
+
+    .phone-screen {
+      background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+      border-radius: 30px;
+      padding: 16px;
+      color: var(--text);
+      min-height: 550px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .app-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .pill {
+      background: var(--soft-green);
+      color: #166534;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .score-card {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white;
+      border-radius: 24px;
+      padding: 22px 16px;
+      text-align: center;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+    }
+
+    .score-label {
+      font-size: 13px;
+      opacity: 0.72;
+      margin-bottom: 5px;
+    }
+
+    .score {
+      font-size: 58px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .progress {
+      background: rgba(255,255,255,0.16);
+      border-radius: 99px;
+      height: 12px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      width: 68%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), #22c55e);
+      border-radius: 99px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+
+    .mini-card {
+      background: white;
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    }
+
+    .mini-card strong {
+      display: block;
+      font-size: 21px;
       margin-top: 4px;
     }
 
-    .day-net.pos {
-      color: #27ae60;
-    }
-
-    .day-net.neg {
-      color: #e74c3c;
-    }
-
-    .day-net.zero {
-      color: #bbb;
-    }
-
-    .day-summary {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 5px;
-  margin-top: 6px;
-  white-space: nowrap;
-}
-
-    .day-pos,
-    .day-neg {
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .day-pos {
-      color: #27ae60;
-    }
-
-    .day-neg {
-      color: #e74c3c;
-    }
-
-    #toast {
-  position: fixed;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1a1a2e;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease, bottom .25s ease;
-  z-index: 9999;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-}
-
-#toast.show {
-  opacity: 1;
-  bottom: 32px;
-}
-
-    /* STATS */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .stat-box {
+    .event {
       background: white;
-      border-radius: 12px;
+      border-radius: 16px;
+      padding: 11px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .event.green {
+      color: #166534;
+      background: var(--soft-green);
+    }
+
+    .event.red {
+      color: #991b1b;
+      background: var(--soft-red);
+    }
+
+    .wheel-card {
+      margin-top: 12px;
+      background: var(--soft-blue);
+      color: #1d4ed8;
+      border-radius: 18px;
       padding: 14px;
       text-align: center;
-      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+      font-size: 14px;
+      font-weight: 900;
     }
 
-    .stat-box .slabel {
-      font-size: 11px;
-      color: #888;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 18px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -1px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      min-height: 166px;
+    }
+
+    .feature-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .feature-card:nth-child(1) .feature-icon { background: var(--soft-green); }
+    .feature-card:nth-child(2) .feature-icon { background: var(--soft-gold); }
+    .feature-card:nth-child(3) .feature-icon { background: var(--soft-blue); }
+    .feature-card:nth-child(4) .feature-icon { background: var(--soft-red); }
+
+    .feature-card h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: var(--navy);
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .step {
+      background: var(--navy);
+      color: white;
+      border-radius: 20px;
+      padding: 17px;
+      min-height: 132px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.13);
+    }
+
+    .step-num {
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .step h3 {
+      font-size: 15px;
       margin-bottom: 6px;
     }
 
-    .stat-box .sval {
-      font-size: 26px;
-      font-weight: 700;
-    }
-
-    .sval.green {
-      color: #27ae60;
-    }
-
-    .sval.red {
-      color: #e74c3c;
-    }
-
-    .sval.blue {
-      color: var(--accent, #4a90d9);
-    }
-
-    /* REWARDS */
-    .section-card {
-      background: white;
-      border-radius: 14px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-    }
-
-    .section-card h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
-
-    .reward-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .reward-row:last-child {
-      border-bottom: none;
-    }
-
-    .reward-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .reward-emoji {
-      font-size: 26px;
-    }
-
-    .reward-name {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .reward-pts {
-      font-size: 12px;
-      color: #888;
-      margin-top: 2px;
-    }
-
-    .badge {
-      font-size: 12px;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    .badge.unlocked {
-      background: #e8f8e8;
-      color: #2a7a2a;
-    }
-
-    .badge.locked {
-      background: #f5f5f5;
-      color: #999;
-    }
-
-    /* LOG FORM */
-    .log-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .choice-panels {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .choice-panel {
-      border-radius: 12px;
-      padding: 12px;
-      border: 1.5px solid #e9e9e9;
-      background: #fafafa;
-    }
-
-    .choice-panel.positive {
-      background: #f4fbf4;
-      border-color: #cdeccd;
-    }
-
-    .choice-panel.negative {
-      background: #fff4f0;
-      border-color: #f2c7b6;
-    }
-
-    .choice-panel h4 {
+    .step p {
       font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 8px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.76);
     }
 
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #666;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-group select,
-    .form-group textarea,
-    .form-group input {
-      width: 100%;
-      padding: 9px 12px;
-      border: 1.5px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-      background: white;
-      color: #1a1a2e;
-      transition: border-color 0.15s;
-    }
-
-    .form-group select:focus,
-    .form-group textarea:focus,
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--accent, #4a90d9);
-    }
-
-    .form-group textarea {
-      height: 64px;
-      resize: none;
-    }
-
-    .action-btns {
-      display: flex;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-   .btn-add-pos {
-  background: #16a34a;
-  color: #ffffff;
-  border: 1.5px solid #15803d;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.btn-add-neg {
-  background: #dc2626;
-  color: #ffffff;
-  border: 1.5px solid #b91c1c;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.btn-add-pos:hover {
-  background: #15803d;
-}
-
-.btn-add-neg:hover {
-  background: #b91c1c;
-}
-
-    /* LOG ENTRIES */
-    .entry-list {
-      display: grid;
-      gap: 8px;
-    }
-
-    .entry {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      border-left: 4px solid transparent;
-    }
-
-    .entry.pos-entry {
-      border-left-color: #27ae60;
-    }
-
-    .entry.neg-entry {
-      border-left-color: #e74c3c;
-    }
-
-    .entry .eicon {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    .entry .ebody {
-      flex: 1;
-    }
-
-    .entry .etext {
-      font-size: 13px;
-      font-weight: 500;
-      color: #333;
-    }
-
-    .entry .emeta {
-      font-size: 11px;
-      color: #aaa;
-      margin-top: 3px;
-    }
-
-    .entry .edel {
-      background: none;
-      border: none;
-      color: #ccc;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 0;
-      line-height: 1;
-    }
-
-    .entry .edel:hover {
-      color: #e74c3c;
-    }
-
-    /* JENSON VIEW */
-    .hero-card {
-      background: linear-gradient(135deg, var(--hero-a, #1a1a2e) 0%, var(--hero-b, #16213e) 100%);
-      border-radius: 20px;
-      padding: 28px;
-      text-align: center;
+    .cta {
+      margin: 30px 0 8px;
+      background: linear-gradient(135deg, var(--green), #15803d);
       color: white;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 30px rgba(26, 26, 46, 0.3);
+      border-radius: 28px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 16px 34px rgba(22, 163, 74, 0.24);
     }
 
-    .hero-stars {
-      font-size: 40px;
-      letter-spacing: 6px;
+    .cta h2 {
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.05;
       margin-bottom: 10px;
     }
 
-    .hero-title {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 8px;
+    .cta p {
+      max-width: 620px;
+      margin: 0 auto 18px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.45;
     }
 
-    .hero-score {
-      font-size: 64px;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    .hero-pts {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-bottom: 20px;
-    }
-
-    .prog-bar {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      height: 14px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-
-    .prog-fill {
-      height: 100%;
-      border-radius: 10px;
-      background: linear-gradient(90deg, var(--accent, #27ae60), #2ecc71);
-      transition: width 0.8s ease;
-    }
-
-    .prog-label {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .reward-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .rcard {
+    .cta .btn {
       background: white;
-      border-radius: 14px;
-      padding: 20px;
+      color: #166534;
+      border: 1.5px solid rgba(255,255,255,0.4);
+    }
+
+    .footer {
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-      border: 2px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .rcard.won {
-      border-color: #27ae60;
-      background: #f0fbf0;
-    }
-
-    .rcard .ricon {
-      font-size: 44px;
-      margin-bottom: 10px;
-    }
-
-    .rcard .rname {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1a1a2e;
-    }
-
-    .rcard.won .rname {
-      color: #1a6a1a;
-    }
-
-    .rcard .rstatus {
-      font-size: 12px;
-      color: #aaa;
-      margin-top: 5px;
-    }
-
-    .rcard.won .rstatus {
-      color: #27ae60;
-      font-weight: 600;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .tab {
-      background: white;
-      border: 1.5px solid #e0e0e0;
-      border-radius: 20px;
-      padding: 6px 16px;
+      color: var(--muted);
       font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #888;
-      transition: all 0.15s;
+      padding: 14px 0 6px;
     }
 
-    .tab.active {
-      background: #1a1a2e;
-      color: white;
-      border-color: #1a1a2e;
-    }
-
-    .empty-msg {
-      font-size: 14px;
-      color: #aaa;
-      padding: 12px 0;
-    }
-
-
-    /* SETTINGS */
-    .settings-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .settings-msg {
-      font-size: 13px;
-      font-weight: 700;
-      min-height: 18px;
-      margin-top: 10px;
-      color: #27ae60;
-    }
-
-    .theme-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-
-    .theme-btn {
-      border: 2px solid transparent;
-      border-radius: 12px;
-      padding: 10px 6px;
-      background: white;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 800;
-      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-    }
-
-    .theme-btn.active {
-      border-color: var(--accent, #4a90d9);
-      background: var(--accent-soft, #ddeeff);
-    }
-
-    body[data-theme="dark"] {
-  color: #e5e7eb;
-}
-
-body[data-theme="dark"] .login-form,
-body[data-theme="dark"] .login-card,
-body[data-theme="dark"] .top-bar,
-body[data-theme="dark"] .section-card,
-body[data-theme="dark"] .day-col,
-body[data-theme="dark"] .stat-box,
-body[data-theme="dark"] .rcard,
-body[data-theme="dark"] .nav-btn,
-body[data-theme="dark"] .theme-btn,
-body[data-theme="dark"] .numpad button {
-  background: #1f2a3d;
-  color: #f8fafc;
-  border-color: #3b4a63;
-}
-
-body[data-theme="dark"] h1,
-body[data-theme="dark"] h2,
-body[data-theme="dark"] h3,
-body[data-theme="dark"] h4,
-body[data-theme="dark"] .reward-name,
-body[data-theme="dark"] .rname,
-body[data-theme="dark"] .etext {
-  color: #f8fafc;
-}
-
-body[data-theme="dark"] p,
-body[data-theme="dark"] .reward-pts,
-body[data-theme="dark"] .emeta,
-body[data-theme="dark"] .empty-msg,
-body[data-theme="dark"] .form-group label {
-  color: #cbd5e1;
-}
-
-body[data-theme="dark"] input,
-body[data-theme="dark"] select,
-body[data-theme="dark"] textarea {
-  background: #020617;
-  color: #f8fafc;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] .choice-panel {
-  background: #0f172a;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] .entry {
-  background: #0f172a;
-}
-
-body[data-theme="dark"] .tab {
-  background: #111827;
-  color: #cbd5e1;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] .tab.active,
-body[data-theme="dark"] .primary-btn {
-  background: #38bdf8;
-  color: #020617;
-  border-color: #38bdf8;
-}
-
-body[data-theme="dark"] .theme-btn.active {
-  background: #1e293b;
-  border-color: #38bdf8;
-}
-
-      .wheel-wrap {
-  position: relative;
-  width: 230px;
-  height: 250px;
-  margin: 8px auto 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wheel-pointer {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  font-size: 28px;
-  color: #1a1a2e;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.18);
-}
-
-.spin-wheel {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  position: relative;
-  border: 8px solid #1a1a2e;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
-  transition: transform 10.2s cubic-bezier(0.08, 0.95, 0.18, 1);
-  background:
-  conic-gradient(
-    #ef4444 0deg 51.42deg,
-    #22c55e 51.42deg 102.84deg,
-    #3b82f6 102.84deg 154.26deg,
-    #facc15 154.26deg 205.68deg,
-    #ef4444 205.68deg 257.1deg,
-    #22c55e 257.1deg 308.52deg,
-    #3b82f6 308.52deg 360deg
-  );
-}
-
-.spin-wheel::after {
-  content: "🎡";
-  position: absolute;
-  inset: 50%;
-  width: 54px;
-  height: 54px;
-  transform: translate(-50%, -50%);
-  background: white;
-  border: 5px solid #1a1a2e;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-}
-
-.wheel-label {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 54px;
-  margin-left: -27px;
-  margin-top: -11px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 900;
-  color: #1a1a2e;
-  text-shadow: 0 1px 1px rgba(255,255,255,0.65);
-  transform-origin: 27px 11px;
-}
-
-.label-1 { transform: rotate(25deg) translateY(-78px) rotate(-25deg); }
-.label-2 { transform: rotate(77deg) translateY(-78px) rotate(-77deg); }
-.label-3 { transform: rotate(129deg) translateY(-78px) rotate(-129deg); }
-.label-4 { transform: rotate(181deg) translateY(-78px) rotate(-181deg); }
-.label-5 { transform: rotate(233deg) translateY(-78px) rotate(-233deg); }
-.label-6 { transform: rotate(285deg) translateY(-78px) rotate(-285deg); }
-.label-7 { transform: rotate(337deg) translateY(-78px) rotate(-337deg); }
-
-body[data-theme="dark"] .spin-wheel {
-  border-color: #e5e7eb;
-}
-
-body[data-theme="dark"] .wheel-pointer {
-  color: #e5e7eb;
-}
-
-body[data-theme="dark"] .pin-dot {
-  border-color: #64748b;
-}
-
-body[data-theme="dark"] .pin-dot.filled {
-  background: #38bdf8;
-  border-color: #38bdf8;
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
-}
-
-.theme-toggle-btn {
-  background: var(--accent-soft, #ddeeff);
-  color: var(--accent, #2563eb);
-  border: 1.5px solid var(--accent, #2563eb);
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.confetti-piece {
-  position: fixed;
-  top: -20px;
-  width: 10px;
-  height: 16px;
-  border-radius: 3px;
-  z-index: 10000;
-  pointer-events: none;
-  animation: confetti-fall 3s linear forwards;
-}
-
-@keyframes confetti-fall {
-  from {
-    transform: translateY(-20px) rotate(0deg);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateY(110vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-body[data-theme="dark"] .theme-toggle-btn {
-  background: #0f172a;
-  color: #f8fafc;
-  border-color: #60a5fa;
-}
-
-.day-summary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  font-size: 11px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.day-pos,
-.day-neg {
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.day-net {
-  font-size: 11px;
-  font-weight: 800;
-  margin-top: 5px;
-}
-
-#forgot-family-result {
-  margin-top: 12px;
-}
-
-#forgot-family-result .found-family-card {
-  background: #f8fafc;
-  border: 1.5px solid #dbeafe;
-  border-radius: 12px;
-  padding: 12px;
-  display: grid;
-  gap: 8px;
-}
-
-#forgot-family-result .found-family-code {
-  font-size: 16px;
-  font-weight: 900;
-  color: #1a1a2e;
-  letter-spacing: 0.5px;
-}
-
-.found-family-code {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.08);
-  font-family: monospace;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-body[data-theme="dark"] #forgot-family-result .found-family-card {
-  background: #0f172a;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] #forgot-family-result .found-family-code {
-  color: #f8fafc;
-}
-
-
-
-body[data-theme="dark"] #forgot-family-result .btn-add-pos {
-  background: #16a34a !important;
-  color: #ffffff !important;
-  border-color: #15803d !important;
-}
-
-.found-family-card {
-  background: #f8fafc;
-  border: 1.5px solid #dbeafe;
-  border-radius: 12px;
-  padding: 12px;
-  display: grid;
-  gap: 8px;
-  color: #1a1a2e;
-}
-
-.found-family-title {
-  font-size: 13px;
-  font-weight: 800;
-  color: #334155;
-}
-
-.found-family-code {
-  font-size: 17px;
-  font-weight: 900;
-  color: #020617;
-  letter-spacing: 0.5px;
-}
-
-body[data-theme="dark"] .found-family-card {
-  background: #0f172a;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] .found-family-title,
-body[data-theme="dark"] .found-family-code {
-  color: #f8fafc;
-}
-
-.catalog-helper {
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.4;
-  margin-bottom: 10px;
-}
-
-.catalog-group {
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.catalog-group summary {
-  cursor: pointer;
-  padding: 10px 12px;
-  font-size: 14px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.catalog-count {
-  font-size: 12px;
-  font-weight: 900;
-  background: #e2e8f0;
-  color: #334155;
-  border-radius: 999px;
-  padding: 3px 8px;
-}
-
-.catalog-items {
-  display: grid;
-  gap: 6px;
-  padding: 0 10px 10px;
-}
-
-.catalog-pill-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 8px;
-}
-
-.catalog-pill-main {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-wrap: wrap;
-}
-
-.catalog-pill-icon {
-  font-size: 16px;
-}
-
-.catalog-pill-name {
-  font-size: 13px;
-  font-weight: 800;
-  color: #1a1a2e;
-}
-
-.catalog-pill-points {
-  font-size: 11px;
-  font-weight: 800;
-  color: #64748b;
-}
-
-.catalog-remove-btn {
-  border: 1px solid #dc2626;
-  background: #dc2626;
-  color: white;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-weight: 800;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: 0.15s;
-}
-
-.catalog-remove-btn:hover {
-  background: #b91c1c;
-  border-color: #b91c1c;
-}
-
-body[data-theme="dark"] .catalog-helper {
-  color: #cbd5e1;
-}
-
-body[data-theme="dark"] .catalog-group {
-  background: #0f172a;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] .catalog-count {
-  background: #1e293b;
-  color: #e2e8f0;
-}
-
-body[data-theme="dark"] .catalog-pill-row {
-  background: #111827;
-  border-color: #334155;
-}
-
-body[data-theme="dark"] .catalog-pill-name {
-  color: #f8fafc;
-}
-
-body[data-theme="dark"] .catalog-pill-points {
-  color: #cbd5e1;
-}
-
-    @media (max-width: 600px) {
-
-.day-summary {
-  gap: 3px;
-  font-size: 10px;
-}
-
-.day-pos,
-.day-neg {
-  font-size: 10px;
-}
-
-.day-net {
-  font-size: 10px;
-}
-      body {
-        overflow-x: hidden;
+    @media (max-width: 860px) {
+      .page {
+        padding: 14px;
       }
 
-      .app {
-        max-width: 100%;
-        padding: 12px;
+      .nav {
+        margin-bottom: 14px;
       }
 
-      .login-wrap {
-        margin: 18px auto;
-        max-width: 100%;
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 26px 18px;
+        border-radius: 30px;
+        text-align: center;
+        gap: 22px;
       }
 
-      .login-logo {
-        margin-bottom: 20px;
+      .hero-copy p {
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      .login-logo .big-star {
-        font-size: 44px;
-      }
-
-      .login-logo h1 {
-        font-size: 24px;
-      }
-
-      .login-form,
-      .section-card {
-        border-radius: 16px;
-        padding: 16px;
-      }
-
-      .top-bar {
-        align-items: flex-start;
-        gap: 10px;
-        padding: 12px 14px;
-      }
-
-      .top-bar h2 {
-        font-size: 16px;
-        line-height: 1.25;
-      }
-
-      .logout-btn {
-        padding: 7px 10px;
-        white-space: nowrap;
-      }
-
-      .week-nav-bar {
-        gap: 10px;
-      }
-
-      .days-grid {
-  display: flex;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 2px 2px 8px;
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.days-grid::-webkit-scrollbar {
-  display: none;
-}
-
-.day-col {
-  flex: 0 0 74px;
-  min-height: 88px;
-  padding: 8px 5px;
-  border-radius: 10px;
-  scroll-snap-align: start;
-}
-
-      .day-col .dname,
-      .day-col .ddate {
-        font-size: 10px;
-      }
-
-      .sym-star {
-        font-size: 13px;
-      }
-
-      .sym-cross {
-        font-size: 12px;
-      }
-
-      .day-net {
-        font-size: 11px;
-      }
-
-      .stats-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-      }
-
-      .stat-box {
-        padding: 12px 8px;
-      }
-
-      .stat-box .sval {
-        font-size: 24px;
-      }
-
-      .reward-row {
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .reward-left {
-        gap: 10px;
-        min-width: 0;
-      }
-
-      .badge {
-        white-space: nowrap;
-      }
-
-      .hero-card {
-        border-radius: 18px;
-        padding: 22px 18px;
-      }
-
-      .hero-stars {
-        font-size: 30px;
-        letter-spacing: 3px;
-      }
-
-      .hero-score {
-        font-size: 54px;
-      }
-
-      .reward-cards {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .rcard {
-        padding: 16px 10px;
-      }
-
-      .rcard .ricon {
-        font-size: 36px;
-      }
-
-      .log-grid,
-      .choice-panels,
-      .settings-grid {
+      .actions {
+        display: grid;
         grid-template-columns: 1fr;
       }
 
-      .action-btns {
-        flex-direction: column;
-      }
-
-      .primary-btn,
-      .btn-add-pos,
-      .btn-add-neg {
+      .btn,
+      .landing-secondary {
         width: 100%;
       }
 
-      .theme-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .trust-row {
+        justify-content: center;
       }
 
-      .tabs {
-        overflow-x: auto;
-        padding-bottom: 2px;
+      .phone {
+        width: min(330px, 100%);
+        transform: none;
       }
 
-      .tab {
-        white-space: nowrap;
+      .features {
+        grid-template-columns: 1fr 1fr;
       }
 
-      input,
-      select,
-      textarea,
-      button {
-        font-size: 16px;
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        min-height: auto;
       }
     }
 
-    @media (max-width: 380px) {
-      .wheel-wrap {
-    width: 210px;
-    height: 230px;
-  }
-
-  .spin-wheel {
-    width: 200px;
-    height: 200px;
-  }
-
-  .label-1 { transform: rotate(25deg) translateY(-70px) rotate(-25deg); }
-  .label-2 { transform: rotate(77deg) translateY(-70px) rotate(-77deg); }
-  .label-3 { transform: rotate(129deg) translateY(-70px) rotate(-129deg); }
-  .label-4 { transform: rotate(181deg) translateY(-70px) rotate(-181deg); }
-  .label-5 { transform: rotate(233deg) translateY(-70px) rotate(-233deg); }
-  .label-6 { transform: rotate(285deg) translateY(-70px) rotate(-285deg); }
-  .label-7 { transform: rotate(337deg) translateY(-70px) rotate(-337deg); }
-      .app {
-        padding: 10px;
+    @media (max-width: 480px) {
+      .brand {
+        font-size: 16px;
       }
 
-
-      .hero-score {
-        font-size: 48px;
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 13px;
       }
 
-      .reward-cards {
+      .nav-link {
+        padding: 9px 12px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 24px 16px;
+      }
+
+      .eyebrow {
+        font-size: 12px;
+      }
+
+      h1 {
+        font-size: 42px;
+        letter-spacing: -1.6px;
+      }
+
+      .hero-copy p {
+        font-size: 15px;
+      }
+
+      .phone-screen {
+        min-height: 500px;
+      }
+
+      .score {
+        font-size: 50px;
+      }
+
+      .features {
         grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: auto;
+        display: grid;
+        grid-template-columns: 50px 1fr;
+        column-gap: 12px;
+        align-items: start;
+      }
+
+      .feature-icon {
+        margin-bottom: 0;
+      }
+
+      .cta {
+        padding: 24px 18px;
       }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-  <div class="app" id="app">
+  <main class="page">
+    <nav class="nav">
+      <a class="brand" href="/app.html">
+        <span class="brand-icon">⭐</span>
+        <span>Family Rewards</span>
+      </a>
+      <a class="nav-link" href="/app.html">Open app</a>
+    </nav>
 
-    <!-- FAMILY SETUP / JOIN SCREEN -->
-    <div class="screen active" id="s-family">
-      <div class="login-wrap">
-        <div class="login-logo">
-          <img src="/images/family-rewards-logo.png" alt="Family Rewards" class="app-logo" />
-          <h1>Family Rewards</h1>
-          <p>Choose how you want to start.</p>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">⭐ Simple reward tracking for families</div>
+        <h1>Turn good choices into real rewards.</h1>
+        <p>
+          Family Rewards helps parents track positive behaviour, consequences,
+          reward requests, family progress and weekly spin bonuses in one simple app.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="/app.html">Open Family Rewards</a>
+          <a class="btn btn-secondary" href="#how-it-works">See how it works</a>
         </div>
 
-        <div class="login-form" style="margin-bottom:16px;">
-          <h3>New to Family Rewards?</h3>
-          <p style="font-size:13px;color:#666;line-height:1.4;">
-            Create a family, add your parent and child login, then get your family code.
-          </p>
-          <button class="primary-btn" onclick="show('create-family')">Sign up here</button>
-        </div>
-
-        <div class="login-form">
-          <h3>Already in a family?</h3>
-          <p style="font-size:13px;color:#666;line-height:1.4;">
-            Use your family code to open your family reward chart.
-          </p>
-          <button class="primary-btn" onclick="show('join-family')">Log in here</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="s-create-family">
-      <div class="login-wrap">
-        <div class="login-logo">
-          <span class="big-star">⭐</span>
-          <h1>Create Family</h1>
-          <p>Set up your family reward chart.</p>
-        </div>
-
-        <div class="login-form">
-          <h3>Create a family</h3>
-
-          <div class="form-group">
-            <label>Family surname</label>
-            <input id="create-family-name" placeholder="e.g. Clynch">
-          </div>
-
-          <div class="settings-grid">
-            <div class="form-group"><label>Parent name</label><input id="create-parent-name" placeholder="e.g. Dad">
-            </div>
-            <div class="form-group"><label>Parent username</label><input id="create-parent-username"
-                placeholder="e.g. dad"></div>
-            <div class="form-group"><label>Parent PIN</label><input id="create-parent-pin" maxlength="4"
-                inputmode="numeric" placeholder="4 digits"></div>
-            <div class="form-group"><label>Child name</label><input id="create-child-name" placeholder="e.g. Jenson">
-            </div>
-            <div class="form-group"><label>Child username</label><input id="create-child-username"
-                placeholder="e.g. jenson"></div>
-            <div class="form-group"><label>Child PIN</label><input id="create-child-pin" maxlength="4"
-                inputmode="numeric" placeholder="4 digits"></div>
-          </div>
-
-          <button class="primary-btn" id="create-family-btn" onclick="createFamily()">Create family</button>
-          <div class="pin-error" id="create-family-err"></div>
-
-          <button class="back-link" type="button" onclick="show('family')">← Back</button>
+        <div class="trust-row">
+          <span>Parent controls</span>
+          <span>Child dashboard</span>
+          <span>Weekly rewards</span>
         </div>
       </div>
-    </div>
 
-    <div class="screen" id="s-join-family">
-      <div class="login-wrap">
-        <div class="login-logo">
-          <span class="big-star">⭐</span>
-          <h1>Open Family</h1>
-          <p>Enter your family code.</p>
-        </div>
-        <div class="login-form">
-          <h3>Already in a family?</h3>
-
-          <div class="form-group">
-            <label>Family code</label>
-            <input id="join-family-code" placeholder="e.g. CLYNCH-A7K2"
-              onkeydown="if(event.key==='Enter') joinFamily()">
-          </div>
-
-          <button class="back-link" type="button" onclick="toggleForgotFamilyCode()">
-            Forgot family code?
-          </button>
-
-          <div id="forgot-family-box" style="display:none;margin-top:12px;">
-            <div class="form-group">
-              <label>Family surname</label>
-              <input id="forgot-family-name" placeholder="e.g. Clynch">
-            </div>
-
-            <button class="btn-add-pos" type="button" onclick="findFamilyCode()">
-              Find family code
-            </button>
-
-            <div class="pin-error" id="forgot-family-err"></div>
-            <div id="forgot-family-result"></div>
-          </div>
-
-          <button class="primary-btn" id="join-family-btn" onclick="joinFamily()">Open Family</button>
-
-          <div class="pin-error" id="join-family-err"></div>
-
-          <button class="back-link" type="button" onclick="show('family')">← Back</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- LOGIN SCREEN -->
-    <div class="screen" id="s-login">
-      <div class="login-wrap">
-        <div class="login-logo">
-          <img src="/images/family-rewards-logo.png" alt="Family Rewards" class="app-logo" />
-
-          <h1>Family Rewards</h1>
-          <p>Choose how you want to start.</p>
-        </div>
-        <div class="login-form" id="family-created-card"
-          style="display:none;margin-bottom:16px;background:#f0fbf0;border:1.5px solid #b5dfb5;">
-          <h3>✅ Family created!</h3>
-          <p style="font-size:13px;color:#1a1a2e;line-height:1.4;margin-bottom:10px;">Save this family code. Anyone
-            joining this family will need it.</p>
-          <p style="font-size:18px;font-weight:800;letter-spacing:1px;color:#1a1a2e;margin-bottom:10px;"
-            id="created-family-code"></p>
-          <button class="btn-add-pos" type="button" onclick="copyFamilyCode()">Copy family code</button>
-        </div>
-        <div class="login-form">
-          <div class="form-group">
-            <label>Username</label>
-            <input id="login-username" autocomplete="username" placeholder="e.g. dad or jenson"
-              onkeydown="if(event.key==='Enter') goPin()">
-          </div>
-          <button class="primary-btn" onclick="goPin()">Continue</button>
-          <div class="pin-error" id="login-err"></div>
-          <p style="font-size:12px;color:#888;line-height:1.4;">Log in with the username and PIN created for this
-            family.</p>
-          <button class="back-link" type="button" onclick="switchFamily()">Open a different family</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PIN SCREEN -->
-    <div class="screen" id="s-pin">
-      <div class="pin-wrap">
-        <h2 id="pin-heading">Enter PIN</h2>
-        <p class="hint" id="pin-hint">Enter your 4-digit PIN</p>
-        <div class="pin-dots">
-          <div class="pin-dot" id="pd0"></div>
-          <div class="pin-dot" id="pd1"></div>
-          <div class="pin-dot" id="pd2"></div>
-          <div class="pin-dot" id="pd3"></div>
-        </div>
-        <div class="numpad">
-          <button onclick="kp('1')">1</button>
-          <button onclick="kp('2')">2</button>
-          <button onclick="kp('3')">3</button>
-          <button onclick="kp('4')">4</button>
-          <button onclick="kp('5')">5</button>
-          <button onclick="kp('6')">6</button>
-          <button onclick="kp('7')">7</button>
-          <button onclick="kp('8')">8</button>
-          <button onclick="kp('9')">9</button>
-          <button onclick="kp('back')" style="font-size:18px">⌫</button>
-          <button onclick="kp('0')">0</button>
-          <button onclick="kp('clr')" style="font-size:13px">Clear</button>
-        </div>
-        <div class="pin-error" id="pin-err"></div>
-        <br>
-        <button class="back-link" onclick="show('login')">← Back</button>
-      </div>
-    </div>
-
-    <!-- PARENT SCREEN -->
-    <div class="screen" id="s-parent">
-      <div class="top-bar">
-        <div style="display:flex;align-items:center">
-          <h2 id="p-title">Reward Chart</h2>
-          <span class="role-badge parent-badge">Parent</span>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-  <button class="theme-toggle-btn" onclick="toggleDarkMode()">🌙 / ☀️</button>
-  <button class="logout-btn" onclick="logout()">Log out</button>
+      <div class="hero-visual">
+  <img
+    src="images/child-dashboard.jpg"
+    alt="Family Rewards Child Dashboard"
+    style="
+      width:100%;
+      max-width:420px;
+      border-radius:24px;
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+      display:block;
+      margin:auto;
+    "
+  />
 </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Built for everyday family life.</h2>
+        <p>
+          Keep it simple: reward good moments, track harder moments, approve rewards
+          and let children see their progress clearly.
+        </p>
       </div>
 
-      <div class="week-nav-bar">
-        <h3 id="p-week-label">This week</h3>
-        <div class="nav-btns">
-          <button class="nav-btn" onclick="wk(-1)">&#8249;</button>
-          <button class="nav-btn" onclick="wk(1)">&#8250;</button>
-        </div>
-      </div>
-
-      <div class="days-grid" id="p-days"></div>
-      <div class="stats-row" id="p-stats"></div>
-
-      <div class="section-card" id="child-switch-card" style="display:none;">
-        <h3>👧 Children</h3>
-        <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Choose which child you want to view or
-          update.</p>
-        <div class="tabs" id="p-child-buttons"></div>
-      </div>
-
-      <div class="section-card">
-        <h3>🎁 Rewards this week</h3>
-        <div id="p-rewards"></div>
-      </div>
-
-      <div class="section-card">
-        <h3>🛠️ Family points & rewards</h3>
-        <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Parents can add their own positive
-          points, consequences and rewards for this family.</p>
-
-        <div class="choice-panels">
-          <div class="choice-panel positive">
-            <h4>⭐ Add positive</h4>
-            <div class="form-group"><label>Name</label><input id="custom-pos-label" placeholder="e.g. Fed the pet">
-            </div>
-            <div class="form-group"><label>Points</label><input id="custom-pos-points" type="number" inputmode="numeric"
-                min="1" placeholder="2"></div>
-            <button class="btn-add-pos" onclick="addCustomBehaviour('positive')" style="margin-top:8px">Add
-              positive</button>
+      <div class="features">
+        <article class="feature-card">
+          <div class="feature-icon">⭐</div>
+          <div>
+            <h3>Positive behaviour</h3>
+            <p>Award points for routines, kindness, schoolwork, chores and calm choices.</p>
           </div>
+        </article>
 
-          <div class="choice-panel negative">
-            <h4>✖ Add consequence</h4>
-            <div class="form-group"><label>Name</label><input id="custom-neg-label" placeholder="e.g. Messy room"></div>
-            <div class="form-group"><label>Points lost</label><input id="custom-neg-points" type="number"
-                inputmode="numeric" min="1" placeholder="1"></div>
-            <button class="btn-add-neg" onclick="addCustomBehaviour('negative')" style="margin-top:8px">Add
-              consequence</button>
+        <article class="feature-card">
+          <div class="feature-icon">🎁</div>
+          <div>
+            <h3>Reward requests</h3>
+            <p>Children can request rewards, while parents approve or deny them.</p>
           </div>
-        </div>
+        </article>
 
-        <div class="choice-panel" style="margin-top:12px;">
-          <h4>🎁 Add reward</h4>
-          <div class="settings-grid">
-            <div class="form-group"><label>Reward name</label><input id="custom-reward-name"
-                placeholder="e.g. Park trip"></div>
-            <div class="form-group"><label>Points needed</label><input id="custom-reward-points" type="number"
-                inputmode="numeric" min="1" placeholder="20"></div>
-            <div class="form-group"><label>Description</label><input id="custom-reward-desc"
-                placeholder="Optional short description"></div>
+        <article class="feature-card">
+          <div class="feature-icon">🎡</div>
+          <div>
+            <h3>Weekly spin wheel</h3>
+            <p>Reach the weekly target and unlock a fun Sunday bonus spin.</p>
           </div>
-          <button class="btn-add-pos" onclick="addCustomReward()" style="margin-top:8px">Add reward</button>
-        </div>
+        </article>
 
-        <div class="settings-msg" id="catalog-msg"></div>
-        <details style="margin-top:14px;">
-          <summary style="cursor:pointer;font-weight:800;font-size:14px;">
-            Manage existing options
-          </summary>
-          <div id="catalog-list" style="display:grid;gap:12px;margin-top:14px;"></div>
-        </details>
-      </div>
-
-      <details class="section-card" style="padding:18px 20px;">
-        <summary style="cursor:pointer;font-weight:800;font-size:16px;">⚙️ Admin settings</summary>
-        <div style="margin-top:16px;">
-          <div class="section-card">
-            <h3>⚙️ Account settings</h3>
-            <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.4;">Change your parent login details or
-              the currently selected child login details here.</p>
-            <p style="font-size:13px;color:#1a1a2e;margin-bottom:12px;line-height:1.4;"><strong>Family code:</strong>
-              <span id="family-code-display"></span> <button class="btn-add-pos" type="button"
-                onclick="copyFamilyCode()" style="padding:6px 10px;margin-left:8px;">Copy</button></p>
-            <div class="settings-grid">
-              <div class="form-group">
-                <label>Parent name</label>
-                <input id="set-parent-name" placeholder="Parent name">
-              </div>
-              <div class="form-group">
-                <label>Parent username</label>
-                <input id="set-parent-username" autocomplete="username" placeholder="parent username">
-              </div>
-              <div class="form-group">
-                <label>Parent PIN</label>
-                <input id="set-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
-              </div>
-              <div></div>
-              <div class="form-group">
-                <label>Child name</label>
-                <input id="set-child-name" placeholder="Child name">
-              </div>
-              <div class="form-group">
-                <label>Child username</label>
-                <input id="set-child-username" autocomplete="username" placeholder="child username">
-              </div>
-              <div class="form-group">
-                <label>Child PIN</label>
-                <input id="set-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
-              </div>
-            </div>
-            <button class="btn-add-pos" onclick="saveAccountSettings()" style="margin-top:12px">Save account
-              details</button>
-            <div class="settings-msg" id="pin-settings-msg"></div>
+        <article class="feature-card">
+          <div class="feature-icon">👨‍👩‍👧</div>
+          <div>
+            <h3>Family setup</h3>
+            <p>Parent and child logins, multiple children and family-specific options.</p>
           </div>
+        </article>
+      </div>
+    </section>
 
-          <div class="section-card">
-            <h3>➕ Add child to this parent</h3>
-            <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Use this when one parent needs to
-              manage more than one child.</p>
-            <div class="settings-grid">
-              <div class="form-group">
-                <label>Child name</label>
-                <input id="add-child-name" placeholder="e.g. Emily">
-              </div>
-              <div class="form-group">
-                <label>Child username</label>
-                <input id="add-child-username" placeholder="e.g. emily">
-              </div>
-              <div class="form-group">
-                <label>Child PIN</label>
-                <input id="add-child-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
-              </div>
-            </div>
-            <button class="btn-add-pos" onclick="addChildToParent()" style="margin-top:12px">Add child</button>
-            <div class="settings-msg" id="add-child-msg"></div>
-          </div>
-
-          <div class="section-card" id="second-parent-card">
-            <h3>➕ Add second parent</h3>
-            <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.4;">Use this for Mum/Dad/guardian.
-              Maximum 2 parents per family. The second parent will manage the same child or children as this parent.</p>
-            <div class="settings-grid">
-              <div class="form-group">
-                <label>Second parent name</label>
-                <input id="second-parent-name" placeholder="e.g. Mum">
-              </div>
-              <div class="form-group">
-                <label>Second parent username</label>
-                <input id="second-parent-username" placeholder="e.g. mum">
-              </div>
-              <div class="form-group">
-                <label>Second parent PIN</label>
-                <input id="second-parent-pin" maxlength="4" inputmode="numeric" placeholder="4 digits">
-              </div>
-            </div>
-            <button class="btn-add-pos" id="second-parent-btn" onclick="addSecondParentToFamily()"
-              style="margin-top:12px">Add second parent</button>
-            <div class="settings-msg" id="add-parent-msg"></div>
-          </div>
-
-          <div class="section-card">
-  <h3>🎨 App theme</h3>
-  <p style="font-size:13px;color:#666;margin-bottom:12px;">
-    Choose the theme for this family.
-  </p>
-
-  <div class="theme-grid">
-    <button class="theme-btn" data-theme-btn="blue" onclick="saveTheme('blue')">🌊 Ocean</button>
-    <button class="theme-btn" data-theme-btn="green" onclick="saveTheme('green')">🌲 Forest</button>
-    <button class="theme-btn" data-theme-btn="gold" onclick="saveTheme('gold')">🏆 Gold</button>
-    <button class="theme-btn" data-theme-btn="red" onclick="saveTheme('red')">🔥 Ruby</button>
-    <button class="theme-btn" data-theme-btn="football" onclick="saveTheme('football')">⚽ Football</button>
-    <button class="theme-btn" data-theme-btn="dark" onclick="saveTheme('dark')">🌙 Dark</button>
-  </div>
-
-   <div class="settings-msg" id="parent-theme-settings-msg"></div>
-</div>
-
-<div class="section-card">
-  <h3>🎡 Weekly Spin Wheel</h3>
-
-  <p style="font-size:13px;color:#666;margin-bottom:12px;">
-    Set how many points are needed to unlock the Sunday wheel spin.
-  </p>
-
-  <div class="form-group">
-    <label>Points required</label>
-    <input
-      id="wheel-threshold"
-      type="number"
-      min="1"
-      max="999"
-      placeholder="25">
-  </div>
-
-  <details style="margin-top:12px;">
-    <summary style="cursor:pointer;font-weight:800;font-size:14px;">
-      Edit wheel prizes
-    </summary>
-
-    <div id="wheel-prize-settings" style="display:grid;gap:10px;margin-top:12px;">
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 1 prize type</label>
-          <select id="wheel-label-input-0"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-0" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-0" type="number" inputmode="numeric" min="0" step="1">
-        </div>
+    <section class="section" id="how-it-works">
+      <div class="section-title">
+        <h2>How it works</h2>
+        <p>Start with the default behaviours and rewards, then customise the app for your family.</p>
       </div>
 
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 2 prize type</label>
-          <select id="wheel-label-input-1"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-1" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-1" type="number" inputmode="numeric" min="0" step="1">
-        </div>
+      <div class="steps">
+        <article class="step">
+          <span class="step-num">1</span>
+          <h3>Create your family</h3>
+          <p>Set up your parent and child login details.</p>
+        </article>
+
+        <article class="step">
+          <span class="step-num">2</span>
+          <h3>Award points</h3>
+          <p>Add positives and consequences during the week.</p>
+        </article>
+
+        <article class="step">
+          <span class="step-num">3</span>
+          <h3>Track progress</h3>
+          <p>Children can see their weekly score and rewards.</p>
+        </article>
+
+        <article class="step">
+          <span class="step-num">4</span>
+          <h3>Approve rewards</h3>
+          <p>Parents stay in control of reward requests.</p>
+        </article>
+
+        <article class="step">
+          <span class="step-num">5</span>
+          <h3>Spin weekly</h3>
+          <p>Hit the target and unlock the Sunday wheel.</p>
+        </article>
       </div>
-
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 3 prize type</label>
-          <select id="wheel-label-input-2"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-2" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-2" type="number" inputmode="numeric" min="0" step="1">
-        </div>
-      </div>
-
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 4 prize type</label>
-          <select id="wheel-label-input-3"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-3" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-3" type="number" inputmode="numeric" min="0" step="1">
-        </div>
-      </div>
-
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 5 prize type</label>
-          <select id="wheel-label-input-4"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-4" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-4" type="number" inputmode="numeric" min="0" step="1">
-        </div>
-      </div>
-
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 6 prize type</label>
-          <select id="wheel-label-input-5"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-5" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-5" type="number" inputmode="numeric" min="0" step="1">
-        </div>
-      </div>
-
-      <div class="settings-grid">
-        <div class="form-group">
-          <label>Slot 7 prize type</label>
-          <select id="wheel-label-input-6"></select>
-        </div>
-        <div class="form-group">
-          <label>Reward text</label>
-          <input id="wheel-prize-input-6" maxlength="60">
-        </div>
-        <div class="form-group">
-          <label>Points awarded</label>
-          <input id="wheel-points-input-6" type="number" inputmode="numeric" min="0" step="1">
-        </div>
-      </div>
-    </div>
-  </details>
-
-  <button
-    class="btn-add-pos"
-    onclick="saveWheelSettings()"
-    style="margin-top:12px">
-    Save wheel settings
-  </button>
-
-  <div class="settings-msg" id="wheel-settings-msg"></div>
-</div>
-
-        </div>
-      </details>
-
-      <div class="section-card">
-        <h3>📝 Log a behaviour</h3>
-        <div class="log-grid">
-          <div class="form-group">
-            <label>Day</label>
-            <select id="f-day">
-              <option value="0">Monday</option>
-              <option value="1">Tuesday</option>
-              <option value="2">Wednesday</option>
-              <option value="3">Thursday</option>
-              <option value="4">Friday</option>
-              <option value="5">Saturday</option>
-              <option value="6">Sunday</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="choice-panels">
-          <div class="choice-panel positive">
-            <h4>⭐ Positive outcome</h4>
-            <div class="form-group">
-              <label>Positive category</label>
-              <select id="f-pos-cat">
-                <option value="">Loading positives...</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="choice-panel negative">
-            <h4>✖ Negative outcome</h4>
-            <div class="form-group">
-              <label>Consequence category</label>
-              <select id="f-neg-cat">
-                <option value="">Loading consequences...</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:12px">
-          <label>Note (optional)</label>
-          <textarea id="f-note" placeholder="Add a short note about what happened..."></textarea>
-        </div>
-        <div class="action-btns">
-          <button class="btn-add-pos" onclick="addEntry('positive')">⭐ Add positive points</button>
-          <button class="btn-add-neg" onclick="addEntry('negative')">✖ Add consequence</button>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <h3>📋 This week's log</h3>
-        <div class="entry-list" id="p-entries"></div>
-      </div>
-    </div>
-
-    <!-- JENSON SCREEN -->
-    <div class="screen" id="s-child">
-      <div class="top-bar">
-        <div style="display:flex;align-items:center">
-          <h2 id="c-title">Hi! 👋</h2>
-          <span class="role-badge child-badge">Your chart</span>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-  <button class="theme-toggle-btn" onclick="toggleDarkMode()">🌙 / ☀️</button>
-  <button class="logout-btn" onclick="logout()">Log out</button>
-</div>
-      </div>
-
-      <div class="hero-card">
-        <div class="hero-stars" id="c-stars">⭐⭐⭐</div>
-        <div class="hero-title">Your points this week</div>
-        <div class="hero-score" id="c-score">0</div>
-        <div class="hero-pts">points</div>
-        <div class="prog-bar">
-          <div class="prog-fill" id="c-prog" style="width:0%"></div>
-        </div>
-        <div class="prog-label" id="c-prog-label">Keep going!</div>
-      </div>
-
-      <div class="reward-cards" id="c-reward-cards"></div>
-      <div class="section-card" id="weekly-spin-card" style="display:none;">
-  <h3>🎡 Sunday Spin Wheel</h3>
-
-  <div class="wheel-wrap">
-    <div class="wheel-pointer">▼</div>
-    <div class="spin-wheel" id="spin-wheel">
-      <div class="wheel-label label-1" id="wheel-label-0">+5</div>
-<div class="wheel-label label-2" id="wheel-label-1">+10</div>
-<div class="wheel-label label-3" id="wheel-label-2">+15</div>
-<div class="wheel-label label-4" id="wheel-label-3">Treat</div>
-<div class="wheel-label label-5" id="wheel-label-4">Movie</div>
-<div class="wheel-label label-6" id="wheel-label-5">Dessert</div>
-<div class="wheel-label label-7" id="wheel-label-6">+25</div>
-    </div>
-  </div>
-
-  <p id="weekly-spin-status" style="font-size:14px;color:#666;line-height:1.4;margin-bottom:12px;"></p>
-
-  <button class="primary-btn" id="weekly-spin-btn" onclick="spinWeeklyWheel()">
-    Spin the Wheel
-  </button>
-</div>
-
-      <div class="section-card">
-        <h3>🎨 Choose your theme</h3>
-        <div class="theme-grid">
-          <button class="theme-btn" data-theme-btn="blue" onclick="saveTheme('blue')">🌊 Ocean</button>
-          <button class="theme-btn" data-theme-btn="green" onclick="saveTheme('green')">🌲 Forest</button>
-          <button class="theme-btn" data-theme-btn="gold" onclick="saveTheme('gold')">🏆 Gold</button>
-          <button class="theme-btn" data-theme-btn="red" onclick="saveTheme('red')">🔥 Ruby</button>
-          <button class="theme-btn" data-theme-btn="football" onclick="saveTheme('football')">⚽ Football</button>
-       <button class="theme-btn" data-theme-btn="dark" onclick="saveTheme('dark')">🌙 Dark</button>
-        </div>
-        <div class="settings-msg" id="theme-settings-msg"></div>
-      </div>
-
-      <div class="section-card">
-        <h3>Your behaviour log</h3>
-        <div class="tabs">
-          <button class="tab active" id="t-all" onclick="setTab('all')">All</button>
-          <button class="tab" id="t-pos" onclick="setTab('pos')">⭐ Positives</button>
-          <button class="tab" id="t-neg" onclick="setTab('neg')">✖ Negatives</button>
-        </div>
-        <div class="entry-list" id="c-entries"></div>
-      </div>
-    </div>
-
- </div>
-
-<div id="toast"></div>
-<audio id="wheel-sound" src="/sounds/wheel-spin.mp3" preload="auto"></audio>
-
-<script>
-    const DEFAULT_PARENT_PIN = '1234';
-    const DEFAULT_CHILD_PIN = '0000';
-    const DEFAULT_WHEEL_THRESHOLD = 25;
-const DEBUG_SPIN_WHEEL = true;
-const WHEEL_PRIZE_OPTIONS = [
-  { value: 'plus5', label: '+5 points', wheelLabel: '+5', prize: '+5 bonus points', points: 5 },
-  { value: 'plus10', label: '+10 points', wheelLabel: '+10', prize: '+10 bonus points', points: 10 },
-  { value: 'plus15', label: '+15 points', wheelLabel: '+15', prize: '+15 bonus points', points: 15 },
-  { value: 'plus25', label: '+25 points', wheelLabel: '+25', prize: 'Jackpot +25 points', points: 25 },
-  { value: 'treat', label: 'Small treat', wheelLabel: 'Treat', prize: 'Small treat voucher', points: 0 },
-  { value: 'movie', label: 'Movie choice', wheelLabel: 'Movie', prize: 'Movie choice voucher', points: 0 },
-  { value: 'dessert', label: 'Dessert choice', wheelLabel: 'Dessert', prize: 'Pick dessert voucher', points: 0 },
-  { value: 'game', label: 'Extra game time', wheelLabel: 'Game', prize: 'Extra game time voucher', points: 0 },
-  { value: 'surprise', label: 'Surprise reward', wheelLabel: 'Prize', prize: 'Surprise reward voucher', points: 0 }
-];
-
-const DEFAULT_WHEEL_PRIZES = [
-  { label: '+5', prize: '+5 bonus points', points: 5 },
-  { label: '+10', prize: '+10 bonus points', points: 10 },
-  { label: '+15', prize: '+15 bonus points', points: 15 },
-  { label: 'Treat', prize: 'Small treat voucher', points: 0 },
-  { label: 'Movie', prize: 'Movie choice voucher', points: 0 },
-  { label: 'Dessert', prize: 'Pick dessert voucher', points: 0 },
-  { label: '+25', prize: 'Jackpot +25 points', points: 25 }
-];
-
-
-    const DEFAULT_REWARDS = [
-      { icon: '🎁', name: 'Small treat', pts: 8, desc: 'A small snack or sweet treat' },
-      { icon: '🎬', name: 'Movie night', pts: 14, desc: 'Choose a film for everyone' },
-      { icon: '🍕', name: 'Takeaway choice', pts: 18, desc: 'Pick the family takeaway' },
-      { icon: '🎮', name: 'Extra game time', pts: 22, desc: 'Bonus screen/game time' },
-      { icon: '⭐', name: 'Big reward choice', pts: 35, desc: 'Choose a bigger weekend reward' },
-    ];
-
-    const DEFAULT_POSITIVE_BEHAVIOURS = [
-  { icon: '🌅', label: 'Brilliant morning routine', points: 3 },
-  { icon: '👂', label: 'Listened first time', points: 2 },
-  { icon: '😊', label: 'Kind / helpful to others', points: 2 },
-  { icon: '📚', label: 'Did homework or schoolwork', points: 2 },
-  { icon: '🧘', label: 'Stayed calm when frustrated', points: 3 },
-  { icon: '✅', label: 'Told the truth / owned up', points: 3 },
-  { icon: '🧹', label: 'Tidied room', points: 2 },
-  { icon: '🎒', label: 'Got ready without fuss', points: 2 },
-  { icon: '🌙', label: 'Good bedtime routine', points: 2 },
-  { icon: '💪', label: 'Tried hard at something difficult', points: 3 },
-
-  { icon: '🪥', label: 'Brushed teeth without being asked', points: 1 },
-  { icon: '🛏️', label: 'Made bed', points: 1 },
-  { icon: '👕', label: 'Got dressed independently', points: 2 },
-  { icon: '🥣', label: 'Ate breakfast nicely', points: 1 },
-  { icon: '🍽️', label: 'Ate dinner nicely', points: 2 },
-  { icon: '🧼', label: 'Washed hands / kept clean', points: 1 },
-  { icon: '🚿', label: 'Had bath or shower without fuss', points: 2 },
-
-  { icon: '🏫', label: 'Good day at school', points: 3 },
-  { icon: '✍️', label: 'Completed reading practice', points: 2 },
-  { icon: '🧠', label: 'Focused well', points: 2 },
-  { icon: '🙋', label: 'Used good manners', points: 2 },
-  { icon: '🤝', label: 'Shared nicely', points: 2 },
-  { icon: '🫶', label: 'Helped someone without being asked', points: 3 },
-
-  { icon: '🧺', label: 'Helped with washing or laundry', points: 2 },
-  { icon: '🗑️', label: 'Put rubbish in the bin', points: 1 },
-  { icon: '🍽️', label: 'Helped clear the table', points: 2 },
-  { icon: '🐾', label: 'Helped with pet care', points: 2 },
-  { icon: '🧸', label: 'Put toys away', points: 2 },
-  { icon: '🧽', label: 'Helped clean up a mess', points: 2 },
-
-  { icon: '🎮', label: 'Played games nicely', points: 2 },
-  { icon: '📱', label: 'Stopped screen time calmly', points: 3 },
-  { icon: '⏰', label: 'Followed instructions quickly', points: 2 },
-  { icon: '🗣️', label: 'Used a calm voice', points: 2 },
-  { icon: '💬', label: 'Asked politely', points: 1 },
-  { icon: '🙏', label: 'Said sorry properly', points: 2 },
-
-  { icon: '⭐', label: 'Extra brilliant behaviour', points: 5 },
-  { icon: '🏆', label: 'Superstar day', points: 5 }
-];
-
-    const DEFAULT_NEGATIVE_BEHAVIOURS = [
-  { icon: '⚠️', label: 'Told more than once', points: -1 },
-  { icon: '🗣️', label: 'Shouting', points: -1 },
-  { icon: '😡', label: 'Screaming', points: -2 },
-  { icon: '🙄', label: 'Rude or disrespectful', points: -2 },
-  { icon: '🙅', label: 'Refused to cooperate', points: -2 },
-  { icon: '📵', label: 'Ignored instructions', points: -2 },
-  { icon: '💬', label: 'Arguing back', points: -1 },
-  { icon: '🚪', label: 'Stormed off / slammed doors', points: -2 },
-
-  { icon: '🧸', label: 'Did not tidy up', points: -1 },
-  { icon: '🛏️', label: 'Bedroom left messy', points: -1 },
-  { icon: '🍽️', label: 'Messy eating / poor table manners', points: -1 },
-  { icon: '🪥', label: 'Refused teeth brushing', points: -1 },
-  { icon: '🌙', label: 'Bedtime behaviour', points: -2 },
-  { icon: '⏰', label: 'Delaying / wasting time', points: -1 },
-
-  { icon: '🎮', label: 'Poor behaviour while gaming', points: -2 },
-  { icon: '📱', label: 'Screen time argument', points: -2 },
-  { icon: '🛑', label: 'Did not stop when asked', points: -2 },
-  { icon: '🎧', label: 'Not listening because of device/game', points: -1 },
-
-  { icon: '🤥', label: 'Lying', points: -3 },
-  { icon: '🫢', label: 'Serious lie', points: -4 },
-  { icon: '🧱', label: 'Broke a rule', points: -2 },
-  { icon: '🚫', label: 'Did something unsafe', points: -3 },
-  { icon: '🏃', label: 'Ran off / left without asking', points: -2 },
-  { icon: '🧨', label: 'Reckless behaviour', points: -3 },
-
-  { icon: '💢', label: 'Damaged something', points: -3 },
-  { icon: '🥊', label: 'Aggressive behaviour', points: -5 },
-  { icon: '✋', label: 'Hitting / kicking / pushing', points: -5 },
-  { icon: '😠', label: 'Threatening behaviour', points: -4 },
-  { icon: '😭', label: 'Deliberately upset someone', points: -3 },
-  { icon: '👎', label: 'Unkind behaviour', points: -2 },
-
-  { icon: '🏫', label: 'Poor behaviour at school', points: -3 },
-  { icon: '📚', label: 'Refused homework or reading', points: -2 },
-  { icon: '🚌', label: 'Poor behaviour outside the home', points: -3 }
-];
-
-    const OLD_BEHAVIOUR_POINTS = {
-      'Brilliant morning routine': 3,
-      'Listened first time': 2,
-      'Kind / helpful to others': 2,
-      'Did homework or schoolwork': 2,
-      'Stayed calm when frustrated': 3,
-      'Told the truth / owned up': 3,
-      'Tidied room': 2,
-      'Got ready without fuss': 2,
-      'Good bedtime routine': 2,
-      'Tried hard at something difficult': 3,
-      'Told more than once to do something': -1,
-      'Shouting': -1,
-      'Screaming': -2,
-      'Rude or disrespectful': -2,
-      'Refused to cooperate': -2,
-      'Left without asking': -2,
-      'Broke a rule': -2,
-      'Reckless behaviour': -3,
-      'Damaged item': -3,
-      'Threatening behaviour': -4,
-      'Aggressive behaviour': -5,
-      'Damaged something on purpose': -5,
-      'Unsafe behaviour': -5,
-    };
-
-    function makeCatalogId(prefix) {
-      return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
-    }
-
-    function normalizeUsername(value) {
-      return String(value || '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '');
-    }
-
-    function makeChildId(username) {
-      return 'child_' + normalizeUsername(username || ('child-' + Date.now()));
-    }
-
-    function defaultUsersFromSettings(settings = {}) {
-      return {
-        dad: {
-          username: 'dad',
-          pin: settings.parentPin || DEFAULT_PARENT_PIN,
-          role: 'parent',
-          name: 'Parent',
-          childId: 'jenson'
-        },
-        jenson: {
-          username: 'jenson',
-          pin: settings.childPin || DEFAULT_CHILD_PIN,
-          role: 'child',
-          name: 'Jenson',
-          childId: 'jenson'
-        }
-      };
-    }
-
-    function ensureMultiUserData(all) {
-      all = all && typeof all === 'object' ? all : {};
-      if (!all.__settings) all.__settings = { theme: 'blue' };
-      if (!all.__children) all.__children = {};
-      if (!all.__users) all.__users = defaultUsersFromSettings(all.__settings);
-
-      if (!all.__children.jenson) {
-        all.__children.jenson = { id: 'jenson', name: 'Jenson', weeks: {} };
-      }
-      if (!all.__children.jenson.weeks) all.__children.jenson.weeks = {};
-
-      // Migrate old single-child week data into Jenson's child profile without deleting the backup.
-      Object.keys(all).forEach(key => {
-        if (/^\d{4}-\d{2}-\d{2}$/.test(key) && Array.isArray(all[key]) && !all.__children.jenson.weeks[key]) {
-          all.__children.jenson.weeks[key] = all[key];
-        }
-      });
-
-      // Make sure every user is stored under its normalized username.
-      const normalizedUsers = {};
-      Object.values(all.__users).forEach(user => {
-        if (!user || !user.username) return;
-        const key = normalizeUsername(user.username);
-        normalizedUsers[key] = { ...user, username: key };
-      });
-      all.__users = Object.keys(normalizedUsers).length ? normalizedUsers : defaultUsersFromSettings(all.__settings);
-
-      Object.values(all.__users).forEach(user => {
-        if (user.role === 'parent') {
-          setParentChildIds(user, getParentChildIds(user));
-        }
-
-        if (user.role === 'child' && user.childId && !all.__children[user.childId]) {
-          all.__children[user.childId] = { id: user.childId, name: user.name || user.username, weeks: {} };
-        }
-      });
-
-      Object.values(all.__users).forEach(user => {
-        if (user.role === 'parent') {
-          getParentChildIds(user).forEach(childId => {
-            if (childId && !all.__children[childId]) {
-              all.__children[childId] = { id: childId, name: 'Child', weeks: {} };
-            }
-          });
-        }
-      });
-if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
-
-all.__customCatalog = all.__customCatalog && typeof all.__customCatalog === 'object'
-  ? all.__customCatalog
-  : {};
-
-all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
-  ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-  : [];
-
-all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
-  ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-  : [];
-
-all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
-  ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-  : [];
-
-/*
-  Migration for older families:
-  anything in old __catalog that is NOT one of the defaults becomes custom.
-*/
-if (all.__catalog && typeof all.__catalog === 'object') {
-  const defaults = {
-    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
-    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
-    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
-  };
-
-  const isSameBehaviour = (a, b) =>
-    String(a.label || '').toLowerCase() === String(b.label || '').toLowerCase();
-
-  const isSameReward = (a, b) =>
-    String(a.name || '').toLowerCase() === String(b.name || '').toLowerCase();
-
-  const oldPositives = Array.isArray(all.__catalog.positives)
-    ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-    : [];
-
-  const oldNegatives = Array.isArray(all.__catalog.negatives)
-    ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-    : [];
-
-  const oldRewards = Array.isArray(all.__catalog.rewards)
-    ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-    : [];
-
-  oldPositives.forEach(item => {
-    const isDefault = defaults.positives.some(def => isSameBehaviour(def, item));
-    const alreadyCustom = all.__customCatalog.positives.some(custom => isSameBehaviour(custom, item));
-    if (!isDefault && !alreadyCustom) all.__customCatalog.positives.push(item);
-  });
-
-  oldNegatives.forEach(item => {
-    const isDefault = defaults.negatives.some(def => isSameBehaviour(def, item));
-    const alreadyCustom = all.__customCatalog.negatives.some(custom => isSameBehaviour(custom, item));
-    if (!isDefault && !alreadyCustom) all.__customCatalog.negatives.push(item);
-  });
-
-  oldRewards.forEach(item => {
-  const alreadyCustom = all.__customCatalog.rewards.some(custom => isSameReward(custom, item));
-  if (!alreadyCustom) all.__customCatalog.rewards.push(item);
-});
-
-if (!all.__customCatalog.rewards.length) {
-  all.__customCatalog.rewards = DEFAULT_REWARDS.map(normaliseRewardItem);
-}
-
-  delete all.__catalog;
-}
-
-return all;
-    }
-
-    function getUsersFromData(all) {
-      return ensureMultiUserData(all).__users;
-    }
-
-    function getChildFromData(all, childId) {
-      all = ensureMultiUserData(all);
-      const id = childId || 'jenson';
-      if (!all.__children[id]) all.__children[id] = { id, name: 'Child', weeks: {} };
-      if (!all.__children[id].weeks) all.__children[id].weeks = {};
-      return all.__children[id];
-    }
-
-    function findChildUser(users, childId) {
-      return Object.values(users).find(u => u.role === 'child' && u.childId === childId) || null;
-    }
-
-    function getParentChildIds(user) {
-      if (!user || user.role !== 'parent') return [];
-      if (Array.isArray(user.childIds) && user.childIds.length) return user.childIds;
-      return user.childId ? [user.childId] : [];
-    }
-
-    function setParentChildIds(user, childIds) {
-      const uniqueIds = [...new Set((childIds || []).filter(Boolean))];
-      user.childIds = uniqueIds;
-      user.childId = uniqueIds[0] || user.childId || '';
-      return user;
-    }
-
-
-    function getParentUsers(users) {
-      return Object.values(users || {}).filter(user => user && user.role === 'parent');
-    }
-
-    function pointsForEntry(e) {
-  const rawPoints =
-    Number.isFinite(Number(e.points)) ? Number(e.points) :
-    Number.isFinite(Number(e.pts)) ? Number(e.pts) :
-    e.cat && OLD_BEHAVIOUR_POINTS[e.cat] !== undefined ? Number(OLD_BEHAVIOUR_POINTS[e.cat]) :
-    1;
-
-  if (e.type === 'negative' || e.pos === false) {
-    return -Math.abs(rawPoints);
-  }
-
-  return Math.abs(rawPoints);
-}
-
-    function formatPoints(points) {
-      return `${points > 0 ? '+' : ''}${points} ${Math.abs(points) === 1 ? 'point' : 'points'}`;
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? '').replace(/[&<>"']/g, ch => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[ch]));
-    }
-
-    function localDateKey(date) {
-      const y = date.getFullYear();
-      const m = String(date.getMonth() + 1).padStart(2, '0');
-      const d = String(date.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
-
-    function weeklyBonus(entries) {
-      let cleanDays = 0;
-
-      for (let day = 0; day < 7; day++) {
-        const dayEntries = entries.filter(e => e.day === day);
-        const hasEntry = dayEntries.length > 0;
-        const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
-
-        if (hasEntry && !hasNegative) cleanDays++;
-      }
-
-      return {
-        cleanDays,
-        points: cleanDays >= 5 ? 10 : 0
-      };
-    }
-
-    function normaliseTheme(theme) {
-  const allowedThemes = ['blue', 'green', 'gold', 'red', 'football', 'dark'];
-  return allowedThemes.includes(theme) ? theme : 'blue';
-}
-function getWheelPrizesFromSettings(settings = {}) {
-  const saved = Array.isArray(settings.wheelPrizes) ? settings.wheelPrizes : [];
-
-  return DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
-    const savedPrize = saved[index] || {};
-
-    return {
-      label: String(savedPrize.label || defaultPrize.label).slice(0, 8),
-      prize: String(savedPrize.prize || defaultPrize.prize).slice(0, 60),
-      points: parseInt(savedPrize.points, 10) || 0
-    };
-  });
-}
-
-    function getWheelPrizesFromSettings(settings = {}) {
-  const saved = Array.isArray(settings.wheelPrizes) ? settings.wheelPrizes : [];
-
-  return DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
-    const savedPrize = saved[index] || {};
-
-    return {
-      label: String(savedPrize.label || defaultPrize.label).slice(0, 8),
-      prize: String(savedPrize.prize || defaultPrize.prize).slice(0, 60),
-      points: parseInt(savedPrize.points, 10) || 0
-    };
-  });
-}
-
-function getSettingsFromData(all) {
-  all = ensureMultiUserData(all);
-
-  return {
-    theme: normaliseTheme(all.__settings?.theme || 'blue'),
-    wheelThreshold: all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD,
-    wheelPrizes: getWheelPrizesFromSettings(all.__settings)
-  };
-}
-
-    async function getSettings() {
-      const all = await getData();
-      return getSettingsFromData(all);
-    }
-
-    function applyTheme(theme) {
-      const safeTheme = normaliseTheme(theme);
-      document.body.dataset.theme = safeTheme;
-      document.querySelectorAll('[data-theme-btn]').forEach(btn => {
-        btn.className = 'theme-btn' + (btn.dataset.themeBtn === safeTheme ? ' active' : '');
-      });
-    }
-
-    async function loadAndApplyTheme() {
-      const settings = await getSettings();
-      applyTheme(settings.theme);
-    }
-async function toggleDarkMode() {
-  const all = await getData();
-  const currentTheme = normaliseTheme(all.__settings?.theme || 'blue');
-  const nextTheme = currentTheme === 'dark' ? 'blue' : 'dark';
-
-  await saveTheme(nextTheme);
-}
-    async function saveTheme(theme) {
-      const safeTheme = normaliseTheme(theme);
-      const all = await getData();
-      all.__settings = { ...getSettingsFromData(all), theme: safeTheme };
-      await saveData(all);
-      applyTheme(safeTheme);
-      ['theme-settings-msg', 'parent-theme-settings-msg'].forEach(id => {
-  const msg = document.getElementById(id);
-  if (msg) {
-    msg.textContent = 'Theme saved!';
-    setTimeout(() => msg.textContent = '', 1500);
-  }
-});
-    }
-
-
-function populateWheelPrizeSettings(settings = {}) {
-  const prizes = getWheelPrizesFromSettings(settings);
-
-  prizes.forEach((prize, index) => {
-    const select = document.getElementById(`wheel-label-input-${index}`);
-    const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
-    const pointsInput = document.getElementById(`wheel-points-input-${index}`);
-    const wheelLabel = document.getElementById(`wheel-label-${index}`);
-
-    if (select) {
-      select.innerHTML = WHEEL_PRIZE_OPTIONS.map(option => `
-        <option value="${option.value}">${option.label}</option>
-      `).join('');
-
-      const matchingOption = WHEEL_PRIZE_OPTIONS.find(option =>
-        option.wheelLabel === prize.label || option.prize === prize.prize
-      );
-
-      select.value = matchingOption?.value || WHEEL_PRIZE_OPTIONS[0].value;
-
-select.onchange = () => {
-  const selectedOption =
-    WHEEL_PRIZE_OPTIONS.find(option => option.value === select.value) ||
-    WHEEL_PRIZE_OPTIONS[0];
-
-  if (prizeInput) prizeInput.value = selectedOption.prize;
-  if (pointsInput) pointsInput.value = selectedOption.points;
-  if (wheelLabel) wheelLabel.textContent = selectedOption.wheelLabel;
-};
-
-select.onchange = () => {
-  const selectedOption =
-    WHEEL_PRIZE_OPTIONS.find(option => option.value === select.value) ||
-    WHEEL_PRIZE_OPTIONS[0];
-
-  if (prizeInput) prizeInput.value = selectedOption.prize;
-  if (pointsInput) pointsInput.value = selectedOption.points;
-  if (wheelLabel) wheelLabel.textContent = selectedOption.wheelLabel;
-};
-    }
-
-    if (prizeInput) prizeInput.value = prize.prize;
-    if (pointsInput) pointsInput.value = parseInt(prize.points, 10) || 0;
-    if (wheelLabel) wheelLabel.textContent = prize.label;
-  });
-}
-async function saveWheelSettings() {
-  const threshold = parseInt(
-    document.getElementById('wheel-threshold').value,
-    10
-  );
-
-  if (!threshold || threshold < 1) {
-    return setMsg(
-      'wheel-settings-msg',
-      'Enter a valid number.',
-      false
-    );
-  }
-
- const wheelPrizes = DEFAULT_WHEEL_PRIZES.map((defaultPrize, index) => {
-  const select = document.getElementById(`wheel-label-input-${index}`);
-  const prizeInput = document.getElementById(`wheel-prize-input-${index}`);
-  const pointsInput = document.getElementById(`wheel-points-input-${index}`);
-
-  const selectedOption =
-    WHEEL_PRIZE_OPTIONS.find(option => option.value === select?.value) ||
-    WHEEL_PRIZE_OPTIONS[index] ||
-    WHEEL_PRIZE_OPTIONS[0];
-
-  return {
-    label: selectedOption.wheelLabel,
-    prize: String(prizeInput?.value || selectedOption.prize).trim().slice(0, 60),
-    points: parseInt(pointsInput?.value, 10) || 0
-  };
-});
-
-  const all = await getData();
-
-  all.__settings = {
-  ...all.__settings,
-  wheelThreshold: threshold,
-  wheelPrizes
-};
-  await saveData(all);
-  populateWheelPrizeSettings(all.__settings);
-
-  setMsg(
-    'wheel-settings-msg',
-    'Wheel settings saved!'
-  );
-}
-
-function launchConfettiRain() {
-  const colors = ['#ef4444', '#22c55e', '#3b82f6', '#facc15'];
-
-  for (let i = 0; i < 100; i++) {
-    const piece = document.createElement('div');
-
-    piece.className = 'confetti-piece';
-    piece.style.left = Math.random() * 100 + 'vw';
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.animationDelay = Math.random() * 0.8 + 's';
-
-    document.body.appendChild(piece);
-
-    setTimeout(() => piece.remove(), 5000);
-  }
-}
-
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.classList.add('show');
-
-  clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2400);
-}
-    function setMsg(id, text, ok = true) {
-      const msg = document.getElementById(id);
-      if (!msg) return;
-      msg.style.color = ok ? '#27ae60' : '#e74c3c';
-      msg.textContent = text;
-      if (ok) setTimeout(() => msg.textContent = '', 1800);
-    }
-
-    async function copyFamilyCode() {
-      if (!currentFamilyId) return;
-      try {
-        await navigator.clipboard.writeText(currentFamilyId);
-        setMsg('pin-settings-msg', 'Family code copied!');
-        const createdCard = document.getElementById('family-created-card');
-        if (createdCard && createdCard.style.display !== 'none') {
-          const subtitle = document.getElementById('login-family-subtitle');
-          if (subtitle) subtitle.textContent = `Family code copied: ${currentFamilyId}`;
-        }
-      } catch (e) {
-        window.prompt('Copy this family code:', currentFamilyId);
-      }
-    }
-
-    function setButtonLoading(buttonId, isLoading, loadingText, normalText) {
-      const btn = document.getElementById(buttonId);
-      if (!btn) return;
-      btn.disabled = isLoading;
-      btn.textContent = isLoading ? loadingText : normalText;
-      btn.style.opacity = isLoading ? '0.75' : '1';
-    }
-
-    function validPin(pin) {
-      return /^\d{4}$/.test(String(pin || '').trim());
-    }
-
-    function normaliseIcon(icon, fallback = '🎁') {
-      const clean = String(icon || '').trim();
-      return clean || fallback;
-    }
-
-    function normaliseBehaviourItem(item, type) {
-      const positive = type === 'positive';
-      const points = Math.abs(parseInt(item?.points, 10) || 1) * (positive ? 1 : -1);
-      return {
-        id: item?.id || makeCatalogId(positive ? 'pos' : 'neg'),
-        icon: normaliseIcon(item?.icon, positive ? '⭐' : '⚠️'),
-        label: String(item?.label || 'Untitled').trim(),
-        points
-      };
-    }
-
-    function normaliseRewardItem(item) {
-      return {
-        id: item?.id || makeCatalogId('reward'),
-        icon: normaliseIcon(item?.icon, '🎁'),
-        name: String(item?.name || 'Reward').trim(),
-        pts: Math.max(1, parseInt(item?.pts ?? item?.points, 10) || 1),
-        desc: String(item?.desc || item?.description || '').trim()
-      };
-    }
-
-    function getDefaultCatalog() {
-  return {
-    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
-    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
-    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
-  };
-}
-
-function getCustomCatalogFromData(all) {
-  all = ensureMultiUserData(all);
-
-  all.__customCatalog ||= {};
-  all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
-    ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-    : [];
-
-  all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
-    ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-    : [];
-
-  all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
-    ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-    : [];
-
-  return all.__customCatalog;
-}
-
-function getDefaultCatalog() {
-  return {
-    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
-    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
-    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
-  };
-}
-
-function getCustomCatalogFromData(all) {
-  all = ensureMultiUserData(all);
-
-  all.__customCatalog ||= {};
-  all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
-    ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-    : [];
-
-  all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
-    ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-    : [];
-
-  all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
-    ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-    : [];
-
-  return all.__customCatalog;
-}
-
-function getCatalogFromData(all) {
-  const defaults = getDefaultCatalog();
-  const custom = getCustomCatalogFromData(all);
-
-  return {
-    positives: [...defaults.positives, ...custom.positives],
-    negatives: [...defaults.negatives, ...custom.negatives],
-    rewards: [...custom.rewards]
-  };
-}
-
-function getBehaviourItems(all, type) {
-  const catalog = getCatalogFromData(all);
-  return type === 'positive' ? catalog.positives : catalog.negatives;
-}
-
-function getRewardsFromData(all) {
-  return getCatalogFromData(all).rewards;
-}
-
-    function renderBehaviourOptions(all) {
-      const posSelect = document.getElementById('f-pos-cat');
-      const negSelect = document.getElementById('f-neg-cat');
-      if (!posSelect || !negSelect) return;
-
-      const positives = getBehaviourItems(all, 'positive');
-      const negatives = getBehaviourItems(all, 'negative');
-
-      posSelect.innerHTML = positives.map(item =>
-        `<option value="${item.points}" data-label="${escapeHtml(item.label)}" data-icon="${escapeHtml(item.icon)}">${escapeHtml(item.icon)} ${escapeHtml(item.label)} (${formatPoints(item.points)})</option>`
-      ).join('');
-
-      negSelect.innerHTML = negatives.map(item =>
-        `<option value="${item.points}" data-label="${escapeHtml(item.label)}" data-icon="${escapeHtml(item.icon)}">${escapeHtml(item.icon)} ${escapeHtml(item.label)} (${formatPoints(item.points)})</option>`
-      ).join('');
-    }
-
-    function renderCatalogList(all) {
-  const el = document.getElementById('catalog-list');
-  if (!el) return;
-
-const catalog = getCustomCatalogFromData(all);
-  const groupHtml = (title, type, items) => `
-    <details class="catalog-group">
-      <summary>
-        <span>${title}</span>
-        <span class="catalog-count">${items.length}</span>
-      </summary>
-
-      <div class="catalog-items">
-        ${items.map(item => `
-          <div class="catalog-pill-row">
-            <div class="catalog-pill-main">
-              <span class="catalog-pill-icon">${escapeHtml(item.icon || '🎁')}</span>
-              <span class="catalog-pill-name">${escapeHtml(item.label || item.name)}</span>
-              <span class="catalog-pill-points">
-                ${type === 'reward'
-                  ? `${item.pts} pts`
-                  : formatPoints(item.points)}
-              </span>
-            </div>
-
-            <button class="catalog-remove-btn"
-              onclick="deleteCatalogItem('${type}','${escapeHtml(item.id)}')">
-              Remove
-            </button>
-          </div>
-        `).join('')}
-      </div>
-    </details>
-  `;
-
-  const hasCustomItems =
-  catalog.positives.length ||
-  catalog.negatives.length ||
-  catalog.rewards.length;
-
-if (!hasCustomItems) {
-  el.innerHTML = `<p class="catalog-helper">No custom options added yet. Default positives, consequences and rewards are always available in the dropdowns.</p>`;
-  return;
-}
-
-el.innerHTML =
-  `<p class="catalog-helper">Remove custom positives, consequences or rewards your family no longer uses. Default options are hidden here and cannot be deleted.</p>` +
-  groupHtml('⭐ Custom positives', 'positive', catalog.positives) +
-  groupHtml('✖ Custom consequences', 'negative', catalog.negatives) +
-  groupHtml('🎁 Custom rewards', 'reward', catalog.rewards);
-}
-
-function renderWheelSettings(all) {
-  const wheelThresholdInput = document.getElementById('wheel-threshold');
-  if (wheelThresholdInput) {
-    wheelThresholdInput.value = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
-  }
-}
-
-async function addCustomBehaviour(type) {
-  if (!currentUser || currentUser.role !== 'parent') return;
-
-  const positive = type === 'positive';
-  const labelId = positive ? 'custom-pos-label' : 'custom-neg-label';
-  const pointsId = positive ? 'custom-pos-points' : 'custom-neg-points';
-  const fallbackIcon = positive ? '⭐' : '⚠️';
-
-  const label = document.getElementById(labelId).value.trim();
-  const rawPoints = parseInt(document.getElementById(pointsId).value, 10);
-
-  if (!label) {
-    showToast(positive ? 'Enter a positive name' : 'Enter a consequence name');
-    return setMsg(
-      'catalog-msg',
-      positive ? 'Enter a positive name.' : 'Enter a consequence name.',
-      false
-    );
-  }
-
-  if (!rawPoints || rawPoints < 1) {
-    showToast('Points must be at least 1');
-    return setMsg('catalog-msg', 'Points must be at least 1.', false);
-  }
-
-  const all = await getData();
-const catalog = getCatalogFromData(all);
-const customCatalog = getCustomCatalogFromData(all);
-const listName = positive ? 'positives' : 'negatives';
-
-  if (catalog[listName].some(existing => existing.label.toLowerCase() === label.toLowerCase())) {
-    showToast('That option already exists');
-    return setMsg('catalog-msg', 'That option already exists.', false);
-  }
-
-  const item = normaliseBehaviourItem({
-    icon: fallbackIcon,
-    label,
-    points: rawPoints
-  }, type);
-
-  customCatalog[listName].push(item);
-
-  await saveData(all);
-
-  document.getElementById(labelId).value = '';
-  document.getElementById(pointsId).value = '';
-
-  renderBehaviourOptions(all);
-  renderCatalogList(all);
-  await renderParent();
-
-  showToast(positive ? '⭐ Positive option added!' : '⚠️ Consequence option added!');
-  setMsg('catalog-msg', positive ? 'Positive option added!' : 'Consequence option added!');
-}
-
-    async function addCustomReward() {
-  if (!currentUser || currentUser.role !== 'parent') return;
-
-  const name = document.getElementById('custom-reward-name').value.trim();
-  const pts = parseInt(document.getElementById('custom-reward-points').value, 10);
-  const desc = document.getElementById('custom-reward-desc').value.trim();
-
-  if (!name) {
-    showToast('Add a reward name first');
-    return setMsg('catalog-msg', 'Add a reward name first.', false);
-  }
-
-  if (!pts || pts < 1) {
-    showToast('Reward points must be at least 1');
-    return setMsg('catalog-msg', 'Reward points must be at least 1.', false);
-  }
-
-  const all = await getData();
-  const catalog = getCatalogFromData(all);
-  const customCatalog = getCustomCatalogFromData(all);
-
-  if ((catalog.rewards || []).some(existing => existing.name.toLowerCase() === name.toLowerCase())) {
-    showToast('That reward already exists');
-    return setMsg('catalog-msg', 'That reward already exists.', false);
-  }
-
-  customCatalog.rewards.push(normaliseRewardItem({
-    icon: '🎁',
-    name,
-    pts,
-    desc
-  }));
-
-  await saveData(all);
-
-  document.getElementById('custom-reward-name').value = '';
-  document.getElementById('custom-reward-points').value = '';
-  document.getElementById('custom-reward-desc').value = '';
-
-  renderCatalogList(all);
-  await renderParent();
-
-  showToast('🎁 Reward added!');
-  setMsg('catalog-msg', 'Reward added!');
-}
-
-
-    async function deleteCatalogItem(type, id) {
-  if (!currentUser || currentUser.role !== 'parent') return;
-
-  const all = await getData();
-  const customCatalog = getCustomCatalogFromData(all);
-  customCatalog.rewards ||= [];
-
-  const key = type === 'positive'
-    ? 'positives'
-    : type === 'negative'
-      ? 'negatives'
-      : 'rewards';
-
-  if (!customCatalog[key]) return;
-
-  const before = customCatalog[key].length;
-  customCatalog[key] = customCatalog[key].filter(item => item.id !== id);
-
-  if (customCatalog[key].length === before) {
-    return setMsg('catalog-msg', 'Default options cannot be deleted.', false);
-  }
-
-  await saveData(all);
-
-  renderBehaviourOptions(all);
-  renderCatalogList(all);
-  await renderParent();
-
-  showToast('Option deleted');
-  setMsg('catalog-msg', 'Option deleted.');
-}
-
-    async function saveAccountSettings() {
-      if (!currentUser || currentUser.role !== 'parent') return;
-
-      const parentName = document.getElementById('set-parent-name').value.trim() || 'Parent';
-      const parentUsername = normalizeUsername(document.getElementById('set-parent-username').value);
-      const parentPin = document.getElementById('set-parent-pin').value.trim();
-      const childName = document.getElementById('set-child-name').value.trim() || 'Child';
-      const childUsername = normalizeUsername(document.getElementById('set-child-username').value);
-      const childPin = document.getElementById('set-child-pin').value.trim();
-
-      if (!parentUsername || !childUsername) return setMsg('pin-settings-msg', 'Usernames cannot be blank.', false);
-      if (parentUsername === childUsername) return setMsg('pin-settings-msg', 'Parent and child usernames must be different.', false);
-      if (!validPin(parentPin) || !validPin(childPin)) return setMsg('pin-settings-msg', 'Both PINs must be exactly 4 numbers.', false);
-
-      const all = await getData();
-      const users = getUsersFromData(all);
-      const childId = activeChildId || currentUser.childId;
-      const childUser = findChildUser(users, childId);
-      const oldParentKey = currentUserKey;
-      const oldChildKey = childUser ? normalizeUsername(childUser.username) : null;
-      const existingParent = users[oldParentKey] || currentUser;
-      const parentChildIds = getParentChildIds(existingParent);
-
-      if (users[parentUsername] && parentUsername !== oldParentKey) return setMsg('pin-settings-msg', 'That parent username already exists.', false);
-      if (users[childUsername] && childUsername !== oldChildKey) return setMsg('pin-settings-msg', 'That child username already exists.', false);
-
-      if (oldParentKey && oldParentKey !== parentUsername) delete all.__users[oldParentKey];
-      if (oldChildKey && oldChildKey !== childUsername) delete all.__users[oldChildKey];
-
-      all.__users[parentUsername] = setParentChildIds(
-        { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId: parentChildIds[0] || childId },
-        parentChildIds.length ? parentChildIds : [childId]
-      );
-      all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
-      all.__children[childId] = { ...getChildFromData(all, childId), name: childName };
-
-      currentUserKey = parentUsername;
-      currentUser = all.__users[parentUsername];
-      activeChildId = childId;
-
-      await saveData(all);
-      await fillParentSettings();
-      await renderParent();
-      setMsg('pin-settings-msg', 'Account details saved!');
-    }
-
-    async function addSecondParentToFamily() {
-      if (!currentUser || currentUser.role !== 'parent') return;
-
-      const parentName = document.getElementById('second-parent-name').value.trim() || 'Parent';
-      const parentUsername = normalizeUsername(document.getElementById('second-parent-username').value);
-      const parentPin = document.getElementById('second-parent-pin').value.trim();
-
-      if (!parentUsername) return setMsg('add-parent-msg', 'Second parent username is required.', false);
-      if (!validPin(parentPin)) return setMsg('add-parent-msg', 'Second parent PIN must be exactly 4 numbers.', false);
-
-      const all = await getData();
-      const users = getUsersFromData(all);
-      const parents = getParentUsers(users);
-
-      if (parents.length >= 2) return setMsg('add-parent-msg', 'This family already has 2 parents.', false);
-      if (users[parentUsername]) return setMsg('add-parent-msg', 'That username already exists.', false);
-
-      const currentParent = users[currentUserKey] || currentUser;
-      const childIds = getParentChildIds(currentParent).length
-        ? getParentChildIds(currentParent)
-        : Object.keys(all.__children || {});
-
-      if (!childIds.length) return setMsg('add-parent-msg', 'Add a child before adding another parent.', false);
-
-      all.__users[parentUsername] = setParentChildIds(
-        { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId: childIds[0] },
-        childIds
-      );
-
-      await saveData(all);
-      ['second-parent-name', 'second-parent-username', 'second-parent-pin'].forEach(id => document.getElementById(id).value = '');
-      await renderParentAdminControls();
-      setMsg('add-parent-msg', 'Second parent added. They can now log in and manage these children!');
-    }
-
-    async function addFamilyLogin() {
-      const parentName = document.getElementById('new-parent-name').value.trim() || 'Parent';
-      const parentUsername = normalizeUsername(document.getElementById('new-parent-username').value);
-      const parentPin = document.getElementById('new-parent-pin').value.trim();
-      const childName = document.getElementById('new-child-name').value.trim() || 'Child';
-      const childUsername = normalizeUsername(document.getElementById('new-child-username').value);
-      const childPin = document.getElementById('new-child-pin').value.trim();
-
-      if (!parentUsername || !childUsername) return setMsg('add-account-msg', 'Both usernames are required.', false);
-      if (parentUsername === childUsername) return setMsg('add-account-msg', 'Parent and child usernames must be different.', false);
-      if (!validPin(parentPin) || !validPin(childPin)) return setMsg('add-account-msg', 'Both PINs must be exactly 4 numbers.', false);
-
-      const all = await getData();
-      const users = getUsersFromData(all);
-      if (users[parentUsername] || users[childUsername]) return setMsg('add-account-msg', 'One of those usernames already exists.', false);
-
-      let childId = makeChildId(childUsername);
-      let n = 2;
-      while (all.__children[childId]) childId = makeChildId(childUsername) + '-' + n++;
-
-      all.__children[childId] = { id: childId, name: childName, weeks: {} };
-      all.__users[parentUsername] = setParentChildIds(
-        { username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId },
-        [childId]
-      );
-      all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
-
-      await saveData(all);
-      ['new-parent-name', 'new-parent-username', 'new-parent-pin', 'new-child-name', 'new-child-username', 'new-child-pin'].forEach(id => document.getElementById(id).value = '');
-      setMsg('add-account-msg', 'New parent and child logins added!');
-    }
-
-    async function addChildToParent() {
-      if (!currentUser || currentUser.role !== 'parent') return;
-
-      const childName = document.getElementById('add-child-name').value.trim() || 'Child';
-      const childUsername = normalizeUsername(document.getElementById('add-child-username').value);
-      const childPin = document.getElementById('add-child-pin').value.trim();
-
-      if (!childUsername) return setMsg('add-child-msg', 'Child username is required.', false);
-      if (!validPin(childPin)) return setMsg('add-child-msg', 'Child PIN must be exactly 4 numbers.', false);
-
-      const all = await getData();
-      const users = getUsersFromData(all);
-
-      if (users[childUsername]) return setMsg('add-child-msg', 'That child username already exists.', false);
-
-      let childId = makeChildId(childUsername);
-      let n = 2;
-      while (all.__children[childId]) childId = makeChildId(childUsername) + '-' + n++;
-
-      all.__children[childId] = { id: childId, name: childName, weeks: {} };
-      all.__users[childUsername] = { username: childUsername, pin: childPin, role: 'child', name: childName, childId };
-
-      // Give every parent in this family access to the new child.
-      getParentUsers(users).forEach(parentUser => {
-        const parentKey = normalizeUsername(parentUser.username);
-        const childIds = getParentChildIds(parentUser);
-        childIds.push(childId);
-        all.__users[parentKey] = setParentChildIds(parentUser, childIds);
-      });
-
-      currentUser = all.__users[currentUserKey];
-      activeChildId = childId;
-
-      await saveData(all);
-      ['add-child-name', 'add-child-username', 'add-child-pin'].forEach(id => document.getElementById(id).value = '');
-      await fillParentSettings();
-      await renderParent();
-      setMsg('add-child-msg', 'Child added to all parent logins!');
-    }
-
-    async function renderParentAdminControls() {
-      const all = await getData();
-      const users = getUsersFromData(all);
-      const parentCount = getParentUsers(users).length;
-      const card = document.getElementById('second-parent-card');
-      const btn = document.getElementById('second-parent-btn');
-      const msg = document.getElementById('add-parent-msg');
-
-      if (!card) return;
-
-      if (parentCount >= 2) {
-        if (btn) {
-          btn.disabled = true;
-          btn.textContent = '2 parents already added';
-          btn.style.opacity = '0.65';
-        }
-        if (msg) {
-          msg.style.color = '#666';
-          msg.textContent = 'This family already has 2 parent logins.';
-        }
-      } else {
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = 'Add second parent';
-          btn.style.opacity = '1';
-        }
-        if (msg && msg.textContent === 'This family already has 2 parent logins.') msg.textContent = '';
-      }
-    }
-
-    async function fillParentSettings() {
-      const familyDisplay = document.getElementById('family-code-display');
-      if (familyDisplay) familyDisplay.textContent = currentFamilyId || '';
-      const all = await getData();
-      const users = getUsersFromData(all);
-      const child = getChildFromData(all, activeChildId);
-      const childUser = findChildUser(users, activeChildId);
-
-      const parentName = document.getElementById('set-parent-name');
-      const parentUsername = document.getElementById('set-parent-username');
-      const parentPin = document.getElementById('set-parent-pin');
-      const childName = document.getElementById('set-child-name');
-      const childUsername = document.getElementById('set-child-username');
-      const childPin = document.getElementById('set-child-pin');
-const wheelThreshold = document.getElementById('wheel-threshold');
-
-if (parentName) parentName.value = currentUser?.name || 'Parent';
-if (parentUsername) parentUsername.value = currentUserKey || currentUser?.username || '';
-if (parentPin) parentPin.value = currentUser?.pin || '';
-if (childName) childName.value = child.name || childUser?.name || 'Child';
-if (childUsername) childUsername.value = childUser?.username || '';
-if (childPin) childPin.value = childUser?.pin || '';
-if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
-    }
-
-    async function renderChildSwitcher() {
-      const card = document.getElementById('child-switch-card');
-      const buttons = document.getElementById('p-child-buttons');
-      if (!card || !buttons || !currentUser || currentUser.role !== 'parent') return;
-
-      const all = await getData();
-      const childIds = getParentChildIds(currentUser);
-
-      if (childIds.length <= 1) {
-        card.style.display = 'none';
-        buttons.innerHTML = '';
-        return;
-      }
-
-      card.style.display = 'block';
-      buttons.innerHTML = childIds.map(childId => {
-        const child = getChildFromData(all, childId);
-        return `<button class="tab${childId === activeChildId ? ' active' : ''}" onclick="switchActiveChild('${escapeHtml(childId)}')">${escapeHtml(child.name || 'Child')}</button>`;
-      }).join('');
-    }
-
-    async function switchActiveChild(childId) {
-      if (!currentUser || currentUser.role !== 'parent') return;
-      if (!getParentChildIds(currentUser).includes(childId)) return;
-
-      activeChildId = childId;
-      wkOff = 0;
-      await renderParent();
-      await fillParentSettings();
-    }
-
-    const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const DAYSFULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-    let loginWho = '';
-    let loginUsername = '';
-    let currentUserKey = '';
-    let currentUser = null;
-    let activeChildId = 'jenson';
-    let pinBuf = '';
-    let wkOff = 0;
-    let cTab = 'all';
-    let rewardRealtimeChannel = null;
-
-    function show(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById('s-' + id).classList.add('active');
-    }
-
-    async function goPin() {
-      const input = document.getElementById('login-username');
-      const err = document.getElementById('login-err');
-      loginUsername = normalizeUsername(input.value);
-      pinBuf = '';
-      updateDots();
-      document.getElementById('pin-err').textContent = '';
-
-      if (!loginUsername) {
-        err.textContent = 'Enter a username first.';
-        return;
-      }
-
-      const all = await getData();
-      const users = getUsersFromData(all);
-
-      if (!users[loginUsername]) {
-        err.textContent = 'No user found with that username.';
-        return;
-      }
-
-      err.textContent = '';
-      document.getElementById('pin-heading').textContent = 'Enter PIN';
-      document.getElementById('pin-hint').textContent = `Enter the 4-digit PIN for ${loginUsername}`;
-
-      if (document.activeElement) document.activeElement.blur();
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-      show('pin');
-    }
-
-    function kp(v) {
-      if (v === 'back') pinBuf = pinBuf.slice(0, -1);
-      else if (v === 'clr') pinBuf = '';
-      else if (pinBuf.length < 4) pinBuf += v;
-      updateDots();
-      if (pinBuf.length === 4) setTimeout(checkPin, 220);
-    }
-
-    function updateDots() {
-      for (let i = 0; i < 4; i++) {
-        const d = document.getElementById('pd' + i);
-        d.className = 'pin-dot' + (i < pinBuf.length ? ' filled' : '');
-      }
-    }
-
-    async function checkPin() {
-      await loadAndApplyTheme();
-      const all = await getData();
-      const users = getUsersFromData(all);
-      const user = users[loginUsername];
-
-      if (user && pinBuf === user.pin) {
-        currentUserKey = loginUsername;
-        currentUser = user;
-        loginWho = user.role;
-        activeChildId = user.role === 'parent'
-          ? (getParentChildIds(user)[0] || user.childId || 'jenson')
-          : (user.childId || 'jenson');
-          saveSession();
-
-        if (document.activeElement) document.activeElement.blur();
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-      if (user.role === 'parent') {
-  wkOff = 0;
-  await renderParent();
-  await fillParentSettings();
-  show('parent');
-  startRewardRealtime();
-} else {
-  await renderChild();
-  show('child');
-  startRewardRealtime();
-}
-      } else {
-        document.getElementById('pin-err').textContent = 'Wrong username or PIN — try again';
-        pinBuf = '';
-        updateDots();
-      }
-    }
-    function saveSession() {
-  if (!currentFamilyId || !currentUserKey || !currentUser) return;
-
-  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({
-    familyId: currentFamilyId,
-    userKey: currentUserKey,
-    activeChildId,
-    savedAt: new Date().toISOString()
-  }));
-}
-
-    function logout() {
-      localStorage.removeItem(SESSION_STORAGE_KEY);
-      stopRewardRealtime();
-      currentUserKey = '';
-      currentUser = null;
-      loginWho = '';
-      pinBuf = '';
-      updateDots();
-      show('login');
-    }
-
-    // CLOUD SETTINGS
-    // Each family gets its own family code, and that code is saved as chart_id in Supabase.
-    const SUPABASE_URL = 'https://yxciwwcfjwsxlksqkmto.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
-
-    const FAMILY_STORAGE_KEY = 'reward_chart_family_code';
-    const SESSION_STORAGE_KEY = 'family_rewards_session';
-
-    const CLOUD_READY =
-      SUPABASE_URL.startsWith('https://') &&
-      SUPABASE_ANON_KEY.length > 30 &&
-      window.supabase;
-
-    const db = CLOUD_READY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-    let currentFamilyId = localStorage.getItem(FAMILY_STORAGE_KEY) || '';
-    let cachedData = null;
-
-    function cleanFamilyCode(value) {
-      return String(value || '').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '');
-    }
-
-    function generateFamilyCode(familyName) {
-      const prefix = String(familyName || 'FAMILY')
-        .toUpperCase()
-        .replace(/[^A-Z0-9]+/g, '-')
-        .replace(/^-|-$/g, '')
-        .slice(0, 12) || 'FAMILY';
-
-      const code = Math.random().toString(36).slice(2, 6).toUpperCase();
-      return `${prefix}-${code}`;
-    }
-
-    function createStarterData({ familyName, parentName, parentUsername, parentPin, childName, childUsername, childPin }) {
-      const childId = makeChildId(childUsername);
-      return ensureMultiUserData({
-        __settings: { theme: 'blue' },
-        __customCatalog: {
-  positives: [],
-  negatives: [],
-  rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
-},
-        __family: { name: familyName, createdAt: new Date().toISOString() },
-        __children: {
-          [childId]: { id: childId, name: childName, weeks: {} }
-        },
-        __users: {
-          [parentUsername]: setParentChildIds({ username: parentUsername, pin: parentPin, role: 'parent', name: parentName, childId }, [childId]),
-          [childUsername]: { username: childUsername, pin: childPin, role: 'child', name: childName, childId }
-        }
-      });
-    }
-
-    function getLocalData() {
-      if (!currentFamilyId) return {};
-      try {
-        return JSON.parse(localStorage.getItem('jenson_v2_' + currentFamilyId) || '{}');
-      } catch (e) {
-        return {};
-      }
-    }
-
-    function saveLocalData(d) {
-      if (!currentFamilyId) return;
-      localStorage.setItem('jenson_v2_' + currentFamilyId, JSON.stringify(d));
-    }
-
-    async function loadCloudFamily(familyId) {
-      if (!CLOUD_READY || !familyId) return null;
-
-      const { data, error } = await db
-        .from('reward_chart_data')
-        .select('data')
-        .eq('chart_id', familyId)
-        .maybeSingle();
-
-      if (error) {
-        console.warn('Cloud load failed:', error.message);
-        return null;
-      }
-
-      return data?.data || null;
-    }
-
-    async function saveCloudFamily(familyId, appData) {
-      if (!CLOUD_READY || !familyId) return false;
-
-      const { error } = await db
-        .from('reward_chart_data')
-        .upsert(
-          { chart_id: familyId, data: appData, updated_at: new Date().toISOString() },
-          { onConflict: 'chart_id' }
-        );
-
-      if (error) {
-        console.warn('Cloud save failed:', error.message);
-        return false;
-      }
-
-      return true;
-    }
-
-    async function getData() {
-      if (!currentFamilyId) return ensureMultiUserData({});
-      if (cachedData) return cachedData;
-
-      const cloudData = await loadCloudFamily(currentFamilyId);
-      const localBackup = getLocalData();
-
-      cachedData = ensureMultiUserData(cloudData || localBackup || {});
-
-      if (!cloudData && Object.keys(localBackup).length) {
-        await saveData(cachedData);
-      }
-
-      return cachedData;
-    }
-
-    async function saveData(d) {
-      d = ensureMultiUserData(d);
-      cachedData = d;
-      saveLocalData(d);
-
-      if (currentFamilyId) {
-        await saveCloudFamily(currentFamilyId, d);
-      }
-    }
-
-    async function createFamily() {
-      const err = document.getElementById('create-family-err');
-      err.textContent = '';
-
-      const familyName = document.getElementById('create-family-name').value.trim();
-      const parentName = document.getElementById('create-parent-name').value.trim() || 'Parent';
-      const parentUsername = normalizeUsername(document.getElementById('create-parent-username').value);
-      const parentPin = document.getElementById('create-parent-pin').value.trim();
-      const childName = document.getElementById('create-child-name').value.trim() || 'Child';
-      const childUsername = normalizeUsername(document.getElementById('create-child-username').value);
-      const childPin = document.getElementById('create-child-pin').value.trim();
-
-      if (!familyName) {
-        err.textContent = 'Family surname is required.';
-        return;
-      }
-
-      if (!parentUsername || !childUsername) {
-        err.textContent = 'Parent and child usernames are required.';
-        return;
-      }
-
-      if (parentUsername === childUsername) {
-        err.textContent = 'Parent and child usernames must be different.';
-        return;
-      }
-
-      if (!validPin(parentPin) || !validPin(childPin)) {
-        err.textContent = 'Both PINs must be exactly 4 numbers.';
-        return;
-      }
-
-      setButtonLoading('create-family-btn', true, 'Creating family...', 'Create family');
-
-      let familyCode = generateFamilyCode(familyName);
-      let tries = 0;
-
-      while (tries < 5 && await loadCloudFamily(familyCode)) {
-        familyCode = generateFamilyCode(familyName);
-        tries++;
-      }
-
-      const starterData = createStarterData({
-        familyName,
-        parentName,
-        parentUsername,
-        parentPin,
-        childName,
-        childUsername,
-        childPin
-      });
-
-      currentFamilyId = familyCode;
-      cachedData = starterData;
-      localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
-      saveLocalData(starterData);
-
-      const saved = await saveCloudFamily(currentFamilyId, starterData);
-      if (!saved && CLOUD_READY) {
-        err.textContent = 'Could not save to Supabase. Check the table/policies.';
-        setButtonLoading('create-family-btn', false, 'Creating family...', 'Create family');
-        return;
-      }
-
-      setButtonLoading('create-family-btn', false, 'Creating family...', 'Create family');
-      await showLoginForFamily(true);
-    }
-
-    function toggleForgotFamilyCode() {
-      const box = document.getElementById('forgot-family-box');
-      if (!box) return;
-
-      box.style.display = box.style.display === 'none' ? 'block' : 'none';
-
-      const err = document.getElementById('forgot-family-err');
-      const result = document.getElementById('forgot-family-result');
-
-      if (err) err.textContent = '';
-      if (result) result.innerHTML = '';
-    }
-
-    async function findFamilyCode() {
-      const err = document.getElementById('forgot-family-err');
-      const result = document.getElementById('forgot-family-result');
-      const input = document.querySelector('#forgot-family-box #forgot-family-name');
-
-      err.textContent = '';
-      result.innerHTML = '';
-
-      const familyName = String(input?.value || '').trim().toLowerCase();
-
-      if (!familyName) {
-        err.textContent = 'Enter your family surname.';
-        return;
-      }
-
-      if (!CLOUD_READY || !db) {
-        err.textContent = 'Cloud lookup is not available.';
-        return;
-      }
-
-      const { data, error } = await db
-        .from('reward_chart_data')
-        .select('chart_id, data');
-
-      if (error) {
-        err.textContent = 'Could not search family codes.';
-        console.warn('Family lookup failed:', error.message);
-        return;
-      }
-
-      const matches = (data || []).filter(row => {
-        const savedName = String(row.data?.__family?.name || '')
-          .trim()
-          .toLowerCase();
-
-        return savedName.includes(familyName);
-      });
-
-      if (!matches.length) {
-        err.textContent = 'No family found with that name.';
-        return;
-      }
-
-     result.innerHTML = matches.map(row => `
-  <div class="found-family-card">
-    <p class="found-family-title">${escapeHtml(row.data?.__family?.name || 'Family')}</p>
-    <p class="found-family-code">${escapeHtml(row.chart_id)}</p>
-
-    <button class="btn-add-pos" type="button"
-      style="padding:8px 12px;width:max-content;"
-      onclick="useFoundFamilyCode('${escapeHtml(row.chart_id)}')">
-      Use this code
-    </button>
-  </div>
-`).join('');}
-
-    function useFoundFamilyCode(code) {
-      const input = document.getElementById('join-family-code');
-      if (input) input.value = cleanFamilyCode(code);
-
-      const err = document.getElementById('join-family-err');
-      if (err) err.textContent = '';
-
-      joinFamily();
-    }
-
-    async function joinFamily() {
-      const err = document.getElementById('join-family-err');
-      if (err) err.textContent = '';
-
-      const input = document.getElementById('join-family-code');
-      const familyCode = cleanFamilyCode(input?.value || '');
-
-      if (!familyCode) {
-        if (err) err.textContent = 'Enter a family code.';
-        return;
-      }
-
-      setButtonLoading('join-family-btn', true, 'Opening family...', 'Open Family');
-
-      try {
-        const cloudData = await loadCloudFamily(familyCode);
-
-        if (!cloudData) {
-          if (err) err.textContent = 'Family code not found.';
-          setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
-          return;
-        }
-
-        currentFamilyId = familyCode;
-        cachedData = ensureMultiUserData(cloudData);
-        localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
-        saveLocalData(cachedData);
-
-        setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
-        await showLoginForFamily(false);
-      } catch (error) {
-        console.error('Open family failed:', error);
-
-        if (err) {
-          err.textContent =
-            'Error: ' + (error?.message || JSON.stringify(error));
-        }
-      }
-    }
-
-    async function showLoginForFamily(wasJustCreated = false) {
-      const all = await getData();
-      const familyName = all.__family?.name || 'Family Rewards';
-
-      const title = document.getElementById('login-family-title');
-      const subtitle = document.getElementById('login-family-subtitle');
-      const username = document.getElementById('login-username');
-      const loginErr = document.getElementById('login-err');
-
-      if (title) title.textContent = familyName;
-      if (subtitle) subtitle.textContent = `Family code: ${currentFamilyId}`;
-      if (username) username.value = '';
-      if (loginErr) loginErr.textContent = '';
-
-      const createdCard = document.getElementById('family-created-card');
-      const createdCode = document.getElementById('created-family-code');
-
-      if (createdCard && createdCode) {
-        createdCard.style.display = wasJustCreated ? 'grid' : 'none';
-        createdCode.textContent = currentFamilyId;
-      }
-
-      show('login');
-    }
-
-    function switchFamily() {
-      localStorage.removeItem(SESSION_STORAGE_KEY);
-      localStorage.removeItem(FAMILY_STORAGE_KEY);
-      currentFamilyId = '';
-      cachedData = null;
-      currentUserKey = '';
-      currentUser = null;
-      loginWho = '';
-      const createdCard = document.getElementById('family-created-card');
-      if (createdCard) createdCard.style.display = 'none';
-      show('family');
-    }
-
-    async function initApp() {
-  if (!currentFamilyId) {
-    show('family');
-    return;
-  }
-
-  const cloudData = await loadCloudFamily(currentFamilyId);
-  const localData = getLocalData();
-
-  if (!cloudData && !Object.keys(localData).length) {
-    switchFamily();
-    return;
-  }
-
-  cachedData = ensureMultiUserData(cloudData || localData);
-  saveLocalData(cachedData);
-
-  await loadAndApplyTheme();
-
-  const savedSession = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null');
-
-  if (
-    savedSession &&
-    savedSession.familyId === currentFamilyId &&
-    savedSession.userKey
-  ) {
-    const users = getUsersFromData(cachedData);
-    const user = users[savedSession.userKey];
-
-    if (user) {
-      currentUserKey = savedSession.userKey;
-      currentUser = user;
-      loginWho = user.role;
-      activeChildId = savedSession.activeChildId || (
-        user.role === 'parent'
-          ? (getParentChildIds(user)[0] || user.childId || 'jenson')
-          : (user.childId || 'jenson')
-      );
-
-      if (user.role === 'parent') {
-        wkOff = 0;
-        await renderParent();
-        await fillParentSettings();
-        show('parent');
-        startRewardRealtime();
-      } else {
-        await renderChild();
-        show('child');
-        startRewardRealtime();
-      }
-
-      return;
-    }
-  }
-
-  await showLoginForFamily();
-}
-
-function weekTotal(entries) {
-  const pos = entries
-    .filter(e => pointsForEntry(e) > 0)
-    .reduce((sum, e) => sum + pointsForEntry(e), 0);
-
-  const neg = Math.abs(entries
-    .filter(e => pointsForEntry(e) < 0)
-    .reduce((sum, e) => sum + pointsForEntry(e), 0));
-
-  const bonus = weeklyBonus(entries);
-
-  return pos - neg + bonus.points;
-}
-
-function getWeeklySpin(child, wk) {
-  if (!child.weeklySpins) child.weeklySpins = {};
-  if (!child.weeklySpins[wk]) {
-    child.weeklySpins[wk] = {
-      claimed: false,
-      prize: null,
-      claimedAt: null
-    };
-  }
-  return child.weeklySpins[wk];
-}
-
-async function spinWeeklyWheel() {
-  if (!currentUser || currentUser.role !== 'child') return;
-
-  const todayWeek = weekKey(0);
-  const wheel = document.getElementById('spin-wheel');
-  const btn = document.getElementById('weekly-spin-btn');
-
-  if (new Date().getDay() !== 0) {
-    showToast('🎡 The spin wheel opens on Sunday!');
-    return;
-  }
-
-  const all = await getData();
-  const child = getChildFromData(all, activeChildId);
-  const entries = child.weeks[todayWeek] || [];
-  const total = weekTotal(entries);
-  const spin = getWeeklySpin(child, todayWeek);
-
-  const threshold = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
-
-if (total < threshold) {
-    showToast(`You need ${threshold} points this week to spin.`);
-    return;
-  }
-
-if (spin.claimed) {
-  showToast(`Already spun this week: ${spin.prize}`);
-  return;
-}
-
-const wheelPrizes = getWheelPrizesFromSettings(all.__settings);
-const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
-const prize = wheelPrizes[prizeIndex];
-
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = 'Spinning...';
-    btn.style.opacity = '0.65';
-  }
-  if (wheel) {
-  wheel.style.transition = 'none';
-  wheel.style.transform = 'rotate(0deg)';
-  wheel.offsetHeight;
-  wheel.style.transition = 'transform 10.2s cubic-bezier(0.08, 0.95, 0.18, 1)';
-}
-
-  const slice = 360 / wheelPrizes.length;
-  const landingAngle = prizeIndex * slice + slice / 2;
-  const spins = 360 * 14;
-  const finalRotation = spins + (360 - landingAngle);
-
-  if (wheel) {
-  const sound = document.getElementById('wheel-sound');
-
-if (sound) {
-  sound.currentTime = 0;
-  sound.play().catch(() => {});
-}
-
-setTimeout(() => {
-  wheel.style.transform = `rotate(${finalRotation}deg)`;
-}, 650);
-  }
-
-  setTimeout(async () => {
-  const prizePoints =
-  parseInt(prize.points, 10) ||
-  parseInt(String(prize.label || '').match(/\d+/)?.[0], 10) ||
-  parseInt(String(prize.prize || '').match(/\d+/)?.[0], 10) ||
-  0;
-  console.log('WHEEL PRIZE DEBUG', {
-  prize,
-  prizePoints
-});
-
-  const latestAll = await getData();
-const latestChild = getChildFromData(latestAll, activeChildId);
-const latestSpin = getWeeklySpin(latestChild, todayWeek);
-
-  latestSpin.claimed = true;
-  latestSpin.prize = prize.prize;
-  latestSpin.points = prizePoints;
-  latestSpin.claimedAt = new Date().toISOString();
-
-  if (prizePoints > 0) {
-    if (!latestChild.weeks[todayWeek]) latestChild.weeks[todayWeek] = [];
-
-    latestChild.weeks[todayWeek].push({
-      day: 6,
-      cat: `Sunday Spin Wheel: ${prize.prize}`,
-      icon: '🎡',
-      note: 'Weekly wheel prize',
-      pos: true,
-      points: prizePoints,
-      pts: prizePoints
-    });
-  }
-cachedData = latestAll;
-
-  await saveData(latestAll);
-
-const updatedEntries = latestChild.weeks[todayWeek] || [];
-const updatedPos = updatedEntries
-  .filter(e => pointsForEntry(e) > 0)
-  .reduce((sum, e) => sum + pointsForEntry(e), 0);
-
-const updatedNeg = Math.abs(
-  updatedEntries
-    .filter(e => pointsForEntry(e) < 0)
-    .reduce((sum, e) => sum + pointsForEntry(e), 0)
-);
-
-const updatedBonus = weeklyBonus(updatedEntries);
-const updatedNet = updatedPos - updatedNeg + updatedBonus.points;
-
-const scoreEl = document.getElementById('c-score');
-if (scoreEl) scoreEl.textContent = updatedNet;
-
-showToast(`🎉 You won ${prize.prize}! New total: ${updatedNet}`);
-launchConfettiRain();
-
-  if (btn) {
-  btn.disabled = true;
-  btn.textContent = 'Already spun';
-  btn.style.opacity = '0.65';
-}
-
-  await renderChild();
-}, 11000);
-}
-
-    function weekKey(off) {
-      const d = new Date();
-      d.setDate(d.getDate() - ((d.getDay() + 6) % 7) + off * 7);
-      return localDateKey(d);
-    }
-
-    async function weekEntries(off) {
-      const all = await getData();
-      const child = getChildFromData(all, activeChildId);
-      return child.weeks[weekKey(off)] || [];
-    }
-
-    function weekDates(off) {
-      const mon = new Date();
-      mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7) + off * 7);
-      return Array.from({ length: 7 }, (_, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
-    }
-
-    async function wk(dir) { wkOff += dir; await renderParent(); }
-function getRewardRequestsForChild(all, childId) {
-  all = ensureMultiUserData(all);
-  return (all.__rewardRequests || []).filter(r => r.childId === childId);
-}
-
-async function requestReward(rewardId) {
-  if (!currentUser || currentUser.role !== 'child') return;
-
-let all = await getData();
-
-if (CLOUD_READY && currentFamilyId) {
-  const cloudData = await loadCloudFamily(currentFamilyId);
-  if (cloudData) {
-    all = ensureMultiUserData(cloudData);
-  }
-}
-
-if (CLOUD_READY && currentFamilyId) {
-  const cloudData = await loadCloudFamily(currentFamilyId);
-  if (cloudData) {
-    all = ensureMultiUserData(cloudData);
-  }
-}  const child = getChildFromData(all, activeChildId);
-  const rewards = getRewardsFromData(all);
-  const reward = rewards.find(r => r.id === rewardId);
-
-  if (!reward) return showToast('Reward not found.');
-
-  const entries = child.weeks[weekKey(0)] || [];
-  const net = weekTotal(entries);
-
-  if (net < reward.pts) {
-    return showToast(`You need ${reward.pts - net} more points.`);
-  }
-
-  all.__rewardRequests = Array.isArray(all.__rewardRequests) ? all.__rewardRequests : [];
-
-  const alreadyPending = all.__rewardRequests.some(r =>
-    r.childId === activeChildId &&
-    r.rewardId === rewardId &&
-    r.status === 'pending'
-  );
-
-  if (alreadyPending) {
-    return showToast('This reward is already waiting for approval.');
-  }
-
-  all.__rewardRequests.push({
-    id: makeCatalogId('request'),
-    childId: activeChildId,
-    childName: child.name || currentUser.name || 'Child',
-    rewardId,
-    rewardName: reward.name,
-    rewardIcon: reward.icon || '🎁',
-    points: reward.pts,
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  });
-
-  all.__lastUpdated = new Date().toISOString();
-
-await saveData(all);
-cachedData = all;
-saveLocalData(all);
-
-showToast('🎁 Reward requested!');
-await renderChild();
-}
-
-async function updateRewardRequest(requestId, status) {
-  if (!currentUser || currentUser.role !== 'parent') return;
-
-  const all = await getData();
-  all.__rewardRequests = Array.isArray(all.__rewardRequests) ? all.__rewardRequests : [];
-
-  const req = all.__rewardRequests.find(r => r.id === requestId);
-  if (!req || req.status !== 'pending') return;
-
- req.status = status;
-req.updatedAt = new Date().toISOString();
-
-if (status === 'approved') {
-  const child = getChildFromData(all, req.childId);
-
-  if (child) {
-    const key = weekKey(0);
-    if (!Array.isArray(child.weeks[key])) child.weeks[key] = [];
-
-    child.weeks[key].push({
-      id: makeCatalogId('reward'),
-      type: 'negative',
-      label: `Reward claimed: ${req.rewardName}`,
-      points: -Math.abs(Number(req.points || 0)),
-      note: 'Approved reward request',
-      day: new Date().getDay() === 0 ? 6 : new Date().getDay() - 1,
-      createdAt: new Date().toISOString()
-    });
-  }
-}
-all.__lastUpdated = new Date().toISOString();
-await saveData(all);
-  showToast(status === 'approved' ? '✅ Reward approved!' : '❌ Reward denied!');
-  await renderParent();
-}
-
-async function clearDeniedRewardRequest(requestId) {
-  if (!currentUser || currentUser.role !== 'parent') return;
-
-  const all = await getData();
-  all.__rewardRequests = Array.isArray(all.__rewardRequests) ? all.__rewardRequests : [];
-
-  const req = all.__rewardRequests.find(r => r.id === requestId);
-  if (!req || req.status !== 'denied') return;
-
-  req.status = 'cleared';
-  req.updatedAt = new Date().toISOString();
-
-  await saveData(all);
-  cachedData = all;
-  saveLocalData(all);
-
-  showToast('Reward request cleared.');
-  await renderParent();
-}
-    async function renderParent() {
-  const allForChild = await getData();
-  populateWheelPrizeSettings(allForChild.__settings);
-
-  const wheelThresholdInput = document.getElementById('wheel-threshold');
-  if (wheelThresholdInput) {
-    wheelThresholdInput.value = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
-  }
-
-  const all = allForChild;
-      const child = getChildFromData(allForChild, activeChildId);
-      const entries = child.weeks[weekKey(wkOff)] || [];
-      const rewards = getRewardsFromData(allForChild);
-      renderBehaviourOptions(allForChild);
-      renderCatalogList(allForChild);
-      const dates = weekDates(wkOff);
-      const today = new Date();
-
-      const parentTitle = document.getElementById('p-title');
-      if (parentTitle) parentTitle.textContent = `${child.name || 'Child'}'s Chart`;
-      await renderParentAdminControls();
-      await renderChildSwitcher();
-
-      const lbl = wkOff === 0 ? 'This week' : wkOff === -1 ? 'Last week' :
-        'Week of ' + dates[0].toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-      document.getElementById('p-week-label').textContent = lbl;
-
-      // Days grid
-      let tPos = 0, tNeg = 0;
-      let dHtml = '';
-      dates.forEach((d, i) => {
-        const de = entries.filter(e => e.day === i);
-        const p = de.filter(e => pointsForEntry(e) > 0).reduce((sum, e) => sum + pointsForEntry(e), 0);
-        const n = Math.abs(de.filter(e => pointsForEntry(e) < 0).reduce((sum, e) => sum + pointsForEntry(e), 0));
-        tPos += p; tNeg += n;
-        const net = p - n;
-        const nc = net > 0 ? 'pos' : net < 0 ? 'neg' : 'zero';
-        const isT = d.toDateString() === today.toDateString();
-       const posCount = de.filter(e => pointsForEntry(e) > 0).length;
-const negCount = de.filter(e => pointsForEntry(e) < 0).length;
-
-const summary = (posCount || negCount) ? `
-  <div class="day-summary">
-    <div class="day-pos">⭐ ${posCount}</div>
-    <div class="day-neg">❌ ${negCount}</div>
-  </div>
-` : '';
-
-        dHtml += `<div class="day-col${isT ? ' today' : ''}">
-        <div class="dname">${DAYS[i]}</div>
-        <div class="ddate">${d.getDate()}/${d.getMonth() + 1}</div>
-        <div class="day-symbols">${summary}</div>
-        ${(p + n) > 0 ? `<div class="day-net ${nc}">${net > 0 ? '+' : ''}${net}</div>` : ''}
-      </div>`;
-      });
-      document.getElementById('p-days').innerHTML = dHtml;
-
-      const bonus = weeklyBonus(entries);
-      const net = tPos - tNeg + bonus.points;
-      document.getElementById('p-stats').innerHTML = `
-      <div class="stat-box"><div class="slabel">Score</div><div class="sval ${net >= 0 ? 'green' : 'red'}">${net > 0 ? '+' : ''}${net}</div></div>
-      <div class="stat-box"><div class="slabel">⭐ Earned</div><div class="sval green">${tPos}</div></div>
-      <div class="stat-box"><div class="slabel">🎉 Bonus</div><div class="sval blue">${bonus.points ? '+' + bonus.points : bonus.cleanDays + '/5'}</div></div>
-      <div class="stat-box"><div class="slabel">✖ Lost</div><div class="sval red">${tNeg}</div></div>
-    `;
-
-      const bonusHtml = `<div class="reward-row">
-        <div class="reward-left">
-          <span class="reward-emoji">🎉</span>
-          <div><div class="reward-name">5 days with no negatives</div><div class="reward-pts">${bonus.cleanDays}/5 clean days this week • Bonus +10 points</div></div>
-        </div>
-        <span class="badge ${bonus.points ? 'unlocked' : 'locked'}">${bonus.points ? '✓ +10 added!' : bonus.cleanDays + '/5'}</span>
-      </div>`;
-
-      const requests = getRewardRequestsForChild(allForChild, activeChildId);
-const pendingRequests = requests.filter(r => r.status === 'pending');
-const deniedRequests = requests.filter(r => r.status === 'denied');
-
-const requestHtml = `
-  <div style="margin-top:14px;padding-top:12px;border-top:1px solid #eee;">
-    <h4 style="font-size:14px;margin-bottom:8px;">📩 Reward requests</h4>
-
-    ${
-      pendingRequests.length
-        ? pendingRequests.map(req => `
-          <div class="reward-row">
-            <div class="reward-left">
-              <span class="reward-emoji">${escapeHtml(req.rewardIcon || '🎁')}</span>
-              <div>
-                <div class="reward-name">${escapeHtml(req.rewardName)}</div>
-                <div class="reward-pts">${escapeHtml(req.childName)} requested this • ${req.points} points</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button class="btn-add-pos" onclick="updateRewardRequest('${req.id}', 'approved')" style="padding:7px 10px;">Approve</button>
-              <button class="btn-add-neg" onclick="updateRewardRequest('${req.id}', 'denied')" style="padding:7px 10px;">Deny</button>
-            </div>
-          </div>
-        `).join('')
-        : '<p class="empty-msg">No pending reward requests.</p>'
-    }
-
-    ${
-      deniedRequests.length
-        ? `
-          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #eee;">
-            <h4 style="font-size:14px;margin-bottom:8px;">❌ Denied requests</h4>
-            ${deniedRequests.map(req => `
-              <div class="reward-row">
-                <div class="reward-left">
-                  <span class="reward-emoji">${escapeHtml(req.rewardIcon || '🎁')}</span>
-                  <div>
-                    <div class="reward-name">${escapeHtml(req.rewardName)}</div>
-                    <div class="reward-pts">${escapeHtml(req.childName)} was denied this • ${req.points} points</div>
-                  </div>
-                </div>
-                <button class="btn-add-pos" onclick="clearDeniedRewardRequest('${req.id}')" style="padding:7px 10px;">Clear</button>
-              </div>
-            `).join('')}
-          </div>
-        `
-        : ''
-    }
-  </div>
-`;
-
-document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
-  const u = net >= r.pts;
-  return `<div class="reward-row">
-    <div class="reward-left">
-      <span class="reward-emoji">${escapeHtml(r.icon || '🎁')}</span>
-      <div><div class="reward-name">${escapeHtml(r.name)}</div><div class="reward-pts">${escapeHtml(r.desc || 'Reward')} • Needs ${r.pts} points</div></div>
-    </div>
-    <span class="badge ${u ? 'unlocked' : 'locked'}">${u ? '✓ Unlocked!' : net + '/' + r.pts}</span>
-  </div>`;
-}).join('') + requestHtml;
-
-      // Auto-set day to today
-      const todayIdx = (today.getDay() + 6) % 7;
-      document.getElementById('f-day').value = todayIdx;
-
-      renderPEntries(entries);
-    }
-
-    function renderPEntries(entries) {
-      const el = document.getElementById('p-entries');
-      const rev = [...entries].reverse();
-      if (!rev.length) { el.innerHTML = '<p class="empty-msg">No entries logged yet this week.</p>'; return; }
-      el.innerHTML = rev.map((e, ri) => {
-        const idx = entries.length - 1 - ri;
-        return `<div class="entry ${pointsForEntry(e) > 0 ? 'pos-entry' : 'neg-entry'}">
-        <span class="eicon">${escapeHtml(e.icon || (pointsForEntry(e) > 0 ? '⭐' : '✖'))}</span>
-        <div class="ebody">
-          <div class="etext">${escapeHtml(e.cat)}${e.note ? ' — ' + escapeHtml(e.note) : ''}</div>
-          <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
-        </div>
-        <button class="edel" onclick="del(${idx})" title="Delete">✕</button>
-      </div>`;
-      }).join('');
-    }
-
-    async function addEntry(type) {
-      const isPositive = type === 'positive';
-      const wk = weekKey(wkOff);
-      const day = parseInt(document.getElementById('f-day').value);
-      const select = document.getElementById(isPositive ? 'f-pos-cat' : 'f-neg-cat');
-      const selected = select.options[select.selectedIndex];
-      if (!selected) return;
-      const icon = selected.dataset.icon || (isPositive ? '⭐' : '✖');
-      const cat = selected.dataset.label || selected.textContent;
-      const points = parseInt(selected.value, 10);
-      const note = document.getElementById('f-note').value.trim();
-      const all = await getData();
-      const child = getChildFromData(all, activeChildId);
-      if (!child.weeks[wk]) child.weeks[wk] = [];
-      child.weeks[wk].push({ day, cat, icon, note, pos: points > 0, points });
-      await saveData(all);
-      document.getElementById('f-note').value = '';
-      await renderParent();
-    }
-
-    async function del(idx) {
-      const wk = weekKey(wkOff);
-      const all = await getData();
-      const child = getChildFromData(all, activeChildId);
-      if (!child.weeks[wk]) return;
-      child.weeks[wk].splice(idx, 1);
-      await saveData(all);
-      await renderParent();
-    }
-
-    async function renderChild() {
-  await loadAndApplyTheme();
-  const allForChild = await getData();
-  populateWheelPrizeSettings(allForChild.__settings);
-
-
-  const child = getChildFromData(allForChild, activeChildId);
-      const childTitle = document.getElementById('c-title');
-      if (childTitle) childTitle.textContent = `Hi ${child.name || currentUser?.name || 'there'}! 👋`;
-      const entries = child.weeks[weekKey(0)] || [];
-      const pos = entries.filter(e => pointsForEntry(e) > 0).reduce((sum, e) => sum + pointsForEntry(e), 0);
-      const neg = Math.abs(entries.filter(e => pointsForEntry(e) < 0).reduce((sum, e) => sum + pointsForEntry(e), 0));
-      const bonus = weeklyBonus(entries);
-      const net = pos - neg + bonus.points;
-   
-      const rewards = getRewardsFromData(allForChild);
-const rewardTarget = rewards.length
-  ? Math.max(1, ...rewards.map(r => r.pts))
-  : 35;
-
-const maxP = Math.max(35, rewardTarget);
-const pct = Math.min(100, Math.max(0, Math.round(net / maxP * 100)));
-
-      document.getElementById('c-stars').textContent = '⭐'.repeat(Math.min(5, Math.max(1, pos)));
-      document.getElementById('c-score').textContent = net;
-      document.getElementById('c-prog').style.width = pct + '%';
-
-      const nxt = rewards.filter(r => net < r.pts).sort((a, b) => a.pts - b.pts)[0];
-      document.getElementById('c-prog-label').textContent = nxt
-        ? `${nxt.pts - net} more points to unlock ${nxt.name}!`
-        : '🎉 Amazing — you\'ve unlocked rewards this week!';
-
-      const bonusCard = `<div class="rcard${bonus.points ? ' won' : ''}">
-        <div class="ricon">🎉</div>
-        <div class="rname">5 clean days</div>
-        <div class="rstatus">${bonus.points ? '✓ +10 bonus points!' : bonus.cleanDays + '/5 days with no negatives'}</div>
-      </div>`;
-
-      const requests = getRewardRequestsForChild(allForChild, activeChildId);
-
-document.getElementById('c-reward-cards').innerHTML = bonusCard + (
-  rewards.length
-    ? rewards.map(r => {
-  const unlocked = net >= r.pts;
-
-  const latestRequest = requests
-    .filter(req => req.rewardId === r.id)
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
-
-  const pending = latestRequest?.status === 'pending';
-  const denied = latestRequest?.status === 'denied';
-
-  return `<div class="rcard${unlocked ? ' won' : ''}">
-  <div class="ricon">${escapeHtml(r.icon || '🎁')}</div>
-  <div class="rname">${escapeHtml(r.name)}</div>
-  <div class="rstatus">
-    ${
-  pending ? '⏳ Waiting for parent' :
-  denied ? '❌ Denied by parent' :
-  unlocked ? `<button class="btn-add-pos" onclick="requestReward('${r.id}')" style="margin-top:8px;">Request reward</button>` :
-  r.pts + ' pts needed'
-}
-  </div>
-</div>`;
-}).join('')
-    : `<div class="rcard">
-  <div class="ricon">🎁</div>
-  <div class="rname">No rewards available yet</div>
-  <div class="rstatus">Ask a parent to add rewards.</div>
-</div>`
-);
-const spinCard = document.getElementById('weekly-spin-card');
-const spinStatus = document.getElementById('weekly-spin-status');
-const spinBtn = document.getElementById('weekly-spin-btn');
-
-if (spinCard && spinStatus && spinBtn) {
-  const todayWeek = weekKey(0);
-  const threshold = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
-  const currentWeekTotal = weekTotal(entries);
-  const spin = getWeeklySpin(child, todayWeek);
-
-  spinCard.style.display = 'block';
-
-  if (new Date().getDay() !== 0) {
-    spinStatus.textContent = `Come back on Sunday. You need ${threshold} points this week to unlock the wheel. Current total: ${currentWeekTotal}.`;
-    spinBtn.disabled = true;
-    spinBtn.textContent = 'Available Sunday';
-    spinBtn.style.opacity = '0.65';
-  } else if (currentWeekTotal < threshold) {
-    spinStatus.textContent = `You need ${threshold} points to spin. Current total: ${currentWeekTotal}.`;
-    spinBtn.disabled = true;
-    spinBtn.textContent = 'Not enough points yet';
-    spinBtn.style.opacity = '0.65';
-  } else if (spin.claimed) {
-    spinStatus.textContent = `You already spun this week and won: ${spin.prize}.`;
-    spinBtn.disabled = true;
-    spinBtn.textContent = 'Already spun';
-    spinBtn.style.opacity = '0.65';
-  } else {
-    spinStatus.textContent = `You reached ${currentWeekTotal} points this week. Spin the wheel!`;
-    spinBtn.disabled = false;
-    spinBtn.textContent = 'Spin the Wheel';
-    spinBtn.style.opacity = '1';
-  }
-}
-      renderCEntries(entries);
-    }
-
-    function setTab(t) {
-      cTab = t;
-      ['all', 'pos', 'neg'].forEach(x => {
-        document.getElementById('t-' + x).className = 'tab' + (x === t ? ' active' : '');
-      });
-      weekEntries(0).then(renderCEntries);
-    }
-
-    function renderCEntries(entries) {
-      let list = [...entries].reverse();
-      if (cTab === 'pos') list = list.filter(e => pointsForEntry(e) > 0);
-      if (cTab === 'neg') list = list.filter(e => pointsForEntry(e) < 0);
-      const el = document.getElementById('c-entries');
-      if (!list.length) { el.innerHTML = '<p class="empty-msg">Nothing here yet.</p>'; return; }
-      el.innerHTML = list.map(e => `<div class="entry ${pointsForEntry(e) > 0 ? 'pos-entry' : 'neg-entry'}">
-      <span class="eicon">${escapeHtml(e.icon || (pointsForEntry(e) > 0 ? '⭐' : '✖'))}</span>
-      <div class="ebody">
-        <div class="etext">${escapeHtml(e.cat)}${e.note ? ' — ' + escapeHtml(e.note) : ''}</div>
-        <div class="emeta">${DAYSFULL[e.day]} • ${formatPoints(pointsForEntry(e))}</div>
-      </div>
-    </div>`).join('');
-    }
-
-    function startRewardRealtime() {
-  stopRewardRealtime();
-
-  if (!CLOUD_READY || !currentFamilyId || !db) return;
-
-  rewardRealtimeChannel = db
-    .channel(`reward-chart-data-${currentFamilyId}`)
-    .on(
-      'postgres_changes',
-      {
-        event: '*',
-        schema: 'public',
-        table: 'reward_chart_data',
-        filter: `chart_id=eq.${currentFamilyId}`
-      },
-      async () => {
-        await refreshFromCloud('realtime');
-      }
-    )
-    .subscribe();
-}
-
-function stopRewardRealtime() {
-  if (rewardRealtimeChannel && db) {
-    db.removeChannel(rewardRealtimeChannel);
-  }
-
-  rewardRealtimeChannel = null;
-}
-
-    async function refreshFromCloud(reason = 'timer') {
-      if (!currentFamilyId || !CLOUD_READY || !loginWho) return;
-
-      const cloudData = await loadCloudFamily(currentFamilyId);
-      if (!cloudData) return;
-
-      const incoming = ensureMultiUserData(cloudData);
-      const before = JSON.stringify(cachedData || {});
-      const after = JSON.stringify(incoming);
-      if (before === after) return;
-
-      cachedData = incoming;
-      saveLocalData(cachedData);
-
-      const users = getUsersFromData(cachedData);
-      if (currentUserKey && users[currentUserKey]) {
-        currentUser = users[currentUserKey];
-      }
-
-      if (currentUser?.role === 'parent') {
-        const allowedChildren = getParentChildIds(currentUser);
-        if (!allowedChildren.includes(activeChildId)) {
-          activeChildId = allowedChildren[0] || activeChildId;
-        }
-        await renderParent();
-        await fillParentSettings();
-      } else if (currentUser?.role === 'child') {
-        await renderChild();
-      }
-    }
-
-// setInterval(() => refreshFromCloud('timer'), 15000);
-    window.addEventListener('focus', () => {
-      refreshFromCloud('focus');
-    });
-
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) refreshFromCloud('visible');
-    });
-
-    initApp();
-  </script>
+    </section>
+
+    <section class="cta">
+      <h2>Ready to start?</h2>
+      <p>
+        Open the app, create your family, and start turning everyday choices into visible progress.
+      </p>
+      <a class="btn" href="/app.html">Open Family Rewards</a>
+    </section>
+
+    <footer class="footer">
+      Family Rewards — built for simple, positive family routines.
+    </footer>
+  </main>
 </body>
-
 </html>
