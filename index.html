@@ -2576,10 +2576,13 @@ if (all.__catalog && typeof all.__catalog === 'object') {
   });
 
   oldRewards.forEach(item => {
-    const isDefault = defaults.rewards.some(def => isSameReward(def, item));
-    const alreadyCustom = all.__customCatalog.rewards.some(custom => isSameReward(custom, item));
-    if (!isDefault && !alreadyCustom) all.__customCatalog.rewards.push(item);
-  });
+  const alreadyCustom = all.__customCatalog.rewards.some(custom => isSameReward(custom, item));
+  if (!alreadyCustom) all.__customCatalog.rewards.push(item);
+});
+
+if (!all.__customCatalog.rewards.length) {
+  all.__customCatalog.rewards = DEFAULT_REWARDS.map(normaliseRewardItem);
+}
 
   delete all.__catalog;
 }
@@ -2999,7 +3002,7 @@ function getCatalogFromData(all) {
   return {
     positives: [...defaults.positives, ...custom.positives],
     negatives: [...defaults.negatives, ...custom.negatives],
-    rewards: [...defaults.rewards, ...custom.rewards]
+    rewards: [...custom.rewards]
   };
 }
 
@@ -3605,7 +3608,7 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
         __customCatalog: {
   positives: [],
   negatives: [],
-  rewards: []
+  rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
 },
         __family: { name: familyName, createdAt: new Date().toISOString() },
         __children: {
@@ -4483,9 +4486,12 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
       const net = pos - neg + bonus.points;
    
       const rewards = getRewardsFromData(allForChild);
-      const rewardTarget = Math.max(1, ...rewards.map(r => r.pts));
-      const maxP = Math.max(35, rewardTarget);
-      const pct = Math.min(100, Math.max(0, Math.round(net / maxP * 100)));
+const rewardTarget = rewards.length
+  ? Math.max(1, ...rewards.map(r => r.pts))
+  : 35;
+
+const maxP = Math.max(35, rewardTarget);
+const pct = Math.min(100, Math.max(0, Math.round(net / maxP * 100)));
 
       document.getElementById('c-stars').textContent = '⭐'.repeat(Math.min(5, Math.max(1, pos)));
       document.getElementById('c-score').textContent = net;
@@ -4504,7 +4510,9 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
 
       const requests = getRewardRequestsForChild(allForChild, activeChildId);
 
-document.getElementById('c-reward-cards').innerHTML = bonusCard + rewards.map(r => {
+document.getElementById('c-reward-cards').innerHTML = bonusCard + (
+  rewards.length
+    ? rewards.map(r => {
   const unlocked = net >= r.pts;
 
   const latestRequest = requests
@@ -4526,7 +4534,9 @@ document.getElementById('c-reward-cards').innerHTML = bonusCard + rewards.map(r 
 }
   </div>
 </div>`;
-}).join('');
+}).join('')
+    : '<p class="empty-msg">No rewards available yet.</p>'
+);
 const spinCard = document.getElementById('weekly-spin-card');
 const spinStatus = document.getElementById('weekly-spin-status');
 const spinBtn = document.getElementById('weekly-spin-btn');
