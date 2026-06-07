@@ -2928,6 +2928,59 @@ function showToast(message) {
       };
     }
 
+    function iconForRewardName(name) {
+  const text = String(name || '').toLowerCase();
+
+  const matches = [
+    { icon: '🛝', words: ['park', 'playground', 'swings', 'slide', 'soft play', 'play area', 'play centre'] },
+    { icon: '🎬', words: ['cinema', 'movie', 'film', 'dvd', 'netflix', 'disney', 'movie night'] },
+    { icon: '🍕', words: ['pizza', 'takeaway', 'mcdonald', 'mcdonalds', 'kfc', 'burger', 'nando', 'dominos', 'chips'] },
+    { icon: '🍦', words: ['ice cream', 'icecream', 'dessert', 'pudding', 'milkshake', 'sundae'] },
+    { icon: '🍬', words: ['sweet', 'sweets', 'candy', 'lolly', 'lollipop', 'pick n mix', 'pick and mix'] },
+    { icon: '🍫', words: ['chocolate', 'choc', 'mars', 'twix', 'kitkat', 'cadbury', 'haribos', 'haribo'] },
+
+    { icon: '🎮', words: ['game', 'gaming', 'xbox', 'playstation', 'ps5', 'ps4', 'switch', 'nintendo', 'console', 'minecraft', 'roblox', 'robux', 'fortnite', 'vbucks', 'v-bucks', 'battle pass', 'crew pack'] },
+    { icon: '🚗', words: ['rocket league', 'car game', 'racing game', 'race'] },
+    { icon: '⚽', words: ['football', 'soccer', 'fc', 'match', 'kickabout', 'training', 'five a side', '5 a side', 'penalties'] },
+    { icon: '🏟️', words: ['stadium', 'arsenal', 'chelsea', 'man city', 'man united', 'wsl', 'football match'] },
+
+    { icon: '🎳', words: ['bowling', 'bowling alley'] },
+    { icon: '🏊', words: ['swimming', 'pool', 'swim', 'leisure centre'] },
+    { icon: '🦁', words: ['zoo', 'safari', 'wildlife park', 'animals'] },
+    { icon: '🐑', words: ['farm', 'petting farm', 'farm park'] },
+    { icon: '🎡', words: ['fair', 'funfair', 'theme park', 'rides', 'amusement park'] },
+    { icon: '🕹️', words: ['arcade', 'arcades', 'game centre'] },
+    { icon: '🤸', words: ['trampoline', 'trampolining', 'jump park', 'bounce'] },
+    { icon: '🚲', words: ['bike', 'cycling', 'cycle', 'scooter'] },
+    { icon: '🛼', words: ['skating', 'roller skating', 'ice skating'] },
+
+    { icon: '📚', words: ['book', 'reading', 'comic', 'magazine', 'kindle'] },
+    { icon: '🧸', words: ['toy', 'lego', 'action figure', 'doll', 'squishmallow', 'plush'] },
+    { icon: '🎨', words: ['paint', 'painting', 'drawing', 'art', 'craft', 'colouring', 'coloring'] },
+    { icon: '🧩', words: ['puzzle', 'jigsaw', 'board game', 'boardgame'] },
+    { icon: '🎵', words: ['music', 'song', 'spotify', 'album'] },
+
+    { icon: '💷', words: ['money', 'cash', 'pocket money', 'allowance', 'paid', 'pound', '£'] },
+    { icon: '🛍️', words: ['shopping', 'shop', 'shopping trip', 'buy something'] },
+    { icon: '🎁', words: ['present', 'gift', 'surprise', 'reward box'] },
+    { icon: '⭐', words: ['big reward', 'special reward', 'choice', 'choose anything'] },
+
+    { icon: '🛏️', words: ['stay up', 'late night', 'later bedtime', 'sleepover'] },
+    { icon: '📺', words: ['tv', 'tablet', 'ipad', 'youtube', 'screen time', 'extra screen'] },
+    { icon: '👨‍👩‍👧‍👦', words: ['family day', 'family time', 'day out'] },
+    { icon: '🍿', words: ['popcorn'] },
+    { icon: '🥞', words: ['breakfast', 'pancake', 'pancakes'] },
+    { icon: '🍩', words: ['donut', 'doughnut'] },
+    { icon: '🧃', words: ['drink', 'slush', 'slushie'] }
+  ];
+
+  const found = matches.find(group =>
+    group.words.some(word => text.includes(word))
+  );
+
+  return found ? found.icon : '🎁';
+}
+
     function normaliseRewardItem(item) {
       return {
         id: item?.id || makeCatalogId('reward'),
@@ -3181,7 +3234,7 @@ const listName = positive ? 'positives' : 'negatives';
   }
 
   catalog.rewards.push(normaliseRewardItem({
-    icon: '🎁',
+    icon: iconForRewardName(name),
     name,
     pts,
     desc
