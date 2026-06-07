@@ -1262,9 +1262,9 @@ body[data-theme="dark"] #forgot-family-result .found-family-code {
 
 
 body[data-theme="dark"] #forgot-family-result .btn-add-pos {
-  background: #dcfce7 !important;
-  color: #166534 !important;
-  border-color: #86efac !important;
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #15803d !important;
 }
 
 .found-family-card {
@@ -2903,6 +2903,15 @@ function showToast(message) {
       const iconId = positive ? 'custom-pos-icon' : 'custom-neg-icon';
       const labelId = positive ? 'custom-pos-label' : 'custom-neg-label';
       const pointsId = positive ? 'custom-pos-points' : 'custom-neg-points';
+      if (!label) {
+  showToast('Enter a positive name');
+  return;
+}
+
+if (!points || points <= 0) {
+  showToast('Enter positive points');
+  return;
+}
       const fallbackIcon = positive ? '⭐' : '⚠️';
 
       const label = document.getElementById(labelId).value.trim();
