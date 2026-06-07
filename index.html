@@ -2271,7 +2271,7 @@ const DEFAULT_WHEEL_PRIZES = [
           });
         }
       });
-
+if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
       if (!all.__catalog) all.__catalog = {};
       all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
         ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
@@ -3678,7 +3678,74 @@ launchConfettiRain();
     }
 
     async function wk(dir) { wkOff += dir; await renderParent(); }
+function getRewardRequestsForChild(all, childId) {
+  all = ensureMultiUserData(all);
+  return (all.__rewardRequests || []).filter(r => r.childId === childId);
+}
 
+async function requestReward(rewardId) {
+  if (!currentUser || currentUser.role !== 'child') return;
+
+  const all = await getData();
+  const child = getChildFromData(all, activeChildId);
+  const rewards = getRewardsFromData(all);
+  const reward = rewards.find(r => r.id === rewardId);
+
+  if (!reward) return showToast('Reward not found.');
+
+  const entries = child.weeks[weekKey(0)] || [];
+  const net = weekTotal(entries);
+
+  if (net < reward.pts) {
+    return showToast(`You need ${reward.pts - net} more points.`);
+  }
+
+  all.__rewardRequests = Array.isArray(all.__rewardRequests) ? all.__rewardRequests : [];
+
+  const alreadyPending = all.__rewardRequests.some(r =>
+    r.childId === activeChildId &&
+    r.rewardId === rewardId &&
+    r.status === 'pending'
+  );
+
+  if (alreadyPending) {
+    return showToast('This reward is already waiting for approval.');
+  }
+
+  all.__rewardRequests.push({
+    id: makeCatalogId('request'),
+    childId: activeChildId,
+    childName: child.name || currentUser.name || 'Child',
+    rewardId,
+    rewardName: reward.name,
+    rewardIcon: reward.icon || '🎁',
+    points: reward.pts,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  });
+
+  await saveData(all);
+  showToast('🎁 Reward requested!');
+  await renderChild();
+}
+
+async function updateRewardRequest(requestId, status) {
+  if (!currentUser || currentUser.role !== 'parent') return;
+
+  const all = await getData();
+  all.__rewardRequests = Array.isArray(all.__rewardRequests) ? all.__rewardRequests : [];
+
+  const req = all.__rewardRequests.find(r => r.id === requestId);
+  if (!req || req.status !== 'pending') return;
+
+  req.status = status;
+  req.updatedAt = new Date().toISOString();
+
+  await saveData(all);
+
+  showToast(status === 'approved' ? '✅ Reward approved!' : '❌ Reward denied!');
+  await renderParent();
+}
     async function renderParent() {
       const allForChild = await getData();
       populateWheelPrizeSettings(allForChild.__settings);
@@ -3747,16 +3814,44 @@ const summary = (posCount || negCount) ? `
         <span class="badge ${bonus.points ? 'unlocked' : 'locked'}">${bonus.points ? '✓ +10 added!' : bonus.cleanDays + '/5'}</span>
       </div>`;
 
-      document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
-        const u = net >= r.pts;
-        return `<div class="reward-row">
-        <div class="reward-left">
-          <span class="reward-emoji">${escapeHtml(r.icon || '🎁')}</span>
-          <div><div class="reward-name">${escapeHtml(r.name)}</div><div class="reward-pts">${escapeHtml(r.desc || 'Reward')} • Needs ${r.pts} points</div></div>
-        </div>
-        <span class="badge ${u ? 'unlocked' : 'locked'}">${u ? '✓ Unlocked!' : net + '/' + r.pts}</span>
-      </div>`;
-      }).join('');
+      const requests = getRewardRequestsForChild(allForChild, activeChildId);
+const pendingRequests = requests.filter(r => r.status === 'pending');
+
+const requestHtml = `
+  <div style="margin-top:14px;padding-top:12px;border-top:1px solid #eee;">
+    <h4 style="font-size:14px;margin-bottom:8px;">📩 Reward requests</h4>
+    ${
+      pendingRequests.length
+        ? pendingRequests.map(req => `
+          <div class="reward-row">
+            <div class="reward-left">
+              <span class="reward-emoji">${escapeHtml(req.rewardIcon || '🎁')}</span>
+              <div>
+                <div class="reward-name">${escapeHtml(req.rewardName)}</div>
+                <div class="reward-pts">${escapeHtml(req.childName)} requested this • ${req.points} points</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn-add-pos" onclick="updateRewardRequest('${req.id}', 'approved')" style="padding:7px 10px;">Approve</button>
+              <button class="btn-add-neg" onclick="updateRewardRequest('${req.id}', 'denied')" style="padding:7px 10px;">Deny</button>
+            </div>
+          </div>
+        `).join('')
+        : '<p class="empty-msg">No pending reward requests.</p>'
+    }
+  </div>
+`;
+
+document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
+  const u = net >= r.pts;
+  return `<div class="reward-row">
+    <div class="reward-left">
+      <span class="reward-emoji">${escapeHtml(r.icon || '🎁')}</span>
+      <div><div class="reward-name">${escapeHtml(r.name)}</div><div class="reward-pts">${escapeHtml(r.desc || 'Reward')} • Needs ${r.pts} points</div></div>
+    </div>
+    <span class="badge ${u ? 'unlocked' : 'locked'}">${u ? '✓ Unlocked!' : net + '/' + r.pts}</span>
+  </div>`;
+}).join('') + requestHtml;
 
       // Auto-set day to today
       const todayIdx = (today.getDay() + 6) % 7;
@@ -3847,14 +3942,26 @@ const summary = (posCount || negCount) ? `
         <div class="rstatus">${bonus.points ? '✓ +10 bonus points!' : bonus.cleanDays + '/5 days with no negatives'}</div>
       </div>`;
 
-      document.getElementById('c-reward-cards').innerHTML = bonusCard + rewards.map(r => {
-        const w = net >= r.pts;
-        return `<div class="rcard${w ? ' won' : ''}">
-        <div class="ricon">${escapeHtml(r.icon || '🎁')}</div>
-        <div class="rname">${escapeHtml(r.name)}</div>
-        <div class="rstatus">${w ? '✓ Unlocked!' : r.pts + ' pts needed'}</div>
-      </div>`;
-      }).join('');
+      const requests = getRewardRequestsForChild(allForChild, activeChildId);
+
+document.getElementById('c-reward-cards').innerHTML = bonusCard + rewards.map(r => {
+  const unlocked = net >= r.pts;
+  const pending = requests.some(req => req.rewardId === r.id && req.status === 'pending');
+  const approved = requests.some(req => req.rewardId === r.id && req.status === 'approved');
+
+  return `<div class="rcard${unlocked ? ' won' : ''}">
+    <div class="ricon">${escapeHtml(r.icon || '🎁')}</div>
+    <div class="rname">${escapeHtml(r.name)}</div>
+    <div class="rstatus">
+      ${
+        approved ? '✅ Approved!' :
+        pending ? '⏳ Waiting for parent' :
+        unlocked ? `<button class="btn-add-pos" onclick="requestReward('${r.id}')" style="margin-top:8px;">Request reward</button>` :
+        r.pts + ' pts needed'
+      }
+    </div>
+  </div>`;
+}).join('');
 const spinCard = document.getElementById('weekly-spin-card');
 const spinStatus = document.getElementById('weekly-spin-status');
 const spinBtn = document.getElementById('weekly-spin-btn');
