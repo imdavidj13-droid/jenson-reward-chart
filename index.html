@@ -3686,8 +3686,21 @@ function getRewardRequestsForChild(all, childId) {
 async function requestReward(rewardId) {
   if (!currentUser || currentUser.role !== 'child') return;
 
-  const all = await getData();
-  const child = getChildFromData(all, activeChildId);
+let all = await getData();
+
+if (CLOUD_READY && currentFamilyId) {
+  const cloudData = await loadCloudFamily(currentFamilyId);
+  if (cloudData) {
+    all = ensureMultiUserData(cloudData);
+  }
+}
+
+if (CLOUD_READY && currentFamilyId) {
+  const cloudData = await loadCloudFamily(currentFamilyId);
+  if (cloudData) {
+    all = ensureMultiUserData(cloudData);
+  }
+}  const child = getChildFromData(all, activeChildId);
   const rewards = getRewardsFromData(all);
   const reward = rewards.find(r => r.id === rewardId);
 
@@ -3728,6 +3741,7 @@ async function requestReward(rewardId) {
 
 await saveData(all);
 cachedData = all;
+saveLocalData(all);
 
 showToast('🎁 Reward requested!');
 await renderChild();
