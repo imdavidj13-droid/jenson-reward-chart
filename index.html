@@ -1220,21 +1220,74 @@ body[data-theme="dark"] .theme-toggle-btn {
   margin-top: 5px;
 }
 
-body[data-theme="dark"] #forgot-family-result {
-  background: #0f172a !important;
-  border: 1.5px solid #334155;
-  border-radius: 10px;
-  color: #f8fafc !important;
+#forgot-family-result {
+  margin-top: 12px;
 }
 
-body[data-theme="dark"] #forgot-family-result * {
-  color: #f8fafc !important;
+#forgot-family-result .found-family-card {
+  background: #f8fafc;
+  border: 1.5px solid #dbeafe;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
 }
+
+#forgot-family-result .found-family-code {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1a1a2e;
+  letter-spacing: 0.5px;
+}
+
+body[data-theme="dark"] #forgot-family-result .found-family-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] #forgot-family-result .found-family-code {
+  color: #f8fafc;
+}
+
+
 
 body[data-theme="dark"] #forgot-family-result .btn-add-pos {
   background: #dcfce7 !important;
   color: #166534 !important;
   border-color: #86efac !important;
+}
+
+.found-family-card {
+  background: #f8fafc;
+  border: 1.5px solid #dbeafe;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  color: #1a1a2e;
+}
+
+.found-family-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.found-family-code {
+  font-size: 17px;
+  font-weight: 900;
+  color: #020617;
+  letter-spacing: 0.5px;
+}
+
+body[data-theme="dark"] .found-family-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .found-family-title,
+body[data-theme="dark"] .found-family-code {
+  color: #f8fafc;
 }
 
     @media (max-width: 600px) {
@@ -3386,17 +3439,18 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
         return;
       }
 
-      result.innerHTML = matches.map(row => `
-    <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin-top:8px;">
-      <strong>${escapeHtml(row.data?.__family?.name || 'Family')}</strong><br>
-      Family code: <strong>${escapeHtml(row.chart_id)}</strong><br>
-      <button class="btn-add-pos" type="button" style="margin-top:8px;padding:7px 10px;"
-        onclick="useFoundFamilyCode('${escapeHtml(row.chart_id)}')">
-        Use this code
-      </button>
-    </div>
-  `).join('');
-    }
+     result.innerHTML = matches.map(row => `
+  <div class="found-family-card">
+    <p class="found-family-title">${escapeHtml(row.data?.__family?.name || 'Family')}</p>
+    <p class="found-family-code">${escapeHtml(row.chart_id)}</p>
+
+    <button class="btn-add-pos" type="button"
+      style="padding:8px 12px;width:max-content;"
+      onclick="useFoundFamilyCode('${escapeHtml(row.chart_id)}')">
+      Use this code
+    </button>
+  </div>
+`).join('');}
 
     function useFoundFamilyCode(code) {
       const input = document.getElementById('join-family-code');
