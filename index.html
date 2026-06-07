@@ -3724,9 +3724,13 @@ async function requestReward(rewardId) {
     createdAt: new Date().toISOString()
   });
 
-  await saveData(all);
-  showToast('🎁 Reward requested!');
-  await renderChild();
+  all.__lastUpdated = new Date().toISOString();
+
+await saveData(all);
+cachedData = all;
+
+showToast('🎁 Reward requested!');
+await renderChild();
 }
 
 async function updateRewardRequest(requestId, status) {
@@ -3759,7 +3763,7 @@ if (status === 'approved') {
     });
   }
 }
-
+all.__lastUpdated = new Date().toISOString();
 await saveData(all);
   showToast(status === 'approved' ? '✅ Reward approved!' : '❌ Reward denied!');
   await renderParent();
