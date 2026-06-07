@@ -3982,21 +3982,24 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
 
 document.getElementById('c-reward-cards').innerHTML = bonusCard + rewards.map(r => {
   const unlocked = net >= r.pts;
-  const pending = requests.some(req => req.rewardId === r.id && req.status === 'pending');
-  const approved = requests.some(req => req.rewardId === r.id && req.status === 'approved');
+
+  const latestRequest = requests
+    .filter(req => req.rewardId === r.id)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+
+  const pending = latestRequest?.status === 'pending';
 
   return `<div class="rcard${unlocked ? ' won' : ''}">
-    <div class="ricon">${escapeHtml(r.icon || '🎁')}</div>
-    <div class="rname">${escapeHtml(r.name)}</div>
-    <div class="rstatus">
-      ${
-        approved ? '✅ Approved!' :
-        pending ? '⏳ Waiting for parent' :
-        unlocked ? `<button class="btn-add-pos" onclick="requestReward('${r.id}')" style="margin-top:8px;">Request reward</button>` :
-        r.pts + ' pts needed'
-      }
-    </div>
-  </div>`;
+  <div class="ricon">${escapeHtml(r.icon || '🎁')}</div>
+  <div class="rname">${escapeHtml(r.name)}</div>
+  <div class="rstatus">
+    ${
+      pending ? '⏳ Waiting for parent' :
+      unlocked ? `<button class="btn-add-pos" onclick="requestReward('${r.id}')" style="margin-top:8px;">Request reward</button>` :
+      r.pts + ' pts needed'
+    }
+  </div>
+</div>`;
 }).join('');
 const spinCard = document.getElementById('weekly-spin-card');
 const spinStatus = document.getElementById('weekly-spin-status');
