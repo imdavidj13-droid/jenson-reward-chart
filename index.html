@@ -1375,15 +1375,21 @@ body[data-theme="dark"] .found-family-code {
 }
 
 .catalog-remove-btn {
-  border: 1.5px solid #fecaca;
-  background: #fff1f2;
-  color: #b91c1c;
-  border-radius: 999px;
-  padding: 5px 9px;
+  border: 1px solid #dc2626;
+  background: #dc2626;
+  color: white;
+  border-radius: 8px;
+  padding: 6px 10px;
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 800;
   cursor: pointer;
   flex-shrink: 0;
+  transition: 0.15s;
+}
+
+.catalog-remove-btn:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
 }
 
 body[data-theme="dark"] .catalog-helper {
@@ -3295,6 +3301,7 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
         activeChildId = user.role === 'parent'
           ? (getParentChildIds(user)[0] || user.childId || 'jenson')
           : (user.childId || 'jenson');
+          saveSession();
 
         if (document.activeElement) document.activeElement.blur();
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -3316,8 +3323,19 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
         updateDots();
       }
     }
+    function saveSession() {
+  if (!currentFamilyId || !currentUserKey || !currentUser) return;
+
+  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({
+    familyId: currentFamilyId,
+    userKey: currentUserKey,
+    activeChildId,
+    savedAt: new Date().toISOString()
+  }));
+}
 
     function logout() {
+      localStorage.removeItem(SESSION_STORAGE_KEY);
       stopRewardRealtime();
       currentUserKey = '';
       currentUser = null;
@@ -3333,6 +3351,7 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
     const SUPABASE_ANON_KEY = 'sb_publishable_qhuf7-EjZ0yCmSHbEFhOJg_goBN_iH6';
 
     const FAMILY_STORAGE_KEY = 'reward_chart_family_code';
+    const SESSION_STORAGE_KEY = 'family_rewards_session';
 
     const CLOUD_READY =
       SUPABASE_URL.startsWith('https://') &&
@@ -3666,6 +3685,7 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
     }
 
     function switchFamily() {
+      localStorage.removeItem(SESSION_STORAGE_KEY);
       localStorage.removeItem(FAMILY_STORAGE_KEY);
       currentFamilyId = '';
       cachedData = null;
@@ -3678,28 +3698,61 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
     }
 
     async function initApp() {
-      if (!currentFamilyId) {
-        show('family');
-        return;
+  if (!currentFamilyId) {
+    show('family');
+    return;
+  }
+
+  const cloudData = await loadCloudFamily(currentFamilyId);
+  const localData = getLocalData();
+
+  if (!cloudData && !Object.keys(localData).length) {
+    switchFamily();
+    return;
+  }
+
+  cachedData = ensureMultiUserData(cloudData || localData);
+  saveLocalData(cachedData);
+
+  await loadAndApplyTheme();
+
+  const savedSession = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null');
+
+  if (
+    savedSession &&
+    savedSession.familyId === currentFamilyId &&
+    savedSession.userKey
+  ) {
+    const users = getUsersFromData(cachedData);
+    const user = users[savedSession.userKey];
+
+    if (user) {
+      currentUserKey = savedSession.userKey;
+      currentUser = user;
+      loginWho = user.role;
+      activeChildId = savedSession.activeChildId || (
+        user.role === 'parent'
+          ? (getParentChildIds(user)[0] || user.childId || 'jenson')
+          : (user.childId || 'jenson')
+      );
+
+      if (user.role === 'parent') {
+        wkOff = 0;
+        await renderParent();
+        await fillParentSettings();
+        show('parent');
+        startRewardRealtime();
+      } else {
+        await renderChild();
+        show('child');
+        startRewardRealtime();
       }
 
-      const cloudData = await loadCloudFamily(currentFamilyId);
-      const localData = getLocalData();
-
-      if (!cloudData && !Object.keys(localData).length) {
-        switchFamily();
-        return;
-      }
-
-      cachedData = ensureMultiUserData(cloudData || localData);
-      saveLocalData(cachedData);
-
-      await loadAndApplyTheme();
-      await showLoginForFamily();
+      return;
     }
+  }
 
-    function isSundayToday() {
-  return true;
+  await showLoginForFamily();
 }
 
 function weekTotal(entries) {
