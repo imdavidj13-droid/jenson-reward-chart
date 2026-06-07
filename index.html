@@ -3738,11 +3738,29 @@ async function updateRewardRequest(requestId, status) {
   const req = all.__rewardRequests.find(r => r.id === requestId);
   if (!req || req.status !== 'pending') return;
 
-  req.status = status;
-  req.updatedAt = new Date().toISOString();
+ req.status = status;
+req.updatedAt = new Date().toISOString();
 
-  await saveData(all);
+if (status === 'approved') {
+  const child = getChildFromData(all, req.childId);
 
+  if (child) {
+    const key = weekKey(0);
+    if (!Array.isArray(child.weeks[key])) child.weeks[key] = [];
+
+    child.weeks[key].push({
+      id: makeCatalogId('reward'),
+      type: 'negative',
+      label: `Reward claimed: ${req.rewardName}`,
+      points: -Math.abs(Number(req.points || 0)),
+      note: 'Approved reward request',
+      day: new Date().getDay() === 0 ? 6 : new Date().getDay() - 1,
+      createdAt: new Date().toISOString()
+    });
+  }
+}
+
+await saveData(all);
   showToast(status === 'approved' ? '✅ Reward approved!' : '❌ Reward denied!');
   await renderParent();
 }
