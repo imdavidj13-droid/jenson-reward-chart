@@ -725,37 +725,37 @@
       margin-top: 4px;
     }
 
-    .btn-add-pos {
-      background: #e8f8e8;
-      color: #2a7a2a;
-      border: 1.5px solid #b5dfb5;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
+   .btn-add-pos {
+  background: #16a34a;
+  color: #ffffff;
+  border: 1.5px solid #15803d;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
 
-    .btn-add-neg {
-      background: #feeee8;
-      color: #aa3300;
-      border: 1.5px solid #f5c0a8;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
+.btn-add-neg {
+  background: #dc2626;
+  color: #ffffff;
+  border: 1.5px solid #b91c1c;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
 
-    .btn-add-pos:hover {
-      background: #c8eec8;
-    }
+.btn-add-pos:hover {
+  background: #15803d;
+}
 
-    .btn-add-neg:hover {
-      background: #f8d8c8;
-    }
+.btn-add-neg:hover {
+  background: #b91c1c;
+}
 
     /* LOG ENTRIES */
     .entry-list {
@@ -1507,29 +1507,6 @@ body[data-theme="dark"] .catalog-pill-points {
   border-radius: 10px;
   scroll-snap-align: start;
 }
-@media (max-width: 600px) {
-  .days-grid {
-    display: flex;
-    gap: 7px;
-    overflow-x: auto;
-    padding: 2px 2px 8px;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .days-grid::-webkit-scrollbar {
-    display: none;
-  }
-
-  .day-col {
-    flex: 0 0 74px;
-    min-height: 88px;
-    padding: 8px 5px;
-    border-radius: 10px;
-    scroll-snap-align: start;
-  }
-}
 
       .day-col .dname,
       .day-col .ddate {
@@ -1661,13 +1638,6 @@ body[data-theme="dark"] .catalog-pill-points {
         padding: 10px;
       }
 
-      .days-grid {
-        grid-template-columns: repeat(7, minmax(34px, 1fr));
-      }
-
-      .day-col {
-        min-height: 68px;
-      }
 
       .hero-score {
         font-size: 48px;
