@@ -3034,6 +3034,7 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
     let pinBuf = '';
     let wkOff = 0;
     let cTab = 'all';
+    let rewardRealtimeChannel = null;
 
     function show(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -3103,15 +3104,17 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
         if (document.activeElement) document.activeElement.blur();
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
-        if (user.role === 'parent') {
-          wkOff = 0;
-          await renderParent();
-          await fillParentSettings();
-          show('parent');
-        } else {
-          await renderChild();
-          show('child');
-        }
+      if (user.role === 'parent') {
+  wkOff = 0;
+  await renderParent();
+  await fillParentSettings();
+  show('parent');
+  startRewardRealtime();
+} else {
+  await renderChild();
+  show('child');
+  startRewardRealtime();
+}
       } else {
         document.getElementById('pin-err').textContent = 'Wrong username or PIN — try again';
         pinBuf = '';
@@ -3120,6 +3123,7 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
     }
 
     function logout() {
+      stopRewardRealtime();
       currentUserKey = '';
       currentUser = null;
       loginWho = '';
@@ -4060,6 +4064,36 @@ if (spinCard && spinStatus && spinBtn) {
       </div>
     </div>`).join('');
     }
+
+    function startRewardRealtime() {
+  stopRewardRealtime();
+
+  if (!CLOUD_READY || !currentFamilyId || !db) return;
+
+  rewardRealtimeChannel = db
+    .channel(`reward-chart-data-${currentFamilyId}`)
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'reward_chart_data',
+        filter: `chart_id=eq.${currentFamilyId}`
+      },
+      async () => {
+        await refreshFromCloud('realtime');
+      }
+    )
+    .subscribe();
+}
+
+function stopRewardRealtime() {
+  if (rewardRealtimeChannel && db) {
+    db.removeChannel(rewardRealtimeChannel);
+  }
+
+  rewardRealtimeChannel = null;
+}
 
     async function refreshFromCloud(reason = 'timer') {
       if (!currentFamilyId || !CLOUD_READY || !loginWho) return;
