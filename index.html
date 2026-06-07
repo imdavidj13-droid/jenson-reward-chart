@@ -1487,14 +1487,25 @@ body[data-theme="dark"] .catalog-pill-points {
       }
 
       .days-grid {
-        grid-template-columns: repeat(7, minmax(38px, 1fr));
-        gap: 4px;
-      }
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
 
-      .day-col {
-  min-height: 82px;
-  padding: 7px 3px;
+.days-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.day-col {
+  flex: 0 0 74px;
+  min-height: 88px;
+  padding: 8px 5px;
   border-radius: 10px;
+  scroll-snap-align: start;
 }
 
       .day-col .dname,
