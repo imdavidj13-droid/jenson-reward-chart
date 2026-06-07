@@ -3148,41 +3148,58 @@ const listName = positive ? 'positives' : 'negatives';
 }
 
     async function addCustomReward() {
-      if (!currentUser || currentUser.role !== 'parent') return;
-      const name = document.getElementById('custom-reward-name').value.trim();
-      const pts = parseInt(document.getElementById('custom-reward-points').value, 10);
-      if (!name) return setMsg('catalog-msg', 'Add a reward name first.', false);
-      if (!pts || pts < 1) return setMsg('catalog-msg', 'Reward points must be at least 1.', false);
+  if (!currentUser || currentUser.role !== 'parent') return;
 
-      const all = await getData();
-      const catalog = getCatalogFromData(all);
-      if (catalog.rewards.some(existing => existing.name.toLowerCase() === name.toLowerCase())) {
-        return setMsg('catalog-msg', 'That reward already exists.', false);
-      }
+  const name = document.getElementById('custom-reward-name').value.trim();
+  const pts = parseInt(document.getElementById('custom-reward-points').value, 10);
+  const desc = document.getElementById('custom-reward-desc').value.trim();
 
-      customCatalog.rewards.push(normaliseRewardItem({
-  icon: '🎁',
-  name,
-  pts,
-  desc: document.getElementById('custom-reward-desc').value.trim()
-}));
+  if (!name) {
+    showToast('Add a reward name first');
+    return setMsg('catalog-msg', 'Add a reward name first.', false);
+  }
 
-      await saveData(all);
+  if (!pts || pts < 1) {
+    showToast('Reward points must be at least 1');
+    return setMsg('catalog-msg', 'Reward points must be at least 1.', false);
+  }
 
-['custom-reward-name', 'custom-reward-points', 'custom-reward-desc']
-  .forEach(id => document.getElementById(id).value = '');
+  const all = await getData();
+  const catalog = getCatalogFromData(all);
+  const customCatalog = getCustomCatalogFromData(all);
 
-renderCatalogList(all);
-await renderParent();
+  if ((catalog.rewards || []).some(existing => existing.name.toLowerCase() === name.toLowerCase())) {
+    showToast('That reward already exists');
+    return setMsg('catalog-msg', 'That reward already exists.', false);
+  }
 
-showToast('🎁 Reward added!');
-    }
+  customCatalog.rewards.push(normaliseRewardItem({
+    icon: '🎁',
+    name,
+    pts,
+    desc
+  }));
+
+  await saveData(all);
+
+  document.getElementById('custom-reward-name').value = '';
+  document.getElementById('custom-reward-points').value = '';
+  document.getElementById('custom-reward-desc').value = '';
+
+  renderCatalogList(all);
+  await renderParent();
+
+  showToast('🎁 Reward added!');
+  setMsg('catalog-msg', 'Reward added!');
+}
+
 
     async function deleteCatalogItem(type, id) {
   if (!currentUser || currentUser.role !== 'parent') return;
 
   const all = await getData();
   const customCatalog = getCustomCatalogFromData(all);
+  customCatalog.rewards ||= [];
 
   const key = type === 'positive'
     ? 'positives'
