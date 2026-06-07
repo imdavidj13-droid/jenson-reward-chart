@@ -2328,31 +2328,90 @@ const DEFAULT_WHEEL_PRIZES = [
     ];
 
     const DEFAULT_POSITIVE_BEHAVIOURS = [
-      { icon: '🌅', label: 'Brilliant morning routine', points: 3 },
-      { icon: '👂', label: 'Listened first time', points: 2 },
-      { icon: '😊', label: 'Kind / helpful to others', points: 2 },
-      { icon: '📚', label: 'Did homework or schoolwork', points: 2 },
-      { icon: '😌', label: 'Stayed calm when frustrated', points: 3 },
-      { icon: '✅', label: 'Told the truth / owned up', points: 3 },
-      { icon: '🧹', label: 'Tidied room', points: 2 },
-      { icon: '👕', label: 'Got ready without fuss', points: 2 },
-      { icon: '🌙', label: 'Good bedtime routine', points: 2 },
-      { icon: '💪', label: 'Tried hard at something difficult', points: 3 },
-    ];
+  { icon: '🌅', label: 'Brilliant morning routine', points: 3 },
+  { icon: '👂', label: 'Listened first time', points: 2 },
+  { icon: '😊', label: 'Kind / helpful to others', points: 2 },
+  { icon: '📚', label: 'Did homework or schoolwork', points: 2 },
+  { icon: '🧘', label: 'Stayed calm when frustrated', points: 3 },
+  { icon: '✅', label: 'Told the truth / owned up', points: 3 },
+  { icon: '🧹', label: 'Tidied room', points: 2 },
+  { icon: '🎒', label: 'Got ready without fuss', points: 2 },
+  { icon: '🌙', label: 'Good bedtime routine', points: 2 },
+  { icon: '💪', label: 'Tried hard at something difficult', points: 3 },
+
+  { icon: '🪥', label: 'Brushed teeth without being asked', points: 1 },
+  { icon: '🛏️', label: 'Made bed', points: 1 },
+  { icon: '👕', label: 'Got dressed independently', points: 2 },
+  { icon: '🥣', label: 'Ate breakfast nicely', points: 1 },
+  { icon: '🍽️', label: 'Ate dinner nicely', points: 2 },
+  { icon: '🧼', label: 'Washed hands / kept clean', points: 1 },
+  { icon: '🚿', label: 'Had bath or shower without fuss', points: 2 },
+
+  { icon: '🏫', label: 'Good day at school', points: 3 },
+  { icon: '✍️', label: 'Completed reading practice', points: 2 },
+  { icon: '🧠', label: 'Focused well', points: 2 },
+  { icon: '🙋', label: 'Used good manners', points: 2 },
+  { icon: '🤝', label: 'Shared nicely', points: 2 },
+  { icon: '🫶', label: 'Helped someone without being asked', points: 3 },
+
+  { icon: '🧺', label: 'Helped with washing or laundry', points: 2 },
+  { icon: '🗑️', label: 'Put rubbish in the bin', points: 1 },
+  { icon: '🍽️', label: 'Helped clear the table', points: 2 },
+  { icon: '🐾', label: 'Helped with pet care', points: 2 },
+  { icon: '🧸', label: 'Put toys away', points: 2 },
+  { icon: '🧽', label: 'Helped clean up a mess', points: 2 },
+
+  { icon: '🎮', label: 'Played games nicely', points: 2 },
+  { icon: '📱', label: 'Stopped screen time calmly', points: 3 },
+  { icon: '⏰', label: 'Followed instructions quickly', points: 2 },
+  { icon: '🗣️', label: 'Used a calm voice', points: 2 },
+  { icon: '💬', label: 'Asked politely', points: 1 },
+  { icon: '🙏', label: 'Said sorry properly', points: 2 },
+
+  { icon: '⭐', label: 'Extra brilliant behaviour', points: 5 },
+  { icon: '🏆', label: 'Superstar day', points: 5 }
+];
 
     const DEFAULT_NEGATIVE_BEHAVIOURS = [
-      { icon: '⚠️', label: 'Told more than once to do something', points: -1 },
-      { icon: '📢', label: 'Shouting', points: -1 },
-      { icon: '😡', label: 'Screaming', points: -2 },
-      { icon: '🙄', label: 'Rude or disrespectful', points: -2 },
-      { icon: '🙅', label: 'Refused to cooperate', points: -2 },
-      { icon: '🚪', label: 'Left without asking', points: -2 },
-      { icon: '📏', label: 'Broke a rule', points: -2 },
-      { icon: '🏃', label: 'Reckless behaviour', points: -3 },
-      { icon: '💥', label: 'Damaged item', points: -3 },
-      { icon: '👊', label: 'Threatening behaviour', points: -4 },
-      { icon: '🚫', label: 'Aggressive behaviour', points: -5 },
-    ];
+  { icon: '⚠️', label: 'Told more than once', points: -1 },
+  { icon: '🗣️', label: 'Shouting', points: -1 },
+  { icon: '😡', label: 'Screaming', points: -2 },
+  { icon: '🙄', label: 'Rude or disrespectful', points: -2 },
+  { icon: '🙅', label: 'Refused to cooperate', points: -2 },
+  { icon: '📵', label: 'Ignored instructions', points: -2 },
+  { icon: '💬', label: 'Arguing back', points: -1 },
+  { icon: '🚪', label: 'Stormed off / slammed doors', points: -2 },
+
+  { icon: '🧸', label: 'Did not tidy up', points: -1 },
+  { icon: '🛏️', label: 'Bedroom left messy', points: -1 },
+  { icon: '🍽️', label: 'Messy eating / poor table manners', points: -1 },
+  { icon: '🪥', label: 'Refused teeth brushing', points: -1 },
+  { icon: '🌙', label: 'Bedtime behaviour', points: -2 },
+  { icon: '⏰', label: 'Delaying / wasting time', points: -1 },
+
+  { icon: '🎮', label: 'Poor behaviour while gaming', points: -2 },
+  { icon: '📱', label: 'Screen time argument', points: -2 },
+  { icon: '🛑', label: 'Did not stop when asked', points: -2 },
+  { icon: '🎧', label: 'Not listening because of device/game', points: -1 },
+
+  { icon: '🤥', label: 'Lying', points: -3 },
+  { icon: '🫢', label: 'Serious lie', points: -4 },
+  { icon: '🧱', label: 'Broke a rule', points: -2 },
+  { icon: '🚫', label: 'Did something unsafe', points: -3 },
+  { icon: '🏃', label: 'Ran off / left without asking', points: -2 },
+  { icon: '🧨', label: 'Reckless behaviour', points: -3 },
+
+  { icon: '💢', label: 'Damaged something', points: -3 },
+  { icon: '🥊', label: 'Aggressive behaviour', points: -5 },
+  { icon: '✋', label: 'Hitting / kicking / pushing', points: -5 },
+  { icon: '😠', label: 'Threatening behaviour', points: -4 },
+  { icon: '😭', label: 'Deliberately upset someone', points: -3 },
+  { icon: '👎', label: 'Unkind behaviour', points: -2 },
+
+  { icon: '🏫', label: 'Poor behaviour at school', points: -3 },
+  { icon: '📚', label: 'Refused homework or reading', points: -2 },
+  { icon: '🚌', label: 'Poor behaviour outside the home', points: -3 }
+];
 
     const OLD_BEHAVIOUR_POINTS = {
       'Brilliant morning routine': 3,
@@ -2458,18 +2517,74 @@ const DEFAULT_WHEEL_PRIZES = [
         }
       });
 if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
-      if (!all.__catalog) all.__catalog = {};
-      all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
-        ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-        : DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive'));
-      all.__catalog.negatives = Array.isArray(all.__catalog.negatives) && all.__catalog.negatives.length
-        ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-        : DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative'));
-      all.__catalog.rewards = Array.isArray(all.__catalog.rewards) && all.__catalog.rewards.length
-        ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-        : DEFAULT_REWARDS.map(normaliseRewardItem);
 
-      return all;
+all.__customCatalog = all.__customCatalog && typeof all.__customCatalog === 'object'
+  ? all.__customCatalog
+  : {};
+
+all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
+  ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+  : [];
+
+all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
+  ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+  : [];
+
+all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
+  ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+  : [];
+
+/*
+  Migration for older families:
+  anything in old __catalog that is NOT one of the defaults becomes custom.
+*/
+if (all.__catalog && typeof all.__catalog === 'object') {
+  const defaults = {
+    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
+    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
+    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
+  };
+
+  const isSameBehaviour = (a, b) =>
+    String(a.label || '').toLowerCase() === String(b.label || '').toLowerCase();
+
+  const isSameReward = (a, b) =>
+    String(a.name || '').toLowerCase() === String(b.name || '').toLowerCase();
+
+  const oldPositives = Array.isArray(all.__catalog.positives)
+    ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+    : [];
+
+  const oldNegatives = Array.isArray(all.__catalog.negatives)
+    ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+    : [];
+
+  const oldRewards = Array.isArray(all.__catalog.rewards)
+    ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+    : [];
+
+  oldPositives.forEach(item => {
+    const isDefault = defaults.positives.some(def => isSameBehaviour(def, item));
+    const alreadyCustom = all.__customCatalog.positives.some(custom => isSameBehaviour(custom, item));
+    if (!isDefault && !alreadyCustom) all.__customCatalog.positives.push(item);
+  });
+
+  oldNegatives.forEach(item => {
+    const isDefault = defaults.negatives.some(def => isSameBehaviour(def, item));
+    const alreadyCustom = all.__customCatalog.negatives.some(custom => isSameBehaviour(custom, item));
+    if (!isDefault && !alreadyCustom) all.__customCatalog.negatives.push(item);
+  });
+
+  oldRewards.forEach(item => {
+    const isDefault = defaults.rewards.some(def => isSameReward(def, item));
+    const alreadyCustom = all.__customCatalog.rewards.some(custom => isSameReward(custom, item));
+    if (!isDefault && !alreadyCustom) all.__customCatalog.rewards.push(item);
+  });
+
+  delete all.__catalog;
+}
+
+return all;
     }
 
     function getUsersFromData(all) {
@@ -2823,19 +2938,79 @@ function showToast(message) {
       };
     }
 
-    function getCatalogFromData(all) {
-      all = ensureMultiUserData(all);
-      return all.__catalog;
-    }
+    function getDefaultCatalog() {
+  return {
+    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
+    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
+    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
+  };
+}
 
-    function getBehaviourItems(all, type) {
-      const catalog = getCatalogFromData(all);
-      return type === 'positive' ? catalog.positives : catalog.negatives;
-    }
+function getCustomCatalogFromData(all) {
+  all = ensureMultiUserData(all);
 
-    function getRewardsFromData(all) {
-      return getCatalogFromData(all).rewards;
-    }
+  all.__customCatalog ||= {};
+  all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
+    ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+    : [];
+
+  all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
+    ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+    : [];
+
+  all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
+    ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+    : [];
+
+  return all.__customCatalog;
+}
+
+function getDefaultCatalog() {
+  return {
+    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
+    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
+    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
+  };
+}
+
+function getCustomCatalogFromData(all) {
+  all = ensureMultiUserData(all);
+
+  all.__customCatalog ||= {};
+  all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
+    ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+    : [];
+
+  all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
+    ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+    : [];
+
+  all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
+    ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+    : [];
+
+  return all.__customCatalog;
+}
+
+function getCatalogFromData(all) {
+  const defaults = getDefaultCatalog();
+  const custom = getCustomCatalogFromData(all);
+
+  return {
+    positives: [...defaults.positives, ...custom.positives],
+    negatives: [...defaults.negatives, ...custom.negatives],
+    rewards: [...defaults.rewards, ...custom.rewards]
+  };
+}
+
+function getBehaviourItems(all, type) {
+  const catalog = getCustomCatalogFromData(all);
+  return type === 'positive' ? catalog.positives : catalog.negatives;
+}
+
+function getRewardsFromData(all) {
+  return getCatalogFromData(all).rewards;
+}
 
     function renderBehaviourOptions(all) {
       const posSelect = document.getElementById('f-pos-cat');
@@ -2858,8 +3033,7 @@ function showToast(message) {
   const el = document.getElementById('catalog-list');
   if (!el) return;
 
-  const catalog = getCatalogFromData(all);
-
+const catalog = getCustomCatalogFromData(all);
   const groupHtml = (title, type, items) => `
     <details class="catalog-group">
       <summary>
@@ -2890,11 +3064,21 @@ function showToast(message) {
     </details>
   `;
 
-  el.innerHTML =
-    `<p class="catalog-helper">Remove custom positives, consequences or rewards your family no longer uses.</p>` +
-    groupHtml('⭐ Positives', 'positive', catalog.positives) +
-    groupHtml('✖ Consequences', 'negative', catalog.negatives) +
-    groupHtml('🎁 Rewards', 'reward', catalog.rewards);
+  const hasCustomItems =
+  catalog.positives.length ||
+  catalog.negatives.length ||
+  catalog.rewards.length;
+
+if (!hasCustomItems) {
+  el.innerHTML = `<p class="catalog-helper">No custom options added yet. Default positives, consequences and rewards are always available in the dropdowns.</p>`;
+  return;
+}
+
+el.innerHTML =
+  `<p class="catalog-helper">Remove custom positives, consequences or rewards your family no longer uses. Default options are hidden here and cannot be deleted.</p>` +
+  groupHtml('⭐ Custom positives', 'positive', catalog.positives) +
+  groupHtml('✖ Custom consequences', 'negative', catalog.negatives) +
+  groupHtml('🎁 Custom rewards', 'reward', catalog.rewards);
 }
 
 function renderWheelSettings(all) {
@@ -2930,8 +3114,9 @@ async function addCustomBehaviour(type) {
   }
 
   const all = await getData();
-  const catalog = getCatalogFromData(all);
-  const listName = positive ? 'positives' : 'negatives';
+const catalog = getCatalogFromData(all);
+const customCatalog = getCustomCatalogFromData(all);
+const listName = positive ? 'positives' : 'negatives';
 
   if (catalog[listName].some(existing => existing.label.toLowerCase() === label.toLowerCase())) {
     showToast('That option already exists');
@@ -2944,7 +3129,7 @@ async function addCustomBehaviour(type) {
     points: rawPoints
   }, type);
 
-  catalog[listName].push(item);
+  customCatalog[listName].push(item);
 
   await saveData(all);
 
@@ -2972,12 +3157,12 @@ async function addCustomBehaviour(type) {
         return setMsg('catalog-msg', 'That reward already exists.', false);
       }
 
-      catalog.rewards.push(normaliseRewardItem({
-        icon: '🎁',
-        name,
-        pts,
-        desc: document.getElementById('custom-reward-desc').value.trim()
-      }));
+      customCatalog.rewards.push(normaliseRewardItem({
+  icon: '🎁',
+  name,
+  pts,
+  desc: document.getElementById('custom-reward-desc').value.trim()
+}));
 
       await saveData(all);
 
@@ -2991,19 +3176,35 @@ showToast('🎁 Reward added!');
     }
 
     async function deleteCatalogItem(type, id) {
-      if (!currentUser || currentUser.role !== 'parent') return;
-      const all = await getData();
-      const catalog = getCatalogFromData(all);
-      const key = type === 'positive' ? 'positives' : type === 'negative' ? 'negatives' : 'rewards';
-      if (!catalog[key]) return;
-      if (catalog[key].length <= 1) return setMsg('catalog-msg', 'Leave at least one option in each list.', false);
-      catalog[key] = catalog[key].filter(item => item.id !== id);
-      await saveData(all);
-      renderBehaviourOptions(all);
-      renderCatalogList(all);
-      await renderParent();
-      setMsg('catalog-msg', 'Option deleted.');
-    }
+  if (!currentUser || currentUser.role !== 'parent') return;
+
+  const all = await getData();
+  const customCatalog = getCustomCatalogFromData(all);
+
+  const key = type === 'positive'
+    ? 'positives'
+    : type === 'negative'
+      ? 'negatives'
+      : 'rewards';
+
+  if (!customCatalog[key]) return;
+
+  const before = customCatalog[key].length;
+  customCatalog[key] = customCatalog[key].filter(item => item.id !== id);
+
+  if (customCatalog[key].length === before) {
+    return setMsg('catalog-msg', 'Default options cannot be deleted.', false);
+  }
+
+  await saveData(all);
+
+  renderBehaviourOptions(all);
+  renderCatalogList(all);
+  await renderParent();
+
+  showToast('Option deleted');
+  setMsg('catalog-msg', 'Option deleted.');
+}
 
     async function saveAccountSettings() {
       if (!currentUser || currentUser.role !== 'parent') return;
@@ -3401,11 +3602,11 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
       const childId = makeChildId(childUsername);
       return ensureMultiUserData({
         __settings: { theme: 'blue' },
-        __catalog: {
-          positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
-          negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
-          rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
-        },
+        __customCatalog: {
+  positives: [],
+  negatives: [],
+  rewards: []
+},
         __family: { name: familyName, createdAt: new Date().toISOString() },
         __children: {
           [childId]: { id: childId, name: childName, weeks: {} }
