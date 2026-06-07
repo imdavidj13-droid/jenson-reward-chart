@@ -101,7 +101,7 @@
 
     .hero {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-columns: 1.25fr 0.75fr;
       gap: 28px;
       align-items: center;
       background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #2563eb 100%);
@@ -138,6 +138,17 @@
       position: relative;
       z-index: 1;
     }
+    .hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.hero-visual img {
+  width: min(100%, 280px) !important;
+  max-width: 280px !important;
+  transform: translateY(18px);
+}
 
     .eyebrow {
       display: inline-flex;
@@ -491,6 +502,49 @@
       padding: 14px 0 6px;
     }
 
+    .feature-showcase{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+  margin-top:60px;
+}
+
+.feature-copy{
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+
+.feature-item h3{
+  margin-bottom:10px;
+  font-size:24px;
+}
+
+.feature-item p{
+  color:#5b6475;
+  line-height:1.7;
+}
+
+.feature-images{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+
+.feature-screen{
+  width:100%;
+  border-radius:24px;
+  box-shadow:0 20px 50px rgba(0,0,0,.15);
+  border:1px solid rgba(0,0,0,.08);
+}
+
+@media (max-width:900px){
+  .feature-showcase{
+    grid-template-columns:1fr;
+  }
+}
+
     @media (max-width: 860px) {
       .page {
         padding: 14px;
@@ -605,6 +659,8 @@
       .cta {
         padding: 24px 18px;
       }
+
+      
     }
   </style>
 </head>
@@ -640,64 +696,83 @@
         </div>
       </div>
 
-      <div class="hero-visual">
+  <div class="hero-visual">
   <img
     src="images/child-dashboard.png"
     alt="Family Rewards Child Dashboard"
     style="
       width:100%;
-      max-width:420px;
-      border-radius:24px;
-      box-shadow:0 20px 50px rgba(0,0,0,.25);
+      max-width:280px;
       display:block;
       margin:auto;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.35));
     "
   />
 </div>
     </section>
 
     <section class="section">
-      <div class="section-title">
-        <h2>Built for everyday family life.</h2>
-        <p>
-          Keep it simple: reward good moments, track harder moments, approve rewards
-          and let children see their progress clearly.
-        </p>
+  <div class="container">
+
+    <div class="section-header">
+      <h2>Powerful parent controls.</h2>
+      <p>
+        Quickly log positive behaviour, record consequences,
+        track weekly progress and keep everything organised
+        in one place.
+      </p>
+    </div>
+
+    <div class="feature-showcase">
+
+      <div class="feature-copy">
+        <div class="feature-item">
+          <h3>⭐ Log positive behaviour</h3>
+          <p>
+            Reward good choices instantly with custom positive
+            categories and point values.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <h3>❌ Record consequences</h3>
+          <p>
+            Track difficult moments fairly using customised
+            consequence categories and point deductions.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <h3>📋 Weekly activity log</h3>
+          <p>
+            View every positive, consequence and bonus earned
+            throughout the week in one clear timeline.
+          </p>
+        </div>
+
       </div>
 
-      <div class="features">
-        <article class="feature-card">
-          <div class="feature-icon">⭐</div>
-          <div>
-            <h3>Positive behaviour</h3>
-            <p>Award points for routines, kindness, schoolwork, chores and calm choices.</p>
-          </div>
-        </article>
+      <div class="feature-images">
 
-        <article class="feature-card">
-          <div class="feature-icon">🎁</div>
-          <div>
-            <h3>Reward requests</h3>
-            <p>Children can request rewards, while parents approve or deny them.</p>
-          </div>
-        </article>
+        <img
+          src="images/log-behaviour.jpg"
+          alt="Log behaviour screen"
+          class="feature-screen"
+        />
 
-        <article class="feature-card">
-          <div class="feature-icon">🎡</div>
-          <div>
-            <h3>Weekly spin wheel</h3>
-            <p>Reach the weekly target and unlock a fun Sunday bonus spin.</p>
-          </div>
-        </article>
+        <img
+          src="images/weekly-log.jpg"
+          alt="Weekly activity log"
+          class="feature-screen"
+        />
 
-        <article class="feature-card">
-          <div class="feature-icon">👨‍👩‍👧</div>
-          <div>
-            <h3>Family setup</h3>
-            <p>Parent and child logins, multiple children and family-specific options.</p>
-          </div>
-        </article>
       </div>
+
+    </div>
+
+  </div>
+</section>
+
     </section>
 
     <section class="section" id="how-it-works">
