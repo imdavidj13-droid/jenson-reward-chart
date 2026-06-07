@@ -2367,12 +2367,15 @@ const DEFAULT_WHEEL_PRIZES = [
 
 
     const DEFAULT_REWARDS = [
-      { icon: '🎁', name: 'Small treat', pts: 8, desc: 'A small snack or sweet treat' },
-      { icon: '🎬', name: 'Movie night', pts: 14, desc: 'Choose a film for everyone' },
-      { icon: '🍕', name: 'Takeaway choice', pts: 18, desc: 'Pick the family takeaway' },
-      { icon: '🎮', name: 'Extra game time', pts: 22, desc: 'Bonus screen/game time' },
-      { icon: '⭐', name: 'Big reward choice', pts: 35, desc: 'Choose a bigger weekend reward' },
-    ];
+  { id: 'small-treat', icon: '🍬', name: 'Small treat', pts: 8, desc: 'A small snack or sweet treat' },
+  { id: 'movie-night', icon: '🎬', name: 'Movie night', pts: 14, desc: 'Choose a film for everyone' },
+  { id: 'takeaway-choice', icon: '🍕', name: 'Takeaway choice', pts: 18, desc: 'Pick the family takeaway' },
+  { id: 'extra-game-time', icon: '🎮', name: 'Extra game time', pts: 22, desc: 'Bonus screen or game time' },
+  { id: 'family-activity', icon: '⚽', name: 'Choose a family activity', pts: 25, desc: 'Pick something fun to do together' },
+  { id: 'park-trip', icon: '🛝', name: 'Trip to the park', pts: 25, desc: 'A visit to the park or playground' },
+  { id: 'ice-cream-treat', icon: '🍦', name: 'Ice cream treat', pts: 28, desc: 'Choose an ice cream treat' },
+  { id: 'big-reward-choice', icon: '⭐', name: 'Big reward choice', pts: 35, desc: 'Choose a bigger weekend reward' }
+];
 
     const DEFAULT_POSITIVE_BEHAVIOURS = [
   { icon: '🌅', label: 'Brilliant morning routine', points: 3 },
@@ -2565,74 +2568,21 @@ const DEFAULT_WHEEL_PRIZES = [
       });
 if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
 
-all.__customCatalog = all.__customCatalog && typeof all.__customCatalog === 'object'
-  ? all.__customCatalog
+all.__catalog = all.__catalog && typeof all.__catalog === 'object'
+  ? all.__catalog
   : {};
 
-all.__customCatalog.positives = Array.isArray(all.__customCatalog.positives)
-  ? all.__customCatalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-  : [];
+all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
+  ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+  : DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive'));
 
-all.__customCatalog.negatives = Array.isArray(all.__customCatalog.negatives)
-  ? all.__customCatalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-  : [];
+all.__catalog.negatives = Array.isArray(all.__catalog.negatives) && all.__catalog.negatives.length
+  ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+  : DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative'));
 
-all.__customCatalog.rewards = Array.isArray(all.__customCatalog.rewards)
-  ? all.__customCatalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-  : [];
-
-/*
-  Migration for older families:
-  anything in old __catalog that is NOT one of the defaults becomes custom.
-*/
-if (all.__catalog && typeof all.__catalog === 'object') {
-  const defaults = {
-    positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
-    negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
-    rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
-  };
-
-  const isSameBehaviour = (a, b) =>
-    String(a.label || '').toLowerCase() === String(b.label || '').toLowerCase();
-
-  const isSameReward = (a, b) =>
-    String(a.name || '').toLowerCase() === String(b.name || '').toLowerCase();
-
-  const oldPositives = Array.isArray(all.__catalog.positives)
-    ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-    : [];
-
-  const oldNegatives = Array.isArray(all.__catalog.negatives)
-    ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-    : [];
-
-  const oldRewards = Array.isArray(all.__catalog.rewards)
-    ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-    : [];
-
-  oldPositives.forEach(item => {
-    const isDefault = defaults.positives.some(def => isSameBehaviour(def, item));
-    const alreadyCustom = all.__customCatalog.positives.some(custom => isSameBehaviour(custom, item));
-    if (!isDefault && !alreadyCustom) all.__customCatalog.positives.push(item);
-  });
-
-  oldNegatives.forEach(item => {
-    const isDefault = defaults.negatives.some(def => isSameBehaviour(def, item));
-    const alreadyCustom = all.__customCatalog.negatives.some(custom => isSameBehaviour(custom, item));
-    if (!isDefault && !alreadyCustom) all.__customCatalog.negatives.push(item);
-  });
-
-  oldRewards.forEach(item => {
-  const alreadyCustom = all.__customCatalog.rewards.some(custom => isSameReward(custom, item));
-  if (!alreadyCustom) all.__customCatalog.rewards.push(item);
-});
-
-if (!all.__customCatalog.rewards.length) {
-  all.__customCatalog.rewards = DEFAULT_REWARDS.map(normaliseRewardItem);
-}
-
-  delete all.__catalog;
-}
+all.__catalog.rewards = Array.isArray(all.__catalog.rewards) && all.__catalog.rewards.length
+  ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+  : DEFAULT_REWARDS.map(normaliseRewardItem);
 
 return all;
     }
@@ -3043,14 +2993,25 @@ function getCustomCatalogFromData(all) {
 }
 
 function getCatalogFromData(all) {
-  const defaults = getDefaultCatalog();
-  const custom = getCustomCatalogFromData(all);
+  all = ensureMultiUserData(all);
 
-  return {
-    positives: [...defaults.positives, ...custom.positives],
-    negatives: [...defaults.negatives, ...custom.negatives],
-    rewards: [...custom.rewards]
-  };
+  if (!all.__catalog || typeof all.__catalog !== 'object') {
+    all.__catalog = {};
+  }
+
+  all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
+    ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+    : DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive'));
+
+  all.__catalog.negatives = Array.isArray(all.__catalog.negatives) && all.__catalog.negatives.length
+    ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+    : DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative'));
+
+  all.__catalog.rewards = Array.isArray(all.__catalog.rewards) && all.__catalog.rewards.length
+    ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+    : DEFAULT_REWARDS.map(normaliseRewardItem);
+
+  return all.__catalog;
 }
 
 function getBehaviourItems(all, type) {
@@ -3083,7 +3044,7 @@ function getRewardsFromData(all) {
   const el = document.getElementById('catalog-list');
   if (!el) return;
 
-const catalog = getCustomCatalogFromData(all);
+const catalog = getCatalogFromData(all);
   const groupHtml = (title, type, items) => `
     <details class="catalog-group">
       <summary>
@@ -3126,9 +3087,9 @@ if (!hasCustomItems) {
 
 el.innerHTML =
   `<p class="catalog-helper">Remove custom positives, consequences or rewards your family no longer uses. Default options are hidden here and cannot be deleted.</p>` +
-  groupHtml('⭐ Custom positives', 'positive', catalog.positives) +
-  groupHtml('✖ Custom consequences', 'negative', catalog.negatives) +
-  groupHtml('🎁 Custom rewards', 'reward', catalog.rewards);
+  groupHtml('⭐ Positives', 'positive', catalog.positives) +
+groupHtml('✖ Consequences', 'negative', catalog.negatives) +
+groupHtml('🎁 Rewards', 'reward', catalog.rewards);
 }
 
 function renderWheelSettings(all) {
@@ -3165,7 +3126,6 @@ async function addCustomBehaviour(type) {
 
   const all = await getData();
 const catalog = getCatalogFromData(all);
-const customCatalog = getCustomCatalogFromData(all);
 const listName = positive ? 'positives' : 'negatives';
 
   if (catalog[listName].some(existing => existing.label.toLowerCase() === label.toLowerCase())) {
@@ -3179,7 +3139,7 @@ const listName = positive ? 'positives' : 'negatives';
     points: rawPoints
   }, type);
 
-  customCatalog[listName].push(item);
+  catalog[listName].push(item);
 
   await saveData(all);
 
@@ -3213,14 +3173,14 @@ const listName = positive ? 'positives' : 'negatives';
 
   const all = await getData();
   const catalog = getCatalogFromData(all);
-  const customCatalog = getCustomCatalogFromData(all);
+
 
   if ((catalog.rewards || []).some(existing => existing.name.toLowerCase() === name.toLowerCase())) {
     showToast('That reward already exists');
     return setMsg('catalog-msg', 'That reward already exists.', false);
   }
 
-  customCatalog.rewards.push(normaliseRewardItem({
+  catalog.rewards.push(normaliseRewardItem({
     icon: '🎁',
     name,
     pts,
@@ -3245,8 +3205,7 @@ const listName = positive ? 'positives' : 'negatives';
   if (!currentUser || currentUser.role !== 'parent') return;
 
   const all = await getData();
-  const customCatalog = getCustomCatalogFromData(all);
-  customCatalog.rewards ||= [];
+  const catalog = getCatalogFromData(all);
 
   const key = type === 'positive'
     ? 'positives'
@@ -3254,14 +3213,10 @@ const listName = positive ? 'positives' : 'negatives';
       ? 'negatives'
       : 'rewards';
 
-  if (!customCatalog[key]) return;
+  if (!catalog[key]) return;
 
-  const before = customCatalog[key].length;
-  customCatalog[key] = customCatalog[key].filter(item => item.id !== id);
-
-  if (customCatalog[key].length === before) {
-    return setMsg('catalog-msg', 'Default options cannot be deleted.', false);
-  }
+  const before = catalog[key].length;
+  catalog[key] = catalog[key].filter(item => item.id !== id);
 
   await saveData(all);
 
@@ -3669,9 +3624,9 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
       const childId = makeChildId(childUsername);
       return ensureMultiUserData({
         __settings: { theme: 'blue' },
-        __customCatalog: {
-  positives: [],
-  negatives: [],
+        __catalog: {
+  positives: DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive')),
+  negatives: DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative')),
   rewards: DEFAULT_REWARDS.map(normaliseRewardItem)
 },
         __family: { name: familyName, createdAt: new Date().toISOString() },
