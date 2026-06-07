@@ -2897,60 +2897,67 @@ function showToast(message) {
     groupHtml('🎁 Rewards', 'reward', catalog.rewards);
 }
 
-    async function addCustomBehaviour(type) {
-      if (!currentUser || currentUser.role !== 'parent') return;
-      const positive = type === 'positive';
-      const iconId = positive ? 'custom-pos-icon' : 'custom-neg-icon';
-      const labelId = positive ? 'custom-pos-label' : 'custom-neg-label';
-      const pointsId = positive ? 'custom-pos-points' : 'custom-neg-points';
-      if (!label) {
-  showToast('Enter a positive name');
-  return;
+function renderWheelSettings(all) {
+  const wheelThresholdInput = document.getElementById('wheel-threshold');
+  if (wheelThresholdInput) {
+    wheelThresholdInput.value = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+  }
 }
 
-if (!points || points <= 0) {
-  showToast('Enter positive points');
-  return;
+async function addCustomBehaviour(type) {
+  if (!currentUser || currentUser.role !== 'parent') return;
+
+  const positive = type === 'positive';
+  const labelId = positive ? 'custom-pos-label' : 'custom-neg-label';
+  const pointsId = positive ? 'custom-pos-points' : 'custom-neg-points';
+  const fallbackIcon = positive ? '⭐' : '⚠️';
+
+  const label = document.getElementById(labelId).value.trim();
+  const rawPoints = parseInt(document.getElementById(pointsId).value, 10);
+
+  if (!label) {
+    showToast(positive ? 'Enter a positive name' : 'Enter a consequence name');
+    return setMsg(
+      'catalog-msg',
+      positive ? 'Enter a positive name.' : 'Enter a consequence name.',
+      false
+    );
+  }
+
+  if (!rawPoints || rawPoints < 1) {
+    showToast('Points must be at least 1');
+    return setMsg('catalog-msg', 'Points must be at least 1.', false);
+  }
+
+  const all = await getData();
+  const catalog = getCatalogFromData(all);
+  const listName = positive ? 'positives' : 'negatives';
+
+  if (catalog[listName].some(existing => existing.label.toLowerCase() === label.toLowerCase())) {
+    showToast('That option already exists');
+    return setMsg('catalog-msg', 'That option already exists.', false);
+  }
+
+  const item = normaliseBehaviourItem({
+    icon: fallbackIcon,
+    label,
+    points: rawPoints
+  }, type);
+
+  catalog[listName].push(item);
+
+  await saveData(all);
+
+  document.getElementById(labelId).value = '';
+  document.getElementById(pointsId).value = '';
+
+  renderBehaviourOptions(all);
+  renderCatalogList(all);
+  await renderParent();
+
+  showToast(positive ? '⭐ Positive option added!' : '⚠️ Consequence option added!');
+  setMsg('catalog-msg', positive ? 'Positive option added!' : 'Consequence option added!');
 }
-      const fallbackIcon = positive ? '⭐' : '⚠️';
-
-      const label = document.getElementById(labelId).value.trim();
-      const rawPoints = parseInt(document.getElementById(pointsId).value, 10);
-      if (!label) return setMsg('catalog-msg', 'Add a name first.', false);
-      if (!rawPoints || rawPoints < 1) return setMsg('catalog-msg', 'Points must be at least 1.', false);
-
-      const all = await getData();
-      const wheelThresholdInput = document.getElementById('wheel-threshold');
-if (wheelThresholdInput) {
-  wheelThresholdInput.value = all.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
-}
-
-populateWheelPrizeSettings(all.__settings);
-      const catalog = getCatalogFromData(all);
-      const item = normaliseBehaviourItem({
-        icon: fallbackIcon,
-        label,
-        points: rawPoints
-      }, type);
-
-      const listName = positive ? 'positives' : 'negatives';
-      if (catalog[listName].some(existing => existing.label.toLowerCase() === label.toLowerCase())) {
-        return setMsg('catalog-msg', 'That option already exists.', false);
-      }
-
-      catalog[listName].push(item);
-      await saveData(all);
-      [labelId, pointsId].forEach(id => document.getElementById(id).value = '');
-renderBehaviourOptions(all);
-renderCatalogList(all);
-await renderParent();
-
-showToast(
-  positive
-    ? '⭐ Positive option added!'
-    : '⚠️ Consequence option added!'
-);
-    }
 
     async function addCustomReward() {
       if (!currentUser || currentUser.role !== 'parent') return;
@@ -4069,9 +4076,15 @@ async function clearDeniedRewardRequest(requestId) {
   await renderParent();
 }
     async function renderParent() {
-      const allForChild = await getData();
-      populateWheelPrizeSettings(allForChild.__settings);
-      const all = allForChild;
+  const allForChild = await getData();
+  populateWheelPrizeSettings(allForChild.__settings);
+
+  const wheelThresholdInput = document.getElementById('wheel-threshold');
+  if (wheelThresholdInput) {
+    wheelThresholdInput.value = allForChild.__settings?.wheelThreshold || DEFAULT_WHEEL_THRESHOLD;
+  }
+
+  const all = allForChild;
       const child = getChildFromData(allForChild, activeChildId);
       const entries = child.weeks[weekKey(wkOff)] || [];
       const rewards = getRewardsFromData(allForChild);
