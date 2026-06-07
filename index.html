@@ -4535,7 +4535,11 @@ document.getElementById('c-reward-cards').innerHTML = bonusCard + (
   </div>
 </div>`;
 }).join('')
-    : '<p class="empty-msg">No rewards available yet.</p>'
+    : `<div class="rcard">
+  <div class="ricon">🎁</div>
+  <div class="rname">No rewards available yet</div>
+  <div class="rstatus">Ask a parent to add rewards.</div>
+</div>`
 );
 const spinCard = document.getElementById('weekly-spin-card');
 const spinStatus = document.getElementById('weekly-spin-status');
