@@ -1240,6 +1240,16 @@ body[data-theme="dark"] .theme-toggle-btn {
   letter-spacing: 0.5px;
 }
 
+.found-family-code {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 900;
+}
+
 body[data-theme="dark"] #forgot-family-result .found-family-card {
   background: #0f172a;
   border-color: #334155;
@@ -1288,6 +1298,119 @@ body[data-theme="dark"] .found-family-card {
 body[data-theme="dark"] .found-family-title,
 body[data-theme="dark"] .found-family-code {
   color: #f8fafc;
+}
+
+.catalog-helper {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.catalog-group {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.catalog-group summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catalog-count {
+  font-size: 12px;
+  font-weight: 900;
+  background: #e2e8f0;
+  color: #334155;
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+
+.catalog-items {
+  display: grid;
+  gap: 6px;
+  padding: 0 10px 10px;
+}
+
+.catalog-pill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.catalog-pill-main {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.catalog-pill-icon {
+  font-size: 16px;
+}
+
+.catalog-pill-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1a1a2e;
+}
+
+.catalog-pill-points {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.catalog-remove-btn {
+  border: 1.5px solid #fecaca;
+  background: #fff1f2;
+  color: #b91c1c;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+body[data-theme="dark"] .catalog-helper {
+  color: #cbd5e1;
+}
+
+body[data-theme="dark"] .catalog-group {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .catalog-count {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+body[data-theme="dark"] .catalog-pill-row {
+  background: #111827;
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .catalog-pill-name {
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] .catalog-pill-points {
+  color: #cbd5e1;
 }
 
     @media (max-width: 600px) {
@@ -2722,32 +2845,47 @@ function showToast(message) {
     }
 
     function renderCatalogList(all) {
-      const el = document.getElementById('catalog-list');
-      if (!el) return;
+  const el = document.getElementById('catalog-list');
+  if (!el) return;
 
-      const catalog = getCatalogFromData(all);
-      const groupHtml = (title, type, items) => `
-      <div style="background:#fafafa;border:1px solid #eee;border-radius:12px;padding:12px;">
-        <h4 style="font-size:13px;margin-bottom:8px;">${title}</h4>
+  const catalog = getCatalogFromData(all);
+
+  const groupHtml = (title, type, items) => `
+    <details class="catalog-group">
+      <summary>
+        <span>${title}</span>
+        <span class="catalog-count">${items.length}</span>
+      </summary>
+
+      <div class="catalog-items">
         ${items.map(item => `
-          <div class="reward-row">
-            <div class="reward-left">
-              <span class="reward-emoji">${escapeHtml(item.icon || '🎁')}</span>
-              <div>
-                <div class="reward-name">${escapeHtml(item.label || item.name)}</div>
-                <div class="reward-pts">${type === 'reward' ? `${item.pts} points${item.desc ? ' • ' + escapeHtml(item.desc) : ''}` : formatPoints(item.points)}</div>
-              </div>
+          <div class="catalog-pill-row">
+            <div class="catalog-pill-main">
+              <span class="catalog-pill-icon">${escapeHtml(item.icon || '🎁')}</span>
+              <span class="catalog-pill-name">${escapeHtml(item.label || item.name)}</span>
+              <span class="catalog-pill-points">
+                ${type === 'reward'
+                  ? `${item.pts} pts`
+                  : formatPoints(item.points)}
+              </span>
             </div>
-            <button class="edel" onclick="deleteCatalogItem('${type}','${escapeHtml(item.id)}')" title="Delete">✕</button>
+
+            <button class="catalog-remove-btn"
+              onclick="deleteCatalogItem('${type}','${escapeHtml(item.id)}')">
+              Remove
+            </button>
           </div>
         `).join('')}
-      </div>`;
+      </div>
+    </details>
+  `;
 
-      el.innerHTML =
-        groupHtml('Positive options', 'positive', catalog.positives) +
-        groupHtml('Consequence options', 'negative', catalog.negatives) +
-        groupHtml('Rewards', 'reward', catalog.rewards);
-    }
+  el.innerHTML =
+    `<p class="catalog-helper">Remove custom positives, consequences or rewards your family no longer uses.</p>` +
+    groupHtml('⭐ Positives', 'positive', catalog.positives) +
+    groupHtml('✖ Consequences', 'negative', catalog.negatives) +
+    groupHtml('🎁 Rewards', 'reward', catalog.rewards);
+}
 
     async function addCustomBehaviour(type) {
       if (!currentUser || currentUser.role !== 'parent') return;
