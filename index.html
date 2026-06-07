@@ -503,7 +503,29 @@
     }
 
     .parent-controls-section{
-  padding:90px 0 80px;
+  margin-top:60px;
+  padding:80px 50px;
+  background:linear-gradient(180deg,#f0fdf4 0%,#dcfce7  100%);
+ background:linear-gradient(
+  135deg,
+  #0f3d1e 0%,
+  #1f7a3d 50%,
+  #43c463 100%
+  
+);
+
+
+border:1px solid rgba(255,255,255,.15);
+border-radius:34px;
+overflow:hidden;
+box-shadow:0 25px 60px rgba(0,0,0,.18);
+}
+.parent-controls-section .section-title h2{
+  color:#fff;
+}
+
+.parent-controls-section .section-title p{
+  color:rgba(255,255,255,.85);
 }
 
 .parent-controls-section .section-title{
@@ -512,7 +534,7 @@
 
 .feature-showcase{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:1.2fr 0.8fr;
   gap:64px;
   align-items:center;
 }
@@ -538,8 +560,8 @@
 
 .feature-item p{
   color:#5b6475;
-  line-height:1.6;
-  font-size:15px;
+  line-height:1.7;
+  font-size:16px;
 }
 
 .feature-images.single{
@@ -549,16 +571,29 @@
 
 .feature-screen{
   width:100%;
-  max-width:460px;
+  max-width:400px;
   border-radius:28px;
   box-shadow:0 24px 60px rgba(15,23,42,.18);
   border:1px solid rgba(15,23,42,.08);
 }
 
 @media (max-width:900px){
-  .parent-controls-section{
-    padding:60px 0;
-  }
+
+ .parent-controls-section{
+  margin-top:60px;
+  padding:80px 50px;
+  background:linear-gradient(
+  135deg,
+  #052e16 0%,
+  #166534 55%,
+  #22c55e 100%
+);
+
+
+border:1px solid rgba(255,255,255,.12);
+  border-radius:32px;
+  box-shadow:0 20px 50px rgba(22,163,74,.08);
+}
 
   .feature-showcase{
     grid-template-columns:1fr;
@@ -568,6 +603,9 @@
   .feature-screen{
     max-width:100%;
   }
+}
+.container{
+  width:100%;
 }
 
     @media (max-width: 860px) {
@@ -694,9 +732,13 @@
   <main class="page">
     <nav class="nav">
       <a class="brand" href="/app.html">
-        <span class="brand-icon">⭐</span>
-        <span>Family Rewards</span>
-      </a>
+  <img
+    src="images/logo.png"
+    alt="Family Rewards"
+    style="height:42px;width:auto;display:block;"
+  />
+  <span>Family Rewards</span>
+</a>
       <a class="nav-link" href="/app.html">Open app</a>
     </nav>
 
@@ -740,44 +782,43 @@
   <div class="container">
 
     <div class="section-title">
-      <h2>Parent controls that keep everything simple.</h2>
-      <p>
-  Log positives, record consequences and review the week from one clear parent dashboard.
+      <h2>See the whole week at a glance.</h2>
+
+<p>
+  Track positives, consequences and bonus rewards in one clear weekly activity log.
 </p>
     </div>
 
     <div class="feature-showcase">
 
       <div class="feature-copy">
-        <div class="feature-item">
-          <h3>⭐ Log positive behaviour</h3>
-          <p>
-            Reward good choices instantly with custom positive
-            categories and point values.
-          </p>
-        </div>
 
-        <div class="feature-item">
-          <h3>❌ Record consequences</h3>
-          <p>
-            Track difficult moments fairly using customised
-            consequence categories and point deductions.
-          </p>
-        </div>
+  <div class="feature-item">
+    <h3>⭐ Reward good moments</h3>
+    <p>
+      Add positive points for routines, kindness, schoolwork, chores and helpful behaviour.
+    </p>
+  </div>
 
-        <div class="feature-item">
-          <h3>📋 Weekly activity log</h3>
-          <p>
-            View every positive, consequence and bonus earned
-            throughout the week in one clear timeline.
-          </p>
-        </div>
+  <div class="feature-item">
+    <h3>❌ Handle harder moments fairly</h3>
+    <p>
+      Record consequences with clear point deductions so everyone understands what happened.
+    </p>
+  </div>
 
-      </div>
+  <div class="feature-item">
+    <h3>📋 Review the full history</h3>
+    <p>
+      See every entry in one place, including bonuses, positives and consequences.
+    </p>
+  </div>
+
+</div>
 
       <div class="feature-images single">
   <img
-    src="images/log-behaviour.jpeg"
+    src="images/weekly-log.jpeg"
     alt="Log behaviour screen"
     class="feature-screen"
   />
