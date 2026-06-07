@@ -2327,7 +2327,11 @@ if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
     e.cat && OLD_BEHAVIOUR_POINTS[e.cat] !== undefined ? Number(OLD_BEHAVIOUR_POINTS[e.cat]) :
     1;
 
-  return e.pos === false ? -Math.abs(rawPoints) : Math.abs(rawPoints);
+  if (e.type === 'negative' || e.pos === false) {
+    return -Math.abs(rawPoints);
+  }
+
+  return Math.abs(rawPoints);
 }
 
     function formatPoints(points) {
