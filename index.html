@@ -4009,7 +4009,7 @@ async function spinWeeklyWheel() {
   const wheel = document.getElementById('spin-wheel');
   const btn = document.getElementById('weekly-spin-btn');
 
-  if (!new Date().getDay() === 0) {
+  if (new Date().getDay() !== 0) {
     showToast('🎡 The spin wheel opens on Sunday!');
     return;
   }
@@ -4027,7 +4027,7 @@ if (total < threshold) {
     return;
   }
 
-if (!DEBUG_SPIN_WHEEL && spin.claimed) {
+if (spin.claimed) {
   showToast(`Already spun this week: ${spin.prize}`);
   return;
 }
@@ -4124,9 +4124,9 @@ showToast(`🎉 You won ${prize.prize}! New total: ${updatedNet}`);
 launchConfettiRain();
 
   if (btn) {
-  btn.disabled = !DEBUG_SPIN_WHEEL;
-  btn.textContent = DEBUG_SPIN_WHEEL ? 'Spin again' : 'Already spun';
-  btn.style.opacity = DEBUG_SPIN_WHEEL ? '1' : '0.65';
+  btn.disabled = true;
+  btn.textContent = 'Already spun';
+  btn.style.opacity = '0.65';
 }
 
   await renderChild();
@@ -4539,7 +4539,7 @@ if (spinCard && spinStatus && spinBtn) {
 
   spinCard.style.display = 'block';
 
-  if (!new Date().getDay() === 0) {
+  if (new Date().getDay() !== 0) {
     spinStatus.textContent = `Come back on Sunday. You need ${threshold} points this week to unlock the wheel. Current total: ${currentWeekTotal}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Available Sunday';
@@ -4549,7 +4549,7 @@ if (spinCard && spinStatus && spinBtn) {
     spinBtn.disabled = true;
     spinBtn.textContent = 'Not enough points yet';
     spinBtn.style.opacity = '0.65';
-  } else if (!DEBUG_SPIN_WHEEL && spin.claimed) {
+  } else if (spin.claimed) {
     spinStatus.textContent = `You already spun this week and won: ${spin.prize}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Already spun';
