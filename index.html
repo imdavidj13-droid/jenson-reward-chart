@@ -3808,7 +3808,7 @@ async function spinWeeklyWheel() {
   const wheel = document.getElementById('spin-wheel');
   const btn = document.getElementById('weekly-spin-btn');
 
-  if (!isSundayToday()) {
+  if (!new Date().getDay() === 0) {
     showToast('🎡 The spin wheel opens on Sunday!');
     return;
   }
@@ -4338,7 +4338,7 @@ if (spinCard && spinStatus && spinBtn) {
 
   spinCard.style.display = 'block';
 
-  if (!isSundayToday()) {
+  if (!new Date().getDay() === 0) {
     spinStatus.textContent = `Come back on Sunday. You need ${threshold} points this week to unlock the wheel. Current total: ${currentWeekTotal}.`;
     spinBtn.disabled = true;
     spinBtn.textContent = 'Available Sunday';
