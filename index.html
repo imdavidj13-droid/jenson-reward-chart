@@ -3786,6 +3786,26 @@ await saveData(all);
   showToast(status === 'approved' ? '✅ Reward approved!' : '❌ Reward denied!');
   await renderParent();
 }
+
+async function clearDeniedRewardRequest(requestId) {
+  if (!currentUser || currentUser.role !== 'parent') return;
+
+  const all = await getData();
+  all.__rewardRequests = Array.isArray(all.__rewardRequests) ? all.__rewardRequests : [];
+
+  const req = all.__rewardRequests.find(r => r.id === requestId);
+  if (!req || req.status !== 'denied') return;
+
+  req.status = 'cleared';
+  req.updatedAt = new Date().toISOString();
+
+  await saveData(all);
+  cachedData = all;
+  saveLocalData(all);
+
+  showToast('Reward request cleared.');
+  await renderParent();
+}
     async function renderParent() {
       const allForChild = await getData();
       populateWheelPrizeSettings(allForChild.__settings);
@@ -3856,10 +3876,12 @@ const summary = (posCount || negCount) ? `
 
       const requests = getRewardRequestsForChild(allForChild, activeChildId);
 const pendingRequests = requests.filter(r => r.status === 'pending');
+const deniedRequests = requests.filter(r => r.status === 'denied');
 
 const requestHtml = `
   <div style="margin-top:14px;padding-top:12px;border-top:1px solid #eee;">
     <h4 style="font-size:14px;margin-bottom:8px;">📩 Reward requests</h4>
+
     ${
       pendingRequests.length
         ? pendingRequests.map(req => `
@@ -3878,6 +3900,28 @@ const requestHtml = `
           </div>
         `).join('')
         : '<p class="empty-msg">No pending reward requests.</p>'
+    }
+
+    ${
+      deniedRequests.length
+        ? `
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #eee;">
+            <h4 style="font-size:14px;margin-bottom:8px;">❌ Denied requests</h4>
+            ${deniedRequests.map(req => `
+              <div class="reward-row">
+                <div class="reward-left">
+                  <span class="reward-emoji">${escapeHtml(req.rewardIcon || '🎁')}</span>
+                  <div>
+                    <div class="reward-name">${escapeHtml(req.rewardName)}</div>
+                    <div class="reward-pts">${escapeHtml(req.childName)} was denied this • ${req.points} points</div>
+                  </div>
+                </div>
+                <button class="btn-add-pos" onclick="clearDeniedRewardRequest('${req.id}')" style="padding:7px 10px;">Clear</button>
+              </div>
+            `).join('')}
+          </div>
+        `
+        : ''
     }
   </div>
 `;
