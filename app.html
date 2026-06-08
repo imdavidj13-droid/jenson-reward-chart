@@ -2276,7 +2276,7 @@ body[data-theme="dark"] .catalog-pill-points {
 
       <div class="hero-card">
         <div class="hero-stars" id="c-stars">⭐⭐⭐</div>
-        <div class="hero-title">Your points this week</div>
+        <div class="hero-title">Your points balance</div>
         <div class="hero-score" id="c-score">0</div>
         <div class="hero-pts">points</div>
         <div class="prog-bar">
@@ -4064,6 +4064,12 @@ function weekTotal(entries) {
 
   return pos - neg + bonus.points;
 }
+function childTotal(child) {
+  return Object.values(child.weeks || {})
+    .filter(Array.isArray)
+    .reduce((sum, entries) => sum + weekTotal(entries), 0);
+}
+
 
 function getWeeklySpin(child, wk) {
   if (!child.weeklySpins) child.weeklySpins = {};
@@ -4255,8 +4261,7 @@ if (CLOUD_READY && currentFamilyId) {
 
   if (!reward) return showToast('Reward not found.');
 
-  const entries = child.weeks[weekKey(0)] || [];
-  const net = weekTotal(entries);
+  const net = childTotal(child);
 
   if (net < reward.pts) {
     return showToast(`You need ${reward.pts - net} more points.`);
@@ -4409,9 +4414,9 @@ const summary = (posCount || negCount) ? `
       document.getElementById('p-days').innerHTML = dHtml;
 
       const bonus = weeklyBonus(entries);
-      const net = tPos - tNeg + bonus.points;
+      const net = childTotal(child);
       document.getElementById('p-stats').innerHTML = `
-      <div class="stat-box"><div class="slabel">Score</div><div class="sval ${net >= 0 ? 'green' : 'red'}">${net > 0 ? '+' : ''}${net}</div></div>
+      <div class="stat-box"><div class="slabel">Balance</div><div class="sval ${net >= 0 ? 'green' : 'red'}">${net > 0 ? '+' : ''}${net}</div></div>
       <div class="stat-box"><div class="slabel">⭐ Earned</div><div class="sval green">${tPos}</div></div>
       <div class="stat-box"><div class="slabel">🎉 Bonus</div><div class="sval blue">${bonus.points ? '+' + bonus.points : bonus.cleanDays + '/5'}</div></div>
       <div class="stat-box"><div class="slabel">✖ Lost</div><div class="sval red">${tNeg}</div></div>
@@ -4555,7 +4560,7 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
       const pos = entries.filter(e => pointsForEntry(e) > 0).reduce((sum, e) => sum + pointsForEntry(e), 0);
       const neg = Math.abs(entries.filter(e => pointsForEntry(e) < 0).reduce((sum, e) => sum + pointsForEntry(e), 0));
       const bonus = weeklyBonus(entries);
-      const net = pos - neg + bonus.points;
+      const net = childTotal(child);
    
       const rewards = getRewardsFromData(allForChild);
 const rewardTarget = rewards.length
