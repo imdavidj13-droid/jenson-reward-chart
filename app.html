@@ -2522,17 +2522,24 @@ const DEFAULT_WHEEL_PRIZES = [
     function ensureMultiUserData(all) {
       all = all && typeof all === 'object' ? all : {};
       if (!all.__settings) all.__settings = { theme: 'blue' };
-      if (!all.__children) all.__children = {};
-      if (!all.__users) all.__users = defaultUsersFromSettings(all.__settings);
+      if (!all.__children || typeof all.__children !== 'object') all.__children = {};
+      if (!all.__users || typeof all.__users !== 'object') all.__users = defaultUsersFromSettings(all.__settings);
 
-      if (!all.__children.jenson) {
+      // Migrate old single-child week data into the legacy Jenson profile only when old week keys exist.
+      const legacyWeekKeys = Object.keys(all).filter(key =>
+        /^\d{4}-\d{2}-\d{2}$/.test(key) && Array.isArray(all[key])
+      );
+
+      if (legacyWeekKeys.length && !all.__children.jenson) {
         all.__children.jenson = { id: 'jenson', name: 'Jenson', weeks: {} };
       }
-      if (!all.__children.jenson.weeks) all.__children.jenson.weeks = {};
 
-      // Migrate old single-child week data into Jenson's child profile without deleting the backup.
-      Object.keys(all).forEach(key => {
-        if (/^\d{4}-\d{2}-\d{2}$/.test(key) && Array.isArray(all[key]) && !all.__children.jenson.weeks[key]) {
+      if (all.__children.jenson && !all.__children.jenson.weeks) {
+        all.__children.jenson.weeks = {};
+      }
+
+      legacyWeekKeys.forEach(key => {
+        if (all.__children.jenson && !all.__children.jenson.weeks[key]) {
           all.__children.jenson.weeks[key] = all[key];
         }
       });
@@ -2544,7 +2551,10 @@ const DEFAULT_WHEEL_PRIZES = [
         const key = normalizeUsername(user.username);
         normalizedUsers[key] = { ...user, username: key };
       });
-      all.__users = Object.keys(normalizedUsers).length ? normalizedUsers : defaultUsersFromSettings(all.__settings);
+
+      all.__users = Object.keys(normalizedUsers).length
+        ? normalizedUsers
+        : defaultUsersFromSettings(all.__settings);
 
       Object.values(all.__users).forEach(user => {
         if (user.role === 'parent') {
@@ -2565,25 +2575,54 @@ const DEFAULT_WHEEL_PRIZES = [
           });
         }
       });
-if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
 
-all.__catalog = all.__catalog && typeof all.__catalog === 'object'
-  ? all.__catalog
-  : {};
+      // Remove the old empty duplicate Jenson child when no login points at it.
+      const referencedChildIds = new Set();
+      Object.values(all.__users).forEach(user => {
+        if (user.role === 'child' && user.childId) referencedChildIds.add(user.childId);
+        if (user.role === 'parent') getParentChildIds(user).forEach(id => referencedChildIds.add(id));
+      });
 
-all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
-  ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
-  : DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive'));
+      if (
+        all.__children.jenson &&
+        !referencedChildIds.has('jenson') &&
+        Object.values(all.__children.jenson.weeks || {}).every(week => !Array.isArray(week) || week.length === 0)
+      ) {
+        delete all.__children.jenson;
+      }
 
-all.__catalog.negatives = Array.isArray(all.__catalog.negatives) && all.__catalog.negatives.length
-  ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
-  : DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative'));
+      if (!Object.keys(all.__children).length) {
+        all.__children.jenson = { id: 'jenson', name: 'Jenson', weeks: {} };
+      }
 
-all.__catalog.rewards = Array.isArray(all.__catalog.rewards) && all.__catalog.rewards.length
-  ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
-  : DEFAULT_REWARDS.map(normaliseRewardItem);
+      Object.values(all.__children).forEach(child => {
+        if (!child.weeks) child.weeks = {};
+        Object.keys(child.weeks).forEach(wk => {
+          if (Array.isArray(child.weeks[wk])) {
+            child.weeks[wk] = child.weeks[wk].map(normaliseEntry);
+          }
+        });
+      });
 
-return all;
+      if (!Array.isArray(all.__rewardRequests)) all.__rewardRequests = [];
+
+      all.__catalog = all.__catalog && typeof all.__catalog === 'object'
+        ? all.__catalog
+        : {};
+
+      all.__catalog.positives = Array.isArray(all.__catalog.positives) && all.__catalog.positives.length
+        ? all.__catalog.positives.map(item => normaliseBehaviourItem(item, 'positive')).filter(item => item.label)
+        : DEFAULT_POSITIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'positive'));
+
+      all.__catalog.negatives = Array.isArray(all.__catalog.negatives) && all.__catalog.negatives.length
+        ? all.__catalog.negatives.map(item => normaliseBehaviourItem(item, 'negative')).filter(item => item.label)
+        : DEFAULT_NEGATIVE_BEHAVIOURS.map(item => normaliseBehaviourItem(item, 'negative'));
+
+      all.__catalog.rewards = Array.isArray(all.__catalog.rewards) && all.__catalog.rewards.length
+        ? all.__catalog.rewards.map(normaliseRewardItem).filter(item => item.name)
+        : DEFAULT_REWARDS.map(normaliseRewardItem);
+
+      return all;
     }
 
     function getUsersFromData(all) {
@@ -2621,6 +2660,8 @@ return all;
     }
 
     function pointsForEntry(e) {
+  if (!e || e.deleted || e.deletedAt) return 0;
+
   const rawPoints =
     Number.isFinite(Number(e.points)) ? Number(e.points) :
     Number.isFinite(Number(e.pts)) ? Number(e.pts) :
@@ -2656,10 +2697,11 @@ return all;
     }
 
     function weeklyBonus(entries) {
+      const visible = visibleEntries(entries);
       let cleanDays = 0;
 
       for (let day = 0; day < 7; day++) {
-        const dayEntries = entries.filter(e => e.day === day);
+        const dayEntries = visible.filter(e => e.day === day);
         const hasEntry = dayEntries.length > 0;
         const hasNegative = dayEntries.some(e => pointsForEntry(e) < 0);
 
@@ -3740,6 +3782,163 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
 
       return true;
     }
+    function cloneData(value) {
+      return JSON.parse(JSON.stringify(value || {}));
+    }
+
+    function tinyHash(value) {
+      const str = String(value || '');
+      let hash = 0;
+
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+
+      return Math.abs(hash).toString(36);
+    }
+
+    function normaliseEntry(entry = {}) {
+      const e = { ...entry };
+      e.day = Number.isFinite(Number(e.day)) ? Number(e.day) : 0;
+      e.cat = String(e.cat || e.label || e.name || 'Entry');
+      e.icon = e.icon || (e.pos === false || e.type === 'negative' ? '✖' : '⭐');
+      e.note = String(e.note || '');
+      e.points = pointsForEntry(e);
+      e.pos = e.points > 0;
+      return e;
+    }
+
+    function entryMergeKey(entry) {
+      if (entry.id) return String(entry.id);
+
+      return 'legacy_' + tinyHash([
+        entry.day,
+        entry.cat,
+        entry.icon,
+        entry.note,
+        pointsForEntry(entry),
+        entry.pos === false ? 'neg' : 'pos'
+      ].join('|'));
+    }
+
+    function visibleEntries(entries = []) {
+      return (Array.isArray(entries) ? entries : []).filter(entry =>
+        entry && !entry.deleted && !entry.deletedAt
+      );
+    }
+
+    function mergeEntryLists(baseList = [], incomingList = []) {
+      const merged = new Map();
+
+      [...(Array.isArray(baseList) ? baseList : []), ...(Array.isArray(incomingList) ? incomingList : [])]
+        .map(normaliseEntry)
+        .forEach(entry => {
+          const key = entryMergeKey(entry);
+          const existing = merged.get(key);
+
+          if (!existing) {
+            merged.set(key, entry);
+            return;
+          }
+
+          merged.set(key, {
+            ...existing,
+            ...entry,
+            deleted: Boolean(existing.deleted || entry.deleted),
+            deletedAt: entry.deletedAt || existing.deletedAt || null
+          });
+        });
+
+      return Array.from(merged.values());
+    }
+
+    function mergeCatalogItems(baseList = [], incomingList = [], type = 'positive') {
+      const merged = new Map();
+
+      [...(Array.isArray(baseList) ? baseList : []), ...(Array.isArray(incomingList) ? incomingList : [])]
+        .forEach(item => {
+          const normalised = type === 'reward'
+            ? normaliseRewardItem(item)
+            : normaliseBehaviourItem(item, type);
+
+          const key = normalised.id || normalised.label || normalised.name;
+          if (key) merged.set(String(key).toLowerCase(), normalised);
+        });
+
+      return Array.from(merged.values());
+    }
+
+    function mergeAppData(baseData = {}, incomingData = {}) {
+      const base = ensureMultiUserData(cloneData(baseData));
+      const incoming = ensureMultiUserData(cloneData(incomingData));
+
+      const merged = {
+        ...base,
+        ...incoming,
+        __settings: {
+          ...(base.__settings || {}),
+          ...(incoming.__settings || {})
+        },
+        __family: {
+          ...(base.__family || {}),
+          ...(incoming.__family || {})
+        },
+        __catalog: {
+          positives: mergeCatalogItems(base.__catalog?.positives, incoming.__catalog?.positives, 'positive'),
+          negatives: mergeCatalogItems(base.__catalog?.negatives, incoming.__catalog?.negatives, 'negative'),
+          rewards: mergeCatalogItems(base.__catalog?.rewards, incoming.__catalog?.rewards, 'reward')
+        },
+        __users: {
+          ...(base.__users || {}),
+          ...(incoming.__users || {})
+        },
+        __children: {},
+        __rewardRequests: []
+      };
+
+      const childIds = new Set([
+        ...Object.keys(base.__children || {}),
+        ...Object.keys(incoming.__children || {})
+      ]);
+
+      childIds.forEach(childId => {
+        const baseChild = base.__children?.[childId] || {};
+        const incomingChild = incoming.__children?.[childId] || {};
+        const weeks = {};
+        const weekKeys = new Set([
+          ...Object.keys(baseChild.weeks || {}),
+          ...Object.keys(incomingChild.weeks || {})
+        ]);
+
+        weekKeys.forEach(wk => {
+          weeks[wk] = mergeEntryLists(baseChild.weeks?.[wk], incomingChild.weeks?.[wk]);
+        });
+
+        merged.__children[childId] = {
+          ...baseChild,
+          ...incomingChild,
+          id: incomingChild.id || baseChild.id || childId,
+          name: incomingChild.name || baseChild.name || 'Child',
+          weeks,
+          weeklySpins: {
+            ...(baseChild.weeklySpins || {}),
+            ...(incomingChild.weeklySpins || {})
+          }
+        };
+      });
+
+      const requests = new Map();
+      [...(base.__rewardRequests || []), ...(incoming.__rewardRequests || [])].forEach(req => {
+        if (!req) return;
+        const key = req.id || tinyHash(JSON.stringify(req));
+        requests.set(key, { ...(requests.get(key) || {}), ...req, id: req.id || key });
+      });
+      merged.__rewardRequests = Array.from(requests.values());
+
+      return ensureMultiUserData(merged);
+    }
+
 
     async function getData() {
       if (!currentFamilyId) return ensureMultiUserData({});
@@ -3748,10 +3947,19 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
       const cloudData = await loadCloudFamily(currentFamilyId);
       const localBackup = getLocalData();
 
-      cachedData = ensureMultiUserData(cloudData || localBackup || {});
+      if (cloudData && Object.keys(localBackup).length) {
+        cachedData = mergeAppData(cloudData, localBackup);
+        saveLocalData(cachedData);
 
-      if (!cloudData && Object.keys(localBackup).length) {
-        await saveData(cachedData);
+        if (JSON.stringify(cachedData) !== JSON.stringify(ensureMultiUserData(cloudData))) {
+          await saveCloudFamily(currentFamilyId, cachedData);
+        }
+      } else {
+        cachedData = ensureMultiUserData(cloudData || localBackup || {});
+
+        if (!cloudData && Object.keys(localBackup).length) {
+          await saveData(cachedData);
+        }
       }
 
       return cachedData;
@@ -3759,12 +3967,19 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
 
     async function saveData(d) {
       d = ensureMultiUserData(d);
-      cachedData = d;
-      saveLocalData(d);
 
-      if (currentFamilyId) {
+      if (currentFamilyId && CLOUD_READY) {
+        const latestCloud = await loadCloudFamily(currentFamilyId);
+
+        if (latestCloud) {
+          d = mergeAppData(latestCloud, d);
+        }
+
         await saveCloudFamily(currentFamilyId, d);
       }
+
+      cachedData = d;
+      saveLocalData(d);
     }
 
     async function createFamily() {
@@ -3938,9 +4153,18 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
         }
 
         currentFamilyId = familyCode;
-        cachedData = ensureMultiUserData(cloudData);
         localStorage.setItem(FAMILY_STORAGE_KEY, currentFamilyId);
+
+        const localData = getLocalData();
+        cachedData = cloudData && Object.keys(localData).length
+          ? mergeAppData(cloudData, localData)
+          : ensureMultiUserData(cloudData);
+
         saveLocalData(cachedData);
+
+        if (Object.keys(localData).length && JSON.stringify(cachedData) !== JSON.stringify(ensureMultiUserData(cloudData))) {
+          await saveCloudFamily(currentFamilyId, cachedData);
+        }
 
         setButtonLoading('join-family-btn', false, 'Opening family...', 'Open Family');
         await showLoginForFamily(false);
@@ -4006,8 +4230,15 @@ if (wheelThreshold) wheelThreshold.value = all.__settings?.wheelThreshold || DEF
     return;
   }
 
-  cachedData = ensureMultiUserData(cloudData || localData);
+  cachedData = cloudData && Object.keys(localData).length
+    ? mergeAppData(cloudData, localData)
+    : ensureMultiUserData(cloudData || localData);
+
   saveLocalData(cachedData);
+
+  if (cloudData && Object.keys(localData).length && JSON.stringify(cachedData) !== JSON.stringify(ensureMultiUserData(cloudData))) {
+    await saveCloudFamily(currentFamilyId, cachedData);
+  }
 
   await loadAndApplyTheme();
 
@@ -4386,7 +4617,7 @@ async function clearDeniedRewardRequest(requestId) {
       let tPos = 0, tNeg = 0;
       let dHtml = '';
       dates.forEach((d, i) => {
-        const de = entries.filter(e => e.day === i);
+        const de = visibleEntries(entries).filter(e => e.day === i);
         const p = de.filter(e => pointsForEntry(e) > 0).reduce((sum, e) => sum + pointsForEntry(e), 0);
         const n = Math.abs(de.filter(e => pointsForEntry(e) < 0).reduce((sum, e) => sum + pointsForEntry(e), 0));
         tPos += p; tNeg += n;
@@ -4501,10 +4732,11 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
 
     function renderPEntries(entries) {
       const el = document.getElementById('p-entries');
-      const rev = [...entries].reverse();
+      const visible = visibleEntries(entries);
+      const rev = [...visible].reverse();
       if (!rev.length) { el.innerHTML = '<p class="empty-msg">No entries logged yet this week.</p>'; return; }
-      el.innerHTML = rev.map((e, ri) => {
-        const idx = entries.length - 1 - ri;
+      el.innerHTML = rev.map((e) => {
+        const idx = entries.findIndex(original => entryMergeKey(original) === entryMergeKey(e));
         return `<div class="entry ${pointsForEntry(e) > 0 ? 'pos-entry' : 'neg-entry'}">
         <span class="eicon">${escapeHtml(e.icon || (pointsForEntry(e) > 0 ? '⭐' : '✖'))}</span>
         <div class="ebody">
@@ -4519,18 +4751,36 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
     async function addEntry(type) {
       const isPositive = type === 'positive';
       const wk = weekKey(wkOff);
-      const day = parseInt(document.getElementById('f-day').value);
+      const day = parseInt(document.getElementById('f-day').value, 10);
       const select = document.getElementById(isPositive ? 'f-pos-cat' : 'f-neg-cat');
       const selected = select.options[select.selectedIndex];
+
       if (!selected) return;
+
       const icon = selected.dataset.icon || (isPositive ? '⭐' : '✖');
       const cat = selected.dataset.label || selected.textContent;
-      const points = parseInt(selected.value, 10);
+      const rawPoints = Math.abs(parseInt(selected.value, 10));
+      const points = isPositive ? rawPoints : -rawPoints;
       const note = document.getElementById('f-note').value.trim();
+
       const all = await getData();
       const child = getChildFromData(all, activeChildId);
       if (!child.weeks[wk]) child.weeks[wk] = [];
-      child.weeks[wk].push({ day, cat, icon, note, pos: points > 0, points });
+
+      child.weeks[wk].push({
+        id: makeCatalogId('entry'),
+        createdAt: new Date().toISOString(),
+        childId: activeChildId,
+        week: wk,
+        day,
+        cat,
+        icon,
+        note,
+        type: isPositive ? 'positive' : 'negative',
+        pos: isPositive,
+        points
+      });
+
       await saveData(all);
       document.getElementById('f-note').value = '';
       await renderParent();
@@ -4540,8 +4790,16 @@ document.getElementById('p-rewards').innerHTML = bonusHtml + rewards.map(r => {
       const wk = weekKey(wkOff);
       const all = await getData();
       const child = getChildFromData(all, activeChildId);
-      if (!child.weeks[wk]) return;
-      child.weeks[wk].splice(idx, 1);
+
+      if (!child.weeks[wk] || !child.weeks[wk][idx]) return;
+
+      child.weeks[wk][idx] = {
+        ...normaliseEntry(child.weeks[wk][idx]),
+        id: child.weeks[wk][idx].id || entryMergeKey(child.weeks[wk][idx]),
+        deleted: true,
+        deletedAt: new Date().toISOString()
+      };
+
       await saveData(all);
       await renderParent();
     }
@@ -4663,7 +4921,7 @@ if (spinCard && spinStatus && spinBtn) {
     }
 
     function renderCEntries(entries) {
-      let list = [...entries].reverse();
+      let list = [...visibleEntries(entries)].reverse();
       if (cTab === 'pos') list = list.filter(e => pointsForEntry(e) > 0);
       if (cTab === 'neg') list = list.filter(e => pointsForEntry(e) < 0);
       const el = document.getElementById('c-entries');
